@@ -206,7 +206,7 @@ public class Connectioner {
 	}
 
 	public synchronized ArrayList<String> getAlwaysAllow(String host)
-			throws SQLException {
+			throws Exception {
 		try {
 			getAllowsAllow.setString(1, host);
 			ResultSet rs = getAllowsAllow.executeQuery();
