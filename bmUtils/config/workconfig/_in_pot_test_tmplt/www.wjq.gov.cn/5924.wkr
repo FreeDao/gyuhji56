@@ -1,0 +1,9 @@
+#ref_url = http://www.wjq.gov.cn/f_filelist_l.asp?p_site=8686&p_index=bz{@key}
+URL = http://www.wjq.gov.cn/f_filelist_l.asp?p_site=8686&p_index=bz{@key}
+PARA_KEY = —————:true:(*)
+PARA_CLASS = int:1:1:1
+COOKIE = YES
+PARSER = zb_www.wjq.gov.cn_0
+TRACE = fromUrl:zb_www.wjq.gov.cn_sub_0
+
+DEFAULT = area = 五家渠

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<project name="project" default="jar_util" basedir=".">
+    <description>  description  </description>
+	<property name="src_util.dir" value="./src/util"></property>
+	<property name="src_htmlps.dir" value="./src/htmlps"></property>
+
+	<!--app build directory-->
+	<property name ="bmtHtmlpsJar" value="bmtHtmlps.jar"></property>
+	<property name ="bmtUtilJar" value="bmtUtil.jar"></property>
+	<property name="build.dir" value="./build/"></property>
+	<property name="build.bmtHtmlpsJar.class.dir" value="${build.dir}/classes/bmtHtmlpsJar.dir"></property>
+	<property name="build.bmtUtilJar.class.dir" value="${build.dir}/classes/build.bmtUtilJar.dir"></property>
+	<!--app dist directory-->
+	<property name="dist.dir" value="./build/dist/"></property>
+	<property name="lib.dir" value="./lib/"></property>
+
+
+	<path id="master-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<!--usage-->
+	<target name="usage">
+		<echo message="------------------------------"/>
+		<echo message="library in ${lib.dir}"/>
+		<echo message="build ${src.dir} => ${build.classes.dir}"/>
+		<echo message="jar ${build.classes.dir} => ${dist.dir}"/>
+		<echo message="javadoc => ${doc.dir}"/>
+		<echo message="------------------------------"/>
+	</target>
+	
+	<!--init-->
+	<target name="init">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.bmtHtmlpsJar.class.dir}"/>
+		<mkdir dir="${build.bmtUtilJar.class.dir}"/>
+	</target>
+
+	<!-- build html-htmlps -->
+	<target name="jar_htmlps" depends="init" description="Build the source file">
+		<javac srcdir="${src_htmlps.dir}" includeantruntime ="false" destdir="${build.bmtHtmlpsJar.class.dir}"  deprecation=""  classpath="" target="1.7" encoding = "utf-8" debug="true">
+			<classpath refid="master-classpath"/>
+		</javac>
+		<jar destfile="${dist.dir}/${bmtHtmlpsJar}" basedir="${build.bmtHtmlpsJar.class.dir}" />
+	</target>
+	
+	<!--jar util -->
+	<target name="jar_util" depends="jar_htmlps" description="Pack the project into a single jar">
+		<path id="utilLib">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir = "${dist.dir}/">
+				<include name= "*.jar"/>
+			</fileset>
+		</path>
+		<javac debug="true" srcdir="${src_util.dir}" includeantruntime ="false" destdir="${build.bmtUtilJar.class.dir}"  deprecation=""  classpath="" target="1.7" encoding = "utf-8">
+			<classpath refid="utilLib"/>
+		</javac>
+		
+		<jar destfile="${dist.dir}/${bmtUtilJar}" basedir="${build.bmtUtilJar.class.dir}" />
+
+	</target>
+
+</project>
+

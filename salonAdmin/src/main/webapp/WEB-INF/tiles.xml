@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="hello" template="/WEB-INF/hello.jsp" />
+	<definition name="jsonView" template="/WEB-INF/jsonView.jsp" />
+
+	<definition name="base.definition" template="/WEB-INF/jsp/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/menu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/footer.jsp" />
+	</definition>
+
+	<definition name="detectedHost" extends="base.definition">
+		<put-attribute name="title" value="Contact Manager" />
+		<put-attribute name="body" value="/WEB-INF/jsp/detectedHost.jsp" />
+	</definition>
+
+	<definition name="metronics.base" template="/WEB-INF/jsp/metronics/layout.jsp">
+		<put-attribute name="metronHeader" value="/WEB-INF/jsp/metronics/header.jsp" />
+		<put-attribute name="metronSidebar" value="/WEB-INF/jsp/metronics/sideBar.jsp" />
+		<put-attribute name="metronPageHeader"
+			value="/WEB-INF/jsp/metronics/pageHeader.jsp" />
+		<put-attribute name="metronMainContent" value="" />
+		<put-attribute name="metronQuickSideBar"
+			value="/WEB-INF/jsp/metronics/quickSideBar.jsp" />
+		<put-attribute name="metronJScript"
+			value="/WEB-INF/jsp/metronics/jScripts.jsp" />
+	</definition>
+
+	<definition name="metronics.base.test" extends="metronics.base">
+		<put-attribute name="metronMainContent"
+			value="/WEB-INF/jsp/metronics/mainContent.jsp" />
+	</definition>
+
+</tiles-definitions>

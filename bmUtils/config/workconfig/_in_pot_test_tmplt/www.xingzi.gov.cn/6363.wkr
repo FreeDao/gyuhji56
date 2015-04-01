@@ -1,0 +1,9 @@
+#ref_url = http://www.xingzi.gov.cn/xingzi/ziye.asp?newtype=4F8F1F{@key}
+URL = http://www.xingzi.gov.cn/xingzi/ziye.asp?newtype=4F8F1F{@key}
+PARA_KEY = —————:true:(*)
+PARA_CLASS = int:1:1:1
+COOKIE = YES
+PARSER = zb_www.xingzi.gov.cn_0
+TRACE = fromurl:zb_www.xingzi.gov.cn_sub_0
+
+DEFAULT = area = 星子

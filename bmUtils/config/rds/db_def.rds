@@ -1,0 +1,185 @@
+#this is the resource file
+[var]
+#define key_values
+#define mysql and oracle's connection url and driver name
+my_url = jdbc:mysql://$host$:$port$/$database$?autoReconnect=true&characterEncoding=utf-8&useUnicode=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+my_driver = com.mysql.jdbc.Driver
+
+#ms_driver=net.sourceforge.jtds.jdbc.Driver
+#ms_url=jdbc:jtds:sqlserver://$host$:$port$;DatabaseName=$database$
+#ora_url = jdbc:oracle:thin:@$host$:$port$:$database$
+#ora_driver = oracle.jdbc.driver.OracleDriver
+
+[def]
+#DEF block, DEF defines the vars who should been defined in other config
+#define oracle vars
+#DEF = ora_host
+#DEF = ora_port
+#DEF = ora_user
+#DEF = ora_password
+#DEF = ora_database
+
+#define mysql vars
+#DEF = my_host
+#DEF = my_port
+#DEF = my_user
+#DEF = my_password
+#DEF = my_database
+
+[src]
+#source define block, it should be defined at the end of main block
+SRC = raw
+SRC = test
+SRC = qianlima
+SRC = qianlima_real
+SRC = zbbridge_local
+SRC = zbbridge
+SRC = raw_adm
+SRC = reader_qlm
+SRC = reader_raw
+SRC= 88_bridge
+SRC = qianlima_reader
+SRC = telphone
+#SRC = local
+#SRC = tests_
+#SRC = raw_ms
+#SRC = zmpp
+#source detail define
+[telphone]
+host = 127.0.0.1
+port = 3306
+#how it is? use another user?
+user = root
+password = 
+database = tel
+driver = $my_driver$
+url = $my_url$
+
+[qianlima_real]
+host = www.qianlima.com	
+port = 3309
+#how it is? use another user?
+user = root
+password = 987sdfo34987sdfjko345sdferysdfe5ewrWsdf34
+database = qianlima
+driver = $my_driver$
+url = $my_url$
+
+[test]
+host = 127.0.0.1
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = test
+driver = $my_driver$
+url = $my_url$
+
+[qianlima_reader]
+host = 127.0.0.1
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = qianlima
+driver = $my_driver$
+url = $my_url$
+
+[qianlima]
+host = 127.0.0.1
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = qianlima
+driver = $my_driver$
+url = $my_url$
+
+[tests_]
+host = 211.100.52.41
+port = 3309
+#how it is? use another user?
+user = root
+password = 987sdfo34987sdfjko345sdferysdfe5ewrWsdf34
+database = rawdatas
+driver = $my_driver$
+url = $my_url$
+
+[raw_ms]
+host = FISHER-BOAT
+port = 3625
+user = sa
+password = liying123654
+database = master
+driver = $ms_driver$
+url = $ms_url$
+
+[raw]
+host = localhost
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = rawdatas
+driver = $my_driver$
+url = $my_url$
+
+[zbbridge_local]
+host = localhost
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = zbbridge
+driver = $my_driver$
+url = $my_url$
+
+[zbbridge]
+host = aly.qianlima.com
+port = 3309
+#how it is? use another user?
+user = rmt_bridge
+password = g8CBBmKjgmK8fgRo7ECCuEEmjfo8gRoC
+database = zbbridge
+driver = $my_driver$
+url = $my_url$
+
+[raw_adm]
+host = adm.qianlima.com
+port = 3309
+#how it is? use another user?
+user = rawdatas
+password = CYaXFTr5qRrEEtRA
+database = rawdatas
+driver = $my_driver$
+url = $my_url$
+
+[reader_qlm]
+host = 192.168.1.88
+port = 3309
+#how it is? use another user?
+user = reader
+password = 3495867
+database = qianlima
+driver = $my_driver$
+url = $my_url$
+
+[reader_raw]
+host = 192.168.1.88
+port = 3309
+#how it is? use another user?
+user = reader
+password = 3495867
+database = rawdatas
+driver = $my_driver$
+url = $my_url$
+
+[88_bridge]
+host = 192.168.1.88
+port = 3306
+#how it is? use another user?
+user = root
+password = 3495867
+database = bridge
+driver = $my_driver$
+url = $my_url$
