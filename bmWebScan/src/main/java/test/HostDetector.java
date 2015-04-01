@@ -32,14 +32,14 @@ public class HostDetector {
 				try {
 					InetAddress its = java.net.InetAddress.getByName(t);
 
-					System.out.println("OK " + ok.addAndGet(1) + ", now " + t);
+					System.out.println(its + " OK " + ok.addAndGet(1)
+							+ ", now " + t);
 				} catch (Exception e) {
 
 					try {
 						setError.setString(1, t);
 						setError.execute();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					System.out.println("ERROR " + error.addAndGet(1) + ", now "
