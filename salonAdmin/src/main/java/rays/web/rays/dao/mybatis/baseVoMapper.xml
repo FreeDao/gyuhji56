@@ -4,23 +4,48 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="rays.web.rays.dao.mybatis.WebScanDao">
 
-	<select id="selectSourceDetectedById" parameterType="int"
-		resultType="SourceDetectVo">
+	<select id="selectSourceDetectedById" resultType="SourceDetectVo">
 		select
 		*
-		from webscan_source_detect where id=#{varRuleId}
+		from
+		webscan_source_detect where id=#{id}
 	</select>
-	<select id="selectSourceDetectedList" 
-		resultType="SourceDetectVo">
+	<select id="selectSourceDetectedList" resultType="SourceDetectVo">
 		select
 		*
-		from webscan_source_detect where audit_status = 0 order by level_3_count desc,level_2_count desc,level_2_count desc limit #{offset}, #{len}
+		from
+		webscan_source_detect
+		<if test="onlyUnAudit">
+			where audit_status = 0
+		</if>
+		order by level_3_count desc,level_2_count desc,level_2_count desc
+		limit
+		#{offset}, #{len}
 	</select>
-	<select id="selectTotalUnAudit" 
-		resultType="int">
+	<select id="selectSourceDetectedListByHostNames" resultType="SourceDetectVo">
+		select
+		*
+		from webscan_source_detect where  host in
+		<foreach collection="hosts" item="hostName" index="index"
+			open="(" close=")" separator=",">
+			#{hostName}
+		</foreach>
+		<if test="onlyUnAudit">
+		and audit_status = 0 
+		</if>
+		order by level_3_count desc,level_2_count desc,level_2_count desc
+	</select>
+	<select id="selectTotalUnAudit" resultType="int">
 		select
 		count(*)
-		from webscan_source_detect where audit_status = 0 
+		from
+		webscan_source_detect where audit_status = 0
 	</select>
+
+	<update id="setHostStatus" flushCache="true">
+		update
+		webscan_source_detect set audit_status=#{statusCode} where host =
+		#{hostName}
+	</update>
 
 </mapper> 

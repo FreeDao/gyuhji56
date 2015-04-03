@@ -1,14 +1,18 @@
 package rays.web.rays.vo;
 
+import java.io.File;
 import java.util.Date;
 
 public class SourceDetectVo {
+	public static final int isAuditing = 0;
+	public static final int isWatching = 9;
+	public static final int isIgnored = 2;
 	int id;
 	String host;
-	int evel_1_count;
+	int level_1_count;
 	int level_2_count;
 	int level_3_count;
-	int scanNum;
+	int scan_num;
 
 	public int getLevel_3_count() {
 		return level_3_count;
@@ -18,12 +22,12 @@ public class SourceDetectVo {
 		this.level_3_count = level_3_count;
 	}
 
-	public int getScanNum() {
-		return scanNum;
+	public int getScan_num() {
+		return scan_num;
 	}
 
-	public void setScanNum(int scanNum) {
-		this.scanNum = scanNum;
+	public void setScan_num(int scanNum) {
+		this.scan_num = scanNum;
 	}
 
 	String path;
@@ -47,12 +51,12 @@ public class SourceDetectVo {
 		this.host = host.toLowerCase().trim();
 	}
 
-	public int getEvel_1_count() {
-		return evel_1_count;
+	public int getLevel_1_count() {
+		return level_1_count;
 	}
 
-	public void setEvel_1_count(int evel_1_count) {
-		this.evel_1_count = evel_1_count;
+	public void setLevel_1_count(int evel_1_count) {
+		this.level_1_count = evel_1_count;
 	}
 
 	public int getLevel_2_count() {
@@ -98,11 +102,23 @@ public class SourceDetectVo {
 	@Override
 	public String toString() {
 		return "SourceDetectVo [id=" + id + ", host=" + host
-				+ ", evel_1_count=" + evel_1_count + ", level_2_count="
+				+ ", level_1_count=" + level_1_count + ", level_2_count="
 				+ level_2_count + ", level_3_count=" + level_3_count
-				+ ", scanNum=" + scanNum + ", path=" + path + ", audit_status="
-				+ audit_status + ", inputtime=" + inputtime + ", updatetime="
-				+ updatetime + "]";
+				+ ", scanNum=" + scan_num + ", path=" + path
+				+ ", audit_status=" + audit_status + ", inputtime=" + inputtime
+				+ ", updatetime=" + updatetime + "]";
+	}
+
+	public File toFile() {
+		return new File(this.getPath());
+	}
+
+	public boolean isWatching() {
+		return this.getAudit_status() == isWatching;
+	}
+
+	public boolean isAuditing() {
+		return this.getAudit_status() == isAuditing;
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PageSplit {
 	private int itemNumberPerPage = 10;
-	private int ItemStartIndex = 0, itemEndIndex = 0;
+	private int itemStartIndex = 0, itemEndIndex = 0;
 	private int startPageNum = 1;
 	private int endPageNum = 1;
 	private int currentPage = 0;
@@ -22,12 +22,12 @@ public class PageSplit {
 		currentPage = pageNum;
 		if (pageNum < 1)
 			pageNum = 1;
-		this.ItemStartIndex = (pageNum - 1) * this.itemNumberPerPage;
-		if (ItemStartIndex > totalItem) {
-			ItemStartIndex = totalItem;
+		this.itemStartIndex = (pageNum - 1) * this.itemNumberPerPage;
+		if (itemStartIndex > totalItem) {
+			itemStartIndex = totalItem;
 			itemEndIndex = totalItem;
 		} else {
-			itemEndIndex = ItemStartIndex + this.itemNumberPerPage;
+			itemEndIndex = itemStartIndex + this.itemNumberPerPage;
 			if (totalItem < pageNum * this.itemNumberPerPage)
 				this.itemEndIndex = totalItem;
 
@@ -83,7 +83,7 @@ public class PageSplit {
 	}
 
 	public int getItemStartIndex() {
-		return ItemStartIndex;
+		return itemStartIndex;
 	}
 
 	public int getItemEndIndex() {
@@ -93,7 +93,7 @@ public class PageSplit {
 	@Override
 	public String toString() {
 		return "PageSplit [itemNumberPerPage=" + itemNumberPerPage
-				+ ", ItemStartIndex=" + ItemStartIndex + ", itemEndIndex="
+				+ ", itemStartIndex=" + itemStartIndex + ", itemEndIndex="
 				+ itemEndIndex + ", startPageNum=" + startPageNum
 				+ ", endPageNum=" + endPageNum + ", currentPage=" + currentPage
 				+ ", totalPageNum=" + totalPageNum + ", totalItem=" + totalItem

@@ -19,21 +19,38 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/detectedHost.jsp" />
 	</definition>
 
-	<definition name="metronics.base" template="/WEB-INF/jsp/metronics/layout.jsp">
-		<put-attribute name="metronHeader" value="/WEB-INF/jsp/metronics/header.jsp" />
-		<put-attribute name="metronSidebar" value="/WEB-INF/jsp/metronics/sideBar.jsp" />
+	<definition name="metronics.base" template="/WEB-INF/jsp/metronics/admin/layout.jsp">
+		<put-attribute name="metronHeader"
+			value="/WEB-INF/jsp/metronics/admin/header.jsp" />
+		<put-attribute name="metronCss" value="" />
+		<put-attribute name="metronSidebar"
+			value="/WEB-INF/jsp/metronics/admin/sideBar.jsp" />
 		<put-attribute name="metronPageHeader"
-			value="/WEB-INF/jsp/metronics/pageHeader.jsp" />
+			value="/WEB-INF/jsp/metronics/admin/pageHeader.jsp" />
 		<put-attribute name="metronMainContent" value="" />
 		<put-attribute name="metronQuickSideBar"
-			value="/WEB-INF/jsp/metronics/quickSideBar.jsp" />
-		<put-attribute name="metronJScript"
-			value="/WEB-INF/jsp/metronics/jScripts.jsp" />
+			value="/WEB-INF/jsp/metronics/admin/quickSideBar.jsp" />
+		<put-attribute name="metronJScript" value="" />
 	</definition>
 
 	<definition name="metronics.base.test" extends="metronics.base">
 		<put-attribute name="metronMainContent"
-			value="/WEB-INF/jsp/metronics/mainContent.jsp" />
+			value="/WEB-INF/jsp/metronics/admin/mainContent.jsp" />
 	</definition>
-
+	<definition name="metronics.detectedList" extends="metronics.base">
+		<put-attribute name="metronMainContent"
+			value="/WEB-INF/jsp/metronics/admin/detectedList.jsp" />
+		<put-attribute name="metronJScript"
+			value="/WEB-INF/jsp/metronics/admin/detectedList_js.jsp" />
+		<put-attribute name="metronCss"
+			value="/WEB-INF/jsp/metronics/admin/detectedList_css.jsp" />
+	</definition>
+	<definition name="metronics.detectedHost" extends="metronics.base">
+		<put-attribute name="metronMainContent"
+			value="/WEB-INF/jsp/metronics/admin/detectedHost.jsp" />
+		<put-attribute name="metronJScript"
+			value="/WEB-INF/jsp/metronics/admin/detectedHost_js.jsp" />
+		<put-attribute name="metronCss"
+			value="/WEB-INF/jsp/metronics/admin/detectedHost_css.jsp" />
+	</definition>
 </tiles-definitions>
