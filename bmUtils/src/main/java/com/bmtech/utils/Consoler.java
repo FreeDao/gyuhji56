@@ -50,6 +50,14 @@ public class Consoler {
 		}
 	}
 
+	public static String readString(String input, String dft) {
+		String str = readString(input + "(default '" + dft + "')");
+		if (str.length() == 0) {
+			return dft;
+		}
+		return str;
+	}
+
 	public static boolean confirm(String input) {
 		return confirm(input, null);
 	}
