@@ -192,10 +192,10 @@ public class ScanConfig {
 		return Math.abs(host.hashCode()) % 1024;
 	}
 
-	public File getHostBase(String host) {
-		host = host.toLowerCase().trim();
-		File f = new File(this.crawlDir, "hosts/" + hostHash(host) + "/"
-				+ Misc.formatFileName(host, '-'));
+	public File getHostBase(HostInfo info) {
+		File f = new File(this.crawlDir, "hosts/"
+				+ hostHash(info.getHostName()) + "/"
+				+ Misc.formatFileName(info.getHostName(), '-'));
 
 		if (!f.exists()) {
 			f.mkdirs();

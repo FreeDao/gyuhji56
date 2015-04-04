@@ -88,6 +88,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 
 					}
 				} catch (Throwable tx) {
+					tx.printStackTrace();
 					log.fatal(tx, "EEE after run %s", r);
 
 				}
@@ -101,7 +102,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 
 	public void requeue(HostScan pot) {
 		requeue.addAndGet(1);
-		log.info("requeue host %s", pot);
+		log.debug("requeue host %s", pot);
 		putToHostSet(pot);
 		this.hostRunnor.execute(pot);
 	}

@@ -58,7 +58,6 @@ public class HostScan implements Runnable {
 			log = new BmtLogHelper(hostName);
 
 			if (siteOut.savedFileCount() >= ScanConfig.instance.maxPagePerHost) {
-				// MDir.closeMDir(mdir);
 				this.hostContext.setEnd(true);
 				return;
 			}
@@ -69,7 +68,7 @@ public class HostScan implements Runnable {
 				log.warn("host valid check false!");
 				hostContext.setEnd(true);
 			}
-			urlIn = new HostScanUrlIn();
+			urlIn = new HostScanUrlIn(hostInfo);
 
 		} catch (Throwable e) {
 			this.hostContext.setEnd(true);
@@ -90,7 +89,9 @@ public class HostScan implements Runnable {
 			urlOut.close();
 		}
 		this.siteOut.close();
-		urlIn.close();
+		if (urlIn != null) {
+			urlIn.close();
+		}
 	}
 
 	private long lastRun = 0;
@@ -144,8 +145,11 @@ public class HostScan implements Runnable {
 		lastRun = now;
 		hostContext.setCurrentUrl(urlIn.nextUrl());
 		if (hostContext.getCurrentUrl() == null) {
+			log.warn("ERROR: no more URL");
 			hostContext.setEnd(true);
 			return;
+		} else {
+			log.info("crawling url %s", hostContext.getCurrentUrl());
 		}
 		roundCrawl++;
 

@@ -96,7 +96,7 @@ public class HostInjectTool {
 		checkHasHost.setString(1, host);
 		boolean canInject = true;
 		ResultSet rs = checkHasHost.executeQuery();
-		File base = conf.getHostBase(host);
+		File base = conf.getHostBase(new HostInfo(host));
 		if (rs.next()) {
 			int status = rs.getInt("status");
 			if (status != 1) {

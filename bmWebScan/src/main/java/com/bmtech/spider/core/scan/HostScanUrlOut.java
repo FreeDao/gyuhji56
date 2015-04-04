@@ -12,7 +12,7 @@ public class HostScanUrlOut {
 	private MOut hasCrawled, hasFailed, newUrlOut;
 
 	public HostScanUrlOut(HostInfo info) throws IOException {
-		File baseDir = ScanConfig.instance.getHostBase(info.getHostName());
+		File baseDir = ScanConfig.instance.getHostBase(info);
 		ScanConfig conf = ScanConfig.instance;
 		File hasCrawledOutBuffer = new File(baseDir, conf.crawledUrlTmp);
 		hasCrawled = new MOut(hasCrawledOutBuffer);

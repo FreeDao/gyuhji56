@@ -95,7 +95,7 @@ public class HostInitor {
 			}
 		}
 		// merge new finded url
-		final File hostBase = conf.getHostBase(host);
+		final File hostBase = conf.getHostBase(new HostInfo(host));
 		if (!hostBase.exists()) {
 			if (!hostBase.mkdirs()) {
 				throw new IOException("can not create file " + hostBase);
