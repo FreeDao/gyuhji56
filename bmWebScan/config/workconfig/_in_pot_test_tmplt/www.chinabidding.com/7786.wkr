@@ -1,0 +1,8 @@
+#ref_url = http://adm.qianlima.com:8080/httpget/webservice/nbnew_hub.jsp?p=1
+URL = http://adm.qianlima.com:8080/httpget/webservice/nbnew_hub.jsp?
+PARA_KEY = p
+PARA_CLASS = int:1:1:10
+COOKIE = YES
+PARSER = zb_www.chinabidding.com_2
+TRACE = fromurl:zb_www.chinabidding.com_sub_2
+PRETRIMER = F[00000009:_Replace_:00000004:true:00000008:<img.+?>:00000000:][00000006:lnkext][00000009:_Replace_:00000004:true:00000027:.+?target="_blank"></a><br>:00000000:]

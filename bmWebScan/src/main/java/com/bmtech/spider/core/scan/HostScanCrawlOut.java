@@ -8,8 +8,6 @@ import com.bmtech.utils.http.CrawlContext.CrawlOut;
 
 public class HostScanCrawlOut extends CrawlOut {
 
-	public String name;
-
 	public HostScanCrawlOut(HostScanOutputStream stream) {
 		super(stream);
 	}
@@ -37,8 +35,4 @@ public class HostScanCrawlOut extends CrawlOut {
 		return new ByteArrayInputStream(this.getBytes());
 	}
 
-	public void setName(String name) {
-		this.name = name;
-
-	}
 }

@@ -7,16 +7,44 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+import com.bmtech.utils.Charsets;
 import com.bmtech.utils.io.InputStreamCombin;
 
 public class SynCombin {
-	static final String headV0 = "cmbHeaderV0-";
+	public static final String headV0 = "cmbHeaderV0-";
+	static final int XXLen = 6;
+
+	public static DecodeSynCombin parse(String str) throws Exception {
+		return new DecodeSynCombin(str);
+	}
+
+	public static class DecodeSynCombin {
+		public final String html;
+		public final URL url;
+
+		private DecodeSynCombin(String str) throws Exception {
+
+			if (!str.startsWith(SynCombin.headV0)) {
+				throw new Exception("not a combin file:" + str);
+			}
+			String str2 = str.substring(headV0.length());
+			String urlLen = str2.substring(0, XXLen);
+			int len = Integer.parseInt(urlLen);
+			str2 = str2.substring(XXLen);
+
+			String url = URLDecoder.decode(str2.substring(0, len),
+					Charsets.UTF8_STR);
+			this.url = new URL(url);
+			this.html = str2.substring(len);
+		}
+	}
 
 	public static InputStreamCombin getCombin(URL url, InputStream ips)
 			throws IOException {
-		String headInfo = URLEncoder.encode(url.toString(), "utf-8");
+		String headInfo = URLEncoder.encode(url.toString(), Charsets.UTF8_STR);
 		int len = headInfo.length() + 1;
 		String toWrite = String.format("%s%06d%s\n", headV0, len, headInfo);
 		ByteArrayInputStream xx = new ByteArrayInputStream(toWrite.getBytes());

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import com.bmtech.spider.core.ScanConfig;
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.Misc;
+import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.log.LogHelper;
 
 public class ScoreExecutor {
@@ -18,20 +19,24 @@ public class ScoreExecutor {
 
 	File scoreDir;
 	File baseRoot;
+	final int exeNum;
 	BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
-	ThreadPoolExecutor exe = new ThreadPoolExecutor(4, 4, 4, TimeUnit.SECONDS,
-			queue);
+	ThreadPoolExecutor exe;
 	static ScanConfig sc = ScanConfig.instance;
 	SiteScoreDao dao;
 	LogHelper log = new LogHelper("scoreExe");
 
-	ScoreExecutor(File baseRoot) throws Exception {
+	ScoreExecutor(File baseRoot, int exeNum) throws Exception {
+		this.exeNum = exeNum;
 		this.baseRoot = baseRoot;
-		dao = new SiteScoreDao();
+		exe = new ThreadPoolExecutor(exeNum, exeNum, exeNum, TimeUnit.SECONDS,
+				queue);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd.HH.mm.ss");
 		scoreDir = new File(baseRoot, "../scored@"
 				+ sdf.format(System.currentTimeMillis()));
 		scoreDir.mkdirs();
+		MDir dir = MDir.makeMDir(this.scoreDir, true);
+		dao = new SiteScoreDao(dir);
 		new Thread() {
 			@Override
 			public void run() {
@@ -52,9 +57,7 @@ public class ScoreExecutor {
 			File[] dirs = f.listFiles();
 			for (final File dir : dirs) {
 
-				String hostName = dir.getName().toLowerCase();
-				File saveDir = new File(scoreDir, hostName);
-				SiteScorer ss = new SiteScorer(dir, dao, saveDir);
+				SiteScorer ss = new SiteScorer(dir, dao);
 				exe.execute(ss);
 
 			}
@@ -72,8 +75,8 @@ public class ScoreExecutor {
 			baseRoot = new File(root);
 		}
 		System.out.println("parse " + root);
-
-		ScoreExecutor ts = new ScoreExecutor(baseRoot);
+		int exeNum = Consoler.readInt("exeNum", 4);
+		ScoreExecutor ts = new ScoreExecutor(baseRoot, exeNum);
 		ts.score();
 
 	}

@@ -10,16 +10,10 @@ import com.bmtech.utils.log.LogHelper;
 
 public class CrawlContext implements Runnable {
 	public static class CrawlOut {
-		public final boolean useFile;
-		public final File fileToSave;
+		private final boolean useFile;
+		private final File fileToSave;
 		protected final OutputStream out;
 		private String suffix = ".html";
-
-		public CrawlOut(File file) {
-			this.useFile = true;
-			this.fileToSave = file;
-			this.out = null;
-		}
 
 		public CrawlOut(OutputStream output) {
 			this.useFile = false;
@@ -39,7 +33,7 @@ public class CrawlContext implements Runnable {
 			return suffix;
 		}
 
-		public void setSuffix(String suffix) {
+		private void setSuffix(String suffix) {
 			this.suffix = suffix;
 		}
 	}

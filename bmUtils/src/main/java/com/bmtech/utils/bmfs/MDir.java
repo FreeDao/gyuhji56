@@ -19,6 +19,7 @@ import com.bmtech.utils.bmfs.util.MFileFormatErrorException;
 import com.bmtech.utils.bmfs.util.ReadProtocol;
 import com.bmtech.utils.bmfs.util.WriteProtocol;
 import com.bmtech.utils.io.FileBasedLock;
+import com.bmtech.utils.io.InputStreamCombin;
 import com.bmtech.utils.io.LineReader;
 import com.bmtech.utils.io.LineWriter;
 import com.bmtech.utils.log.LogHelper;
@@ -69,6 +70,10 @@ public class MDir {
 
 	public static MDir open(File file) throws IOException {
 		return makeMDir(file, false);
+	}
+
+	public static MDir open4Write(File file) throws IOException {
+		return makeMDir(file, true);
 	}
 
 	public static MDir makeMDir(File file, boolean write) throws IOException {
@@ -406,18 +411,18 @@ public class MDir {
 		}
 		assert files[locate[0]][locate[1]] == null;
 		if (forceCheckSameFileNameExists) {
-			assert this.nameMap.get(mfile.name) == null;
+			assert this.nameMap.get(mfile.getName()) == null;
 		}
 		this.besureIndexLocationExists(locate);
 		this.files[locate[0]][locate[1]] = mfile;
-		this.nameMap.put(mfile.name, mfile);
+		this.nameMap.put(mfile.getName(), mfile);
 	}
 
 	public synchronized boolean delete(MFile mf) throws Exception {
 		checkWriteAccess();
 		int[] locate = this.locateFsId(mf.fsId);
 		this.files[locate[0]][locate[1]] = null;
-		MFile tmp = this.nameMap.remove(mf.name);
+		MFile tmp = this.nameMap.remove(mf.getName());
 		if (tmp == null) {
 			return false;
 		} else {
@@ -448,7 +453,7 @@ public class MDir {
 		long offset = proc.readI64();
 		long length = proc.readI64();
 		String str = proc.readString();
-		MFile file = new MFile(str, fsId, flag, createTime);
+		MFile file = new MFile(this, str, fsId, flag, createTime);
 		file.setOffset(offset);
 		file.setLength(length);
 		if (file.veryfyPend() != verify) {
@@ -467,7 +472,7 @@ public class MDir {
 		proc.writeI64(mfile.getCreateTime());
 		proc.writeI64(mfile.getOffset());
 		proc.writeI64(mfile.getLength());
-		proc.writeString(mfile.name);
+		proc.writeString(mfile.getName());
 	}
 
 	public synchronized int size() {
@@ -476,6 +481,9 @@ public class MDir {
 
 	public synchronized MFile createMFileIfPossible(String name)
 			throws IOException {
+		if (name == null) {
+			name = "fsIdSeq." + (this.fsIdSeq.get() + 1);
+		}
 		try {
 			return new MFile(name, this);
 		} catch (MFileAlreadyExistsException e) {
@@ -500,7 +508,7 @@ public class MDir {
 		return this.defaultWriter;
 	}
 
-	public void addFile(String fileName, MFileWriter writer, InputStream ips,
+	public MFile addFile(String fileName, MFileWriter writer, InputStream ips,
 			boolean gzipOut) throws IOException {
 		MFile mFile = this.createMFileIfPossible(fileName);
 		MFileOutputStream mFileOutputStream;
@@ -514,17 +522,18 @@ public class MDir {
 		} finally {
 			mFileOutputStream.close();
 		}
+		return mFile;
 	}
 
-	public void addFile(String FileName, InputStream ips, boolean gzipOut)
+	public MFile addFile(String FileName, InputStream ips, boolean gzipOut)
 			throws IOException {
-		this.addFile(FileName, this.getDefaultWriter(), ips, gzipOut);
+		return this.addFile(FileName, this.getDefaultWriter(), ips, gzipOut);
 	}
 
-	public void addFile(File currentFile, boolean gzipOut) throws IOException {
+	public MFile addFile(File currentFile, boolean gzipOut) throws IOException {
 		FileInputStream fis = new FileInputStream(currentFile);
 		try {
-			this.addFile(currentFile.getName(), fis, gzipOut);
+			return this.addFile(currentFile.getName(), fis, gzipOut);
 		} finally {
 			fis.close();
 		}
@@ -568,8 +577,8 @@ public class MDir {
 	 * @param mfile
 	 */
 	public synchronized void abort(MFile mfile) {
-		if (this.nameMap.get(mfile.name) == null) {
-			this.nameMap.remove(mfile.name);
+		if (this.nameMap.get(mfile.getName()) == null) {
+			this.nameMap.remove(mfile.getName());
 		}
 	}
 
@@ -577,4 +586,12 @@ public class MDir {
 		return localDir;
 	}
 
+	public String filePath(MFile mFile) {
+		return this.toString() + mFile.getName();
+	}
+
+	public MFile addFile(InputStreamCombin ips, boolean gzipOut)
+			throws IOException {
+		return this.addFile(null, ips, gzipOut);
+	}
 }

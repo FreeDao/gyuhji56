@@ -1,0 +1,9 @@
+#ref_url = http://www.ningshan.gov.cn/2009/E_BigClass.asp?E_typeid=3&E_BigClassID=66{@key}
+URL = http://www.ningshan.gov.cn/2009/E_BigClass.asp?E_typeid=3&E_BigClassID=66{@key}
+PARA_KEY = —————:true:(*)
+PARA_CLASS = int:1:1:1
+COOKIE = YES
+PARSER = zb_www.ningshan.gov.cn_0
+TRACE = fromUrl:zb_www.ningshan.gov.cn_sub_0
+
+DEFAULT = area = 宁陕

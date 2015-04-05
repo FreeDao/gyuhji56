@@ -69,7 +69,7 @@ public class RMMSegment extends Segment {
 				continue;
 			}
 
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			sb.append(next);
 			for (int x = 0; x < 4; x++) {
 				if (hdl.hasNext()) {
@@ -101,8 +101,6 @@ public class RMMSegment extends Segment {
 		return new CoupleResult(hdl, set);
 	}
 
-
-
 	public static TokenHandler binarySegment(String string) {
 		CoupleResult r1 = instance.noCoverSegment(string);
 		CoupleResult r2 = notReverseInstance.noCoverSegment(string);
@@ -110,7 +108,7 @@ public class RMMSegment extends Segment {
 		hdl.combine(r2.handler);
 		return hdl;
 	}
-	
+
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		while (true) {
 			String ipt = Consoler.readString("\n:");

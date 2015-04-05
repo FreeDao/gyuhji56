@@ -1,6 +1,5 @@
 package com.bmtech.spider.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -159,10 +158,7 @@ public class HostScan implements Runnable {
 		hdl.setConnectTimeout(conf.crawlConnectTimeout);
 		hdl.setReadTimeout(conf.crawlReadTimeout);
 
-		hostContext.setFileSeq(conf.nextSeq());
 		HostScanCrawlOut out = new HostScanCrawlOut(new HostScanOutputStream());
-		out.setName(new File(urlIn.getTmpHtmlsDir(), hostContext.getFileSeq()
-				+ ".html").getAbsolutePath());
 
 		hostContext.setCrawlContext(new CrawlContext(hostContext
 				.getCurrentUrl().getUrl(), out, hdl, log,
@@ -178,7 +174,6 @@ public class HostScan implements Runnable {
 
 		boolean crawled = true;
 		try {
-			long start = System.currentTimeMillis() / 1000;
 			if (!hostContext.getCrawlContext().isOkRun()) {
 				if (hostContext.getCurrentUrl().getErrorCount() < conf.maxErrorForEveryPage) {
 					hostContext.getCurrentUrl().increaseFailTime();
@@ -191,10 +186,7 @@ public class HostScan implements Runnable {
 				log.warn(" downloadType, url=%s", hostContext.getCurrentUrl()
 						.getUrl());
 				if (conf.allowDownload) {
-					siteOut.saveOkUrlDir(out, hostContext.getFileSeq(),
-							hostContext.getCurrentUrl());
-					Connectioner.instance().addLog(hostContext.getCurrentUrl(),
-							0, 0, start, hostContext.getFileSeq());
+					siteOut.saveOkUrlDir(out, hostContext.getCurrentUrl());
 				}
 				return;
 			} else if (out.tooBig()) {
@@ -271,10 +263,7 @@ public class HostScan implements Runnable {
 					.getCurrentUrl().getUrl());
 
 			if (scorer.isGoodScore(pageScore, listScore)) {
-				siteOut.saveOkUrlDir(out, hostContext.getFileSeq(),
-						hostContext.getCurrentUrl());
-				Connectioner.instance().addLog(hostContext.getCurrentUrl(),
-						listScore, pageScore, start, hostContext.getFileSeq());
+				siteOut.saveOkUrlDir(out, hostContext.getCurrentUrl());
 			}
 		} catch (Exception e) {
 			log.error(e, "when after crawl %s", e);

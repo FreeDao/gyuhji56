@@ -27,6 +27,15 @@ public class RDS {
 		this(source, null);
 	}
 
+	public int getGeneratedKey() throws SQLException {
+		ResultSet rs = pps.getGeneratedKeys();
+		if (rs.next()) {
+			return rs.getInt(1);
+		} else {
+			throw new SQLException("no GeneratedKeys");
+		}
+	}
+
 	private RDS(String source, Connection conn) {
 		this.source = source;
 		this.conn = conn;
@@ -76,7 +85,10 @@ public class RDS {
 					java.sql.ResultSet.CONCUR_READ_ONLY);
 			pps.setFetchSize(Integer.MIN_VALUE);
 		} else {
-			pps = conn.prepareStatement(sql);
+
+			pps = conn.prepareStatement(sql,
+					PreparedStatement.RETURN_GENERATED_KEYS);
+
 		}
 	}
 

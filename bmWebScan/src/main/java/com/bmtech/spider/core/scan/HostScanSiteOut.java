@@ -18,7 +18,7 @@ public class HostScanSiteOut {
 		this.hostInfo = hostInfo;
 		File f = ScanConfig.instance.getSaveDir(hostInfo.getMyHostSuffix());
 		mdir = MDir.makeMDir(f, true);
-		log = new LogHelper("outOf-" + hostInfo.getClass());
+		log = new LogHelper("outOf-" + hostInfo.getHostName());
 	}
 
 	public int savedFileCount() {
@@ -42,8 +42,8 @@ public class HostScanSiteOut {
 		return count;
 	}
 
-	public void saveOkUrlDir(HostScanCrawlOut out, long fileSeq,
-			ScoredUrlRecord currentUrl) throws IOException {
-		ScanConfig.instance.saveOkUrlDir(out, fileSeq, currentUrl, mdir);
+	public void saveOkUrlDir(HostScanCrawlOut out, ScoredUrlRecord currentUrl)
+			throws IOException {
+		ScanConfig.instance.saveOkPage(out, currentUrl, mdir);
 	}
 }

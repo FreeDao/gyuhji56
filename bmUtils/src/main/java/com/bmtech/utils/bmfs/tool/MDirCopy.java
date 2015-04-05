@@ -40,7 +40,7 @@ public class MDirCopy {
 		while (itr.hasNext()) {
 			MFile mfile = itr.next();
 
-			MFile add = to.createMFileIfPossible(mfile.name);
+			MFile add = to.createMFileIfPossible(mfile.getName());
 			if (add == null) {
 				System.out.println("SKIP " + mfile);
 				itr.skip();

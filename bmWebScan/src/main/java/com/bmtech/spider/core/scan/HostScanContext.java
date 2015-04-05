@@ -9,14 +9,12 @@ public class HostScanContext {
 	private boolean preCrawl = true;
 	private ScoredUrlRecord currentUrl;
 	private CrawlContext crawlContext;
-	private long fileSeq;
 
 	public void setPreStage(boolean isPre) {
 		if (isPre) {
 			setPreCrawl(true);
 			setCurrentUrl(null);
 			setCrawlContext(null);
-			setFileSeq(0);
 		} else {
 			this.setPreCrawl(false);
 		}
@@ -44,14 +42,6 @@ public class HostScanContext {
 
 	public void setCurrentUrl(ScoredUrlRecord currentUrl) {
 		this.currentUrl = currentUrl;
-	}
-
-	public long getFileSeq() {
-		return fileSeq;
-	}
-
-	public void setFileSeq(long fileSeq) {
-		this.fileSeq = fileSeq;
 	}
 
 	public boolean isPreCrawl() {

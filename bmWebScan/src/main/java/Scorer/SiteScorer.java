@@ -10,15 +10,13 @@ public class SiteScorer implements Runnable {
 	private LogHelper log;
 	String hostName;
 	File mdirPath;
-	SiteScoreDao dao;
-	File saveDir;
-	final String parseFlag = "parsed.flag";
+	ScoreSaver saver;
+	final String parseFlag = "parsed2.flag";
 
-	public SiteScorer(File mdirPath, SiteScoreDao dao, File saveDir) {
+	public SiteScorer(File mdirPath, ScoreSaver saver) {
 		this.hostName = mdirPath.getName();
 		this.mdirPath = mdirPath;
-		this.dao = dao;
-		this.saveDir = saveDir;
+		this.saver = saver;
 		log = new LogHelper(hostName);
 	}
 
@@ -32,16 +30,13 @@ public class SiteScorer implements Runnable {
 			} else {
 				MDir mdir = MDir.open(mdirPath);
 				try {
-					MDirScorer scorer = new MDirScorer(mdir, saveDir);
+					MDirScorer scorer = new MDirScorer(mdir, saver);
 					scorer.score();
-					dao.saveHostScore(hostName, scorer);
+					scorer.saveHostScore(hostName);
 					TchFileTool.put(mdirPath, parseFlag, scorer.getLastName());
 					log.info("parse total %s, levels %s:%s:%s",
 							scorer.getScanNum(), scorer.getLevel1Num(),
 							scorer.getLevel2Num(), scorer.getLevel3Num());
-					if (saveDir.listFiles().length == 0) {
-						saveDir.delete();
-					}
 				} finally {
 					MDir.closeMDir(mdir);
 				}

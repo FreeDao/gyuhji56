@@ -35,56 +35,57 @@ import com.bmtech.htmls.parser.tags.ImageTag;
 import com.bmtech.htmls.parser.tags.LinkTag;
 
 public class UrlModifyingVisitor extends NodeVisitor {
-    private String linkPrefix;
-    private StringBuffer modifiedResult;
+	private String linkPrefix;
+	private StringBuilder modifiedResult;
 
-    public UrlModifyingVisitor(String linkPrefix) {
-        super(true,true);
-        this.linkPrefix =linkPrefix;
-        modifiedResult = new StringBuffer();
-    }
+	public UrlModifyingVisitor(String linkPrefix) {
+		super(true, true);
+		this.linkPrefix = linkPrefix;
+		modifiedResult = new StringBuilder();
+	}
 
-    public void visitRemarkNode (Remark remarkNode)
-    {
-        modifiedResult.append (remarkNode.toHtml());
-    }
+	@Override
+	public void visitRemarkNode(Remark remarkNode) {
+		modifiedResult.append(remarkNode.toHtml());
+	}
 
-    public void visitStringNode(Text stringNode)
-    {
-        modifiedResult.append (stringNode.toHtml());
-    }
+	@Override
+	public void visitStringNode(Text stringNode) {
+		modifiedResult.append(stringNode.toHtml());
+	}
 
-    public void visitTag(Tag tag)
-    {
-        if (tag instanceof LinkTag)
-            ((LinkTag)tag).setLink(linkPrefix + ((LinkTag)tag).getLink());
-        else if (tag instanceof ImageTag)
-            ((ImageTag)tag).setImageURL(linkPrefix + ((ImageTag)tag).getImageURL());
-        // process only those nodes that won't be processed by an end tag,
-        // nodes without parents or parents without an end tag, since
-        // the complete processing of all children should happen before
-        // we turn this node back into html text
-        if (null == tag.getParent ()
-            && (!(tag instanceof CompositeTag) || null == ((CompositeTag)tag).getEndTag ()))
-            modifiedResult.append(tag.toHtml());
-    }
+	@Override
+	public void visitTag(Tag tag) {
+		if (tag instanceof LinkTag)
+			((LinkTag) tag).setLink(linkPrefix + ((LinkTag) tag).getLink());
+		else if (tag instanceof ImageTag)
+			((ImageTag) tag).setImageURL(linkPrefix
+					+ ((ImageTag) tag).getImageURL());
+		// process only those nodes that won't be processed by an end tag,
+		// nodes without parents or parents without an end tag, since
+		// the complete processing of all children should happen before
+		// we turn this node back into html text
+		if (null == tag.getParent()
+				&& (!(tag instanceof CompositeTag) || null == ((CompositeTag) tag)
+						.getEndTag()))
+			modifiedResult.append(tag.toHtml());
+	}
 
-    public void visitEndTag(Tag tag)
-    {
-        Node parent;
-        
-        parent = tag.getParent ();
-        // process only those nodes not processed by a parent
-        if (null == parent)
-            // an orphan end tag
-            modifiedResult.append(tag.toHtml());
-        else
-            if (null == parent.getParent ())
-                // a top level tag with no parents
-                modifiedResult.append(parent.toHtml());
-    }
+	@Override
+	public void visitEndTag(Tag tag) {
+		Node parent;
 
-    public String getModifiedResult() {
-        return modifiedResult.toString();
-    }
+		parent = tag.getParent();
+		// process only those nodes not processed by a parent
+		if (null == parent)
+			// an orphan end tag
+			modifiedResult.append(tag.toHtml());
+		else if (null == parent.getParent())
+			// a top level tag with no parents
+			modifiedResult.append(parent.toHtml());
+	}
+
+	public String getModifiedResult() {
+		return modifiedResult.toString();
+	}
 }

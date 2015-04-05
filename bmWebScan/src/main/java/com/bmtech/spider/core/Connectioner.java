@@ -45,9 +45,11 @@ public class Connectioner {
 		conn = SourceDefine.instance().getDataSourceDefine("webscan")
 				.getNewConnection();
 
-		rds_setHas = RDS.getRDSByDefine("webscan",
-				"UPDATE webscan_host_info set HasDetected=?  where host=?",
-				conn);
+		rds_setHas = RDS.getRDSByKey("setHas", conn);
+		// .getRDSByDefine(
+		// "webscan",
+		// "UPDATE webscan_host_info set HasDetected=? , scanRound = (scanRound + 1) where host=?",
+		// conn);
 		// rds_addHas = RDS
 		// .getRDSByDefine(
 		// "webscan",
@@ -113,24 +115,6 @@ public class Connectioner {
 	public synchronized void setToInjected(int id) throws SQLException {
 		rdsSetToInjected.setInt(1, id);
 		rdsSetToInjected.execute();
-	}
-
-	public synchronized void addLog(ScoredUrlRecord su, int list_score,
-			int detail_page_score, long startTime, long detectTile)
-			throws SQLException {
-		// try {
-		// rds_insert.setInt(1, su.getHashId());
-		// rds_insert.setString(2, CoreTool.urlHost(su.getUrl()));
-		// rds_insert.setString(3, su.getUrl().toString());
-		// rds_insert.setInt(4, list_score);
-		// rds_insert.setInt(5, detail_page_score);
-		// rds_insert.setLong(6, startTime);
-		// rds_insert.setLong(7, detectTile);
-		// rds_insert.execute();
-		// } catch (SQLException e) {
-		// e.printStackTrace();
-		// this.getConnected(true);
-		// }
 	}
 
 	// public synchronized void addHasCrawled(String host, int inc)

@@ -1,0 +1,9 @@
+#ref_url = http://www.jy5566.com/gcjy/ShowClass.asp?ClassID=1{@key}
+URL = http://www.jy5566.com/gcjy/ShowClass.asp?ClassID=1{@key}
+PARA_KEY = —————:true:(*)
+PARA_CLASS = int:1:1:1
+COOKIE = YES
+PARSER = zb_www.jy5566.com_2
+TRACE = fromUrl:zb_www.jy5566.com_sub_2
+
+DEFAULT = area = 建阳

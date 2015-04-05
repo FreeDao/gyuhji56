@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.bmtech.htmls.parser.filters.NodeClassFilter;
 import com.bmtech.htmls.parser.tags.FrameTag;
 import com.bmtech.htmls.parser.tags.LinkTag;
+import com.bmtech.htmls.parser.tags.TitleTag;
 import com.bmtech.htmls.parser.util.NodeList;
 
 public class CoreUtil {
@@ -63,5 +64,16 @@ public class CoreUtil {
 			e.printStackTrace();
 		}
 		return ret;
+	}
+
+	public static String getHtmlTitle(NodeList nl) {
+		NodeList titles = nl.extractAllNodesThatMatch(new NodeClassFilter(
+				TitleTag.class), true);
+
+		String title = "";
+		if (titles.size() > 0) {
+			title = titles.elementAt(0).toPlainTextString();
+		}
+		return title;
 	}
 }

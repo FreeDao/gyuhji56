@@ -151,7 +151,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 		if (!needFillHostPool()) {
 			return;
 		}
-		log.warn("initing :%s ", host);
+		log.warn("prepare initing :%s ", host);
 		try {
 			HostInitor.instance.initialize(host, filter, new AfterInitor(host));
 		} catch (Exception e) {
@@ -171,7 +171,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 			if (sc != null) {
 				execute(sc);
 			} else {
-				log.fatal("init fail for host %s", host);
+				log.fatal("Strange! init fail for host %s", host);
 			}
 		}
 	}

@@ -30,11 +30,8 @@ import com.bmtech.htmls.parser.Tag;
 import com.bmtech.htmls.parser.Text;
 import com.bmtech.htmls.parser.util.Translate;
 
-
 /**
- * Extracts text from a web page.
- * Usage:
- * <code>
+ * Extracts text from a web page. Usage: <code>
  * Parser parser = new Parser(...);
  * TextExtractingVisitor visitor = new TextExtractingVisitor();
  * parser.visitAllNodesWith(visitor);
@@ -42,45 +39,46 @@ import com.bmtech.htmls.parser.util.Translate;
  * </code>
  */
 public class TextExtractingVisitor extends NodeVisitor {
-    private StringBuffer textAccumulator;
-    private boolean preTagBeingProcessed;
+	private StringBuilder textAccumulator;
+	private boolean preTagBeingProcessed;
 
-    public TextExtractingVisitor() {
-        textAccumulator = new StringBuffer();
-        preTagBeingProcessed = false;
-    }
+	public TextExtractingVisitor() {
+		textAccumulator = new StringBuilder();
+		preTagBeingProcessed = false;
+	}
 
-    public String getExtractedText() {
-        return textAccumulator.toString();
-    }
+	public String getExtractedText() {
+		return textAccumulator.toString();
+	}
 
-    public void visitStringNode(Text stringNode) {
-        String text = stringNode.getText();
-        if (!preTagBeingProcessed) {
-            text = Translate.decode(text);
-            text = replaceNonBreakingSpaceWithOrdinarySpace(text);
-        }
-        textAccumulator.append(text);
-    }
+	@Override
+	public void visitStringNode(Text stringNode) {
+		String text = stringNode.getText();
+		if (!preTagBeingProcessed) {
+			text = Translate.decode(text);
+			text = replaceNonBreakingSpaceWithOrdinarySpace(text);
+		}
+		textAccumulator.append(text);
+	}
 
-    private String replaceNonBreakingSpaceWithOrdinarySpace(String text) {
-        return text.replace('\u00a0',' ');
-    }
+	private String replaceNonBreakingSpaceWithOrdinarySpace(String text) {
+		return text.replace('\u00a0', ' ');
+	}
 
-    public void visitTag(Tag tag)
-    {
-        if (isPreTag(tag))
-            preTagBeingProcessed = true;
-    }
+	@Override
+	public void visitTag(Tag tag) {
+		if (isPreTag(tag))
+			preTagBeingProcessed = true;
+	}
 
-    public void visitEndTag(Tag tag)
-    {
-        if (isPreTag(tag))
-            preTagBeingProcessed = false;
-    }
+	@Override
+	public void visitEndTag(Tag tag) {
+		if (isPreTag(tag))
+			preTagBeingProcessed = false;
+	}
 
-    private boolean isPreTag(Tag tag) {
-        return tag.getTagName().equals("PRE");
-    }
+	private boolean isPreTag(Tag tag) {
+		return tag.getTagName().equals("PRE");
+	}
 
 }

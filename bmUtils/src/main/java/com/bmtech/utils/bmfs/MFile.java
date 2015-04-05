@@ -5,12 +5,12 @@ import java.io.IOException;
 public final class MFile {
 	public static final int MAX_NAME_LEN = 64;
 	public final int fsId;
-	public final String name;
+	private final String name;
 	public final long createTime;
 	private long offset = -1;
 	private long length = 0;
 
-	// final MDir dir;
+	final MDir dir;
 
 	MFile(String name, MDir dir) throws IOException {
 		if (name.length() > MAX_NAME_LEN) {
@@ -18,15 +18,15 @@ public final class MFile {
 		}
 		this.name = name;
 		this.fsId = dir.locateId(name);
-		// this.dir = dir;
+		this.dir = dir;
 		this.createTime = System.currentTimeMillis();
 	}
 
-	MFile(String name, final int fsId, byte flag, long createTime)
+	MFile(MDir dir, String name, final int fsId, byte flag, long createTime)
 			throws IOException {
+		this.dir = dir;
 		this.name = name;
 		this.fsId = fsId;
-		// this.dir = dir;
 		this.createTime = createTime;
 	}
 
@@ -51,8 +51,8 @@ public final class MFile {
 		return flag;
 	}
 
-	public String toString() {
-		return this.name;
+	public String getFullFilePath() {
+		return dir.filePath(this);
 	}
 
 	// public boolean isMount() {
@@ -99,11 +99,21 @@ public final class MFile {
 		this.length = length;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof MFile) {
 			return this.fsId == ((MFile) o).fsId;
 		}
 		return false;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String toString() {
+		return this.getFullFilePath();
 	}
 
 }

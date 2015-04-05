@@ -25,8 +25,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.bmtech.utils.Charsets;
 import com.bmtech.utils.ZipUnzip;
@@ -189,7 +189,7 @@ public class FileGet {
 		if (bs == null)
 			return null;
 		if (charset == null) {
-			charset = Charsets.getCharset(bs);
+			charset = Charsets.getCharset(bs, true);
 		}
 		return new String(bs, charset);
 	}

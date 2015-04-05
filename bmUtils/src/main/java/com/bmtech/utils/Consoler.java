@@ -15,7 +15,7 @@ public class Consoler {
 		while (true) {
 			byte[] bs = new byte[32];
 			if (input != null) {
-				System.out.print(input);
+				System.out.print(input + "(default " + defaultValue + ") ");
 			}
 			try {
 				System.in.read(bs);
@@ -33,7 +33,7 @@ public class Consoler {
 	}
 
 	public static int readInt(int defaultValue) {
-		return readInt(":", defaultValue);
+		return readInt("(default " + defaultValue + ") ", defaultValue);
 	}
 
 	public static String readString(String input) {
@@ -51,7 +51,7 @@ public class Consoler {
 	}
 
 	public static String readString(String input, String dft) {
-		String str = readString(input + "(default '" + dft + "')");
+		String str = readString(input + "(default '" + dft + "') ");
 		if (str.length() == 0) {
 			return dft;
 		}
@@ -66,7 +66,7 @@ public class Consoler {
 		while (true) {
 			byte[] bs = new byte[1024];
 			if (input != null) {
-				System.out.print(input);
+				System.out.print(input + "(default '" + dft + "') ");
 			}
 			try {
 				System.in.read(bs);
