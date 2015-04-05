@@ -67,7 +67,7 @@ public class UrlExt {
 		toParse = new int[cmds.length];
 		for (int x = 0; x < cmds.length; x++) {
 			int y = Integer.parseInt(cmds[x].trim());
-			System.out.println("accept " + SeCrawlConfig.names[x]);
+			System.out.println("accept " + SeCrawlConfig.names[y]);
 			toParse[x] = y;
 		}
 

@@ -58,14 +58,15 @@ public class HostInitorTool {
 				.getUnInjected(host);
 		if (toInject.size() > 0) {
 			ArrayList<ScoredUrlRecord> rec = new ArrayList<ScoredUrlRecord>();
-			HashSet<URL> set = new HashSet<URL>();
+			HashSet<String> set = new HashSet<String>();
 			for (URLToInject ut : toInject) {
 				try {
 					URL u = new URL(ut.url);
-					if (set.contains(u)) {
+					String us = u.toString();
+					if (set.contains(us)) {
 						continue;
 					}
-					set.add(u);
+					set.add(us);
 					ScoredUrlRecord su = new ScoredUrlRecord(u,
 							ScanConfig.instance.scoreInjected);
 					rec.add(su);
