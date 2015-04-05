@@ -17,7 +17,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 	protected ScanConfig conf = ScanConfig.instance;
 
 	protected final BlockingQueue<Runnable> hostQueue = new LinkedBlockingQueue<Runnable>();
-	protected Set<String> hostSet = Collections
+	private Set<String> hostSet = Collections
 			.synchronizedSet(new HashSet<String>());
 	protected final ThreadPoolExecutor hostRunnor;
 	protected AtomicInteger hasRunned = new AtomicInteger(0),

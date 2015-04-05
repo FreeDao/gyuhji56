@@ -48,7 +48,7 @@ public class ScanConfig {
 	public final int hostInitThreads;
 	public final int scoreInjected;
 	public final int scoreAllwaysAllow;
-	public final int scoreDefault;
+	// public final int scoreDefault;
 	public final int scoreFirstPage;
 	public final boolean injectHomePagePerHost;
 	public final int crawlConnectTimeout;
@@ -144,7 +144,6 @@ public class ScanConfig {
 		injectedUrlValue = cr.getInt("injectedUrlValue", 100);
 		scoreAllwaysAllow = cr.getInt("scoreAllwaysAllow", 90);
 		scoreInjected = cr.getInt("scoreInjected", 80);
-		scoreDefault = cr.getInt("scoreInjected", 70);
 		scoreFirstPage = cr.getInt("scoreAllwaysAllow", 100);
 		hostInitThreads = cr.getInt("hostInitThreads", 5);
 		allowDownload = cr.getInt("allowDownload", 0) == 1;
@@ -290,12 +289,11 @@ public class ScanConfig {
 				+ allowSaveOKFile + ", allowSaveTmpFile=" + allowSaveTmpFile
 				+ ", hostInitThreads=" + hostInitThreads + ", scoreInjected="
 				+ scoreInjected + ", scoreAllwaysAllow=" + scoreAllwaysAllow
-				+ ", scoreDefault=" + scoreDefault + ", scoreFirstPage="
-				+ scoreFirstPage + ", injectHomePagePerHost="
-				+ injectHomePagePerHost + ", crawlConnectTimeout="
-				+ crawlConnectTimeout + ", crawlReadTimeout="
-				+ crawlReadTimeout + ", useMDir=" + useMDir
-				+ ", maxCrawlPagesPerRound=" + maxCrawlPagesPerRound
+				+ ", scoreFirstPage=" + scoreFirstPage
+				+ ", injectHomePagePerHost=" + injectHomePagePerHost
+				+ ", crawlConnectTimeout=" + crawlConnectTimeout
+				+ ", crawlReadTimeout=" + crawlReadTimeout + ", useMDir="
+				+ useMDir + ", maxCrawlPagesPerRound=" + maxCrawlPagesPerRound
 				+ ", parseThread=" + parseThread + ", parseQueueMaxSize="
 				+ parseQueueMaxSize + ", mergeFactor=" + mergeFactor
 				+ ", sortFactor=" + sortFactor + ", maxPagePerHost="

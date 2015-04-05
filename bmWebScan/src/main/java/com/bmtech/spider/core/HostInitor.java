@@ -33,8 +33,9 @@ public class HostInitor {
 			}
 			runNum++;
 			try {
-				HostInitorTool tool = new HostInitorTool(host);
-				HostScan hs = tool.initHost(hostFilter, sortFactor);
+				HostInitorTool tool = new HostInitorTool(host, hostFilter,
+						sortFactor);
+				HostScan hs = tool.initHost();
 				afterRunnor.afterInitor(hs);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -15,45 +15,42 @@ import com.bmtech.utils.log.BmtLogHelper;
 
 public class HostInitorTool {
 
-	BmtLogHelper log;
-	private String host;
+	final BmtLogHelper log;
+	private final String host;
+	final HostFilter hostFilter;
+	final int sortFactor;
+	ScanConfig conf = ScanConfig.instance;
 
-	HostInitorTool(String host) {
-		this.host = host;
-		log = new BmtLogHelper("hInit-" + host);
-	}
-
-	public HostScan initHost(HostFilter hostFilter, int sortFactor)
+	HostInitorTool(String host, HostFilter hostFilter, int sortFactor)
 			throws Exception {
-		host = host.toLowerCase().trim();
-
-		ScanConfig conf = ScanConfig.instance;
-		log.warn("initializing host %s/%s", ScanConfig.instance.hostHash(host),
-				host);
+		this.host = host.toLowerCase().trim();
+		log = new BmtLogHelper("hInit-" + host);
+		this.hostFilter = hostFilter;
+		this.sortFactor = sortFactor;
 		if (!Connectioner.instance().checkHostValid(host)) {
 			// Connectioner.instance().getConnected(true);
 			throw new Exception("host is forbidden : " + host);
 		}
 		if (true) {
 			if (hostFilter.checkAndForbidden(host)) {
-				log.warn("forbidden host %s", host);
-				return null;
+				throw new Exception("forbidden host " + host + ", by "
+						+ hostFilter);
+
 			}
 		}
+	}
+
+	public HostScan initHost() throws Exception {
+
+		log.warn("initializing host %s/%s", ScanConfig.instance.hostHash(host),
+				host);
+
 		// merge new finded url
 		final File hostBase = conf.getHostBase(new HostInfo(host));
-		if (!hostBase.exists()) {
-			if (!hostBase.mkdirs()) {
-				throw new IOException("can not create file " + hostBase);
-			}
-		}
+		besureDirExists(hostBase);
 
 		final File allUrlFile = new File(hostBase, conf.urlDataBase);
-		if (!allUrlFile.exists()) {
-			if (!allUrlFile.createNewFile()) {
-				throw new IOException("can not create file " + allUrlFile);
-			}
-		}
+		this.besureFileExists(allUrlFile);
 		File newURLDir = new File(hostBase, conf.newUrlDir);
 		makeDir(newURLDir);
 
@@ -118,7 +115,7 @@ public class HostInitorTool {
 						ScoredUrlRecord.urlHashCmp, sortFactor);
 				besureDelete(f);
 				fNewTmp.renameTo(f);
-				besureExists(f);
+				checkFileExists(f);
 			}
 
 			File allUrlTmp1 = new File(hostBase,
@@ -254,12 +251,49 @@ public class HostInitorTool {
 		return new HostScan(new HostInfo(host, okCrawledNum));
 	}
 
-	private void besureExists(File f) {
+	private void checkFileExists(File f) {
 		if (!f.exists()) {
 			log.fatal("can not find sorted %s", f);
 			throw new RuntimeException("can not FIND sorted " + f);
 		}
+	}
 
+	private void besureDirExists(File dir) throws IOException {
+		if (!dir.exists()) {
+			makeDir(dir);
+		} else {
+			if (!dir.isDirectory()) {
+				throw new IOException("IS NOT Dir " + dir);
+
+			}
+		}
+
+	}
+
+	private void createFile(File file) throws IOException {
+		if (!file.createNewFile()) {
+			throw new IOException("can not create file " + file);
+		}
+	}
+
+	private void beusureFileExists(File file) throws IOException {
+		if (!file.exists()) {
+			this.createFile(file);
+		}
+	}
+
+	private File createRandomFile(File base, String suffix) {
+		return new File(base, System.currentTimeMillis() + "."
+				+ (int) (1 + Math.random() * 100000) + suffix);
+	}
+
+	private void besureFileExists(File f) throws IOException {
+
+		if (!f.exists()) {
+			if (!f.createNewFile()) {
+				throw new IOException("can not create file " + f);
+			}
+		}
 	}
 
 	private void besureDelete(File f) {

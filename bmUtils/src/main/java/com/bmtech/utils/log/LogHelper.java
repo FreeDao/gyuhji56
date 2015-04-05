@@ -1,11 +1,12 @@
 package com.bmtech.utils.log;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 public class LogHelper {
-	// static{
-	// PropertyConfigurator.configureAndWatch("config/log4j.properties");
-	// }
+	static {
+		PropertyConfigurator.configureAndWatch("log4j.properties");
+	}
 	public static final LogHelper log = new LogHelper("log");
 	public final Logger logger;
 	public final String logName;

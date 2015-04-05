@@ -31,14 +31,14 @@ public class HostScanSiteOut {
 
 	public int getOkCount() {
 		int count = hostInfo.getOkCrawled();
-		if (this.mdir != null) {
-			int xcount = mdir.size();
-			if (xcount != count) {
-				log.warn("mismatch! host size size %s != dir size %s", count,
-						xcount);
-			}
-			count = xcount;
-		}
+		// if (this.mdir != null) {
+		// int xcount = mdir.size();
+		// if (xcount != count) {
+		// log.warn("mismatch! host size size %s != dir size %s", count,
+		// xcount);
+		// }
+		// count = xcount;
+		// }
 		return count;
 	}
 
