@@ -1,6 +1,7 @@
 1.审核 hostInitor
 2.sql语句配置化，hostValid配置话
 3.host入口计算
-4.状态迁移，MOut清理
+4.状态迁移，
+	MOut清理 尚未处理！！
 5部署（sql）
 6.管理界面

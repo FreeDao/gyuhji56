@@ -258,9 +258,10 @@ public class ScanConfig {
 	//
 	// }
 
-	public File getSaveDir(String myHostSuffix) {
+	public File getSaveDir(HostInfo hi) {
 		return new File(ScanConfig.instance.saveDir, "okCrawled/"
-				+ myHostSuffix.subSequence(0, 3) + ".h/" + myHostSuffix);
+				+ hi.getMyHostSuffix().subSequence(0, 3) + ".h/"
+				+ hi.getMyHostSuffix());
 	}
 
 	public File getOkFileSaveDirBase() {

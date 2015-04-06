@@ -16,7 +16,7 @@ public class HostScanSiteOut {
 
 	public HostScanSiteOut(HostInfo hostInfo) throws IOException {
 		this.hostInfo = hostInfo;
-		File f = ScanConfig.instance.getSaveDir(hostInfo.getMyHostSuffix());
+		File f = ScanConfig.instance.getSaveDir(hostInfo);
 		mdir = MDir.makeMDir(f, true);
 		log = new LogHelper("outOf-" + hostInfo.getHostName());
 	}

@@ -17,7 +17,7 @@ import com.bmtech.utils.rds.RDS;
 public class HostInjectTool {
 
 	RDS checkHasHost, checkHasUrl, checkAllway, insertAlways;
-	RDS insertHost, insertUrl;
+	RDS insertHost, injectInsertUrl;
 	BmtLogHelper log = new BmtLogHelper("hostInject");
 	ScanConfig conf = ScanConfig.instance;
 	HostFilter flt;
@@ -36,18 +36,15 @@ public class HostInjectTool {
 
 		checkHasUrl = RDS.getRDSByDefine("webscan",
 				"select url from webscan_host_inject where host = ?", conn);
-		insertUrl = RDS.getRDSByDefine("webscan",
+		injectInsertUrl = RDS.getRDSByDefine("webscan",
 				"insert into webscan_host_inject(host, type, url, score)values(?, 1, ?, "
 						+ conf.injectedUrlValue + ")", conn);
 		log.info("inject ready!");
 		flt = conf.hostFilterCls.newInstance();
 
-		checkAllway = RDS.getRDSByDefine("webscan",
-				"select * from webscan_host_url_allows where url = ?", conn);
+		checkAllway = RDS.getRDSByKey("checkAllway", conn);
 
-		insertAlways = RDS.getRDSByDefine("webscan",
-				"insert into webscan_host_url_allows(host, url)values(?, ?)",
-				conn);
+		insertAlways = RDS.getRDSByKey("insertAlways", conn);
 	}
 
 	@Override
@@ -76,16 +73,17 @@ public class HostInjectTool {
 		return ret;
 	}
 
-	public synchronized boolean injectAlwaysAllow(URL url) throws SQLException {
-		String host = CoreUtil.urlHost(url);
-		String surl = url.toString();
+	public synchronized boolean injectAlwaysAllow(HostInfo host, String surl)
+			throws SQLException {
 		checkAllway.setString(1, surl);
 		ResultSet rs = checkAllway.executeQuery();
 		if (rs.next()) {
+			log.warn("skip has set url %s", surl);
 			return false;
 		}
-		insertAlways.setString(1, host);
+		insertAlways.setString(1, host.getHostName());
 		insertAlways.setString(2, surl);
+		insertAlways.setInt(3, 4);
 		insertAlways.execute();
 		return true;
 	}
@@ -133,9 +131,9 @@ public class HostInjectTool {
 					log.debug("skip already host %s", u);
 				} else {
 					injected++;
-					insertUrl.setString(1, host);
-					insertUrl.setString(2, u.toString());
-					insertUrl.execute();
+					injectInsertUrl.setString(1, host);
+					injectInsertUrl.setString(2, u.toString());
+					injectInsertUrl.execute();
 				}
 
 			}

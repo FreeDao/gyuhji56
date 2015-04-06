@@ -40,7 +40,7 @@ public class SiteMDirEntranceFinder {
 		reader = new SiteMDirReader(mdir);
 	}
 
-	public void run() throws Exception {
+	public void caculate() throws Exception {
 		while (reader.hasNext()) {
 			DecodeSynCombin entry = reader.next();
 			Parser p = new Parser(entry.html);
@@ -200,8 +200,9 @@ public class SiteMDirEntranceFinder {
 				"E:\\datas\\rl2ee\\okCrawled\\xiq.h\\xiqing.mofcom.gov.cn");
 		MDir dir = MDir.open(f);
 
-		SiteMDirEntranceFinder sc = new SiteMDirEntranceFinder(dir, new HostInfo(f.getName()));
-		sc.run();
+		SiteMDirEntranceFinder sc = new SiteMDirEntranceFinder(dir,
+				new HostInfo(f.getName()));
+		sc.caculate();
 		List<PageInfo> list = sc.getByLinkOutNum();
 		for (int x = 0; x < 100; x++) {
 			PageInfo pi = list.get(x);
