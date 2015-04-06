@@ -1,9 +1,10 @@
 package com.bmtech.spider.core;
 
 public abstract class HostFilter {
-	public static final int Status_OK = 0;
+	// public static final int Status_OK = 0;
 	public static final int Status_FBD = -1;
 	public static final int Status_Number_Match = -9;
+	public static final int Status_Incr_watch = 4;
 
 	/**
 	 * should override this implements

@@ -1,20 +1,16 @@
+
 [main]
-put_raw = raw::insert into bidding_raw(title,content,fromurl,area, orgtime, state, industry,endtime,biddid,ae_template, intime,catid,typeid,areaid,status,similars,seq,progid) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,unix_timestamp(now()), ?, ?, ?, ?, ?,?,?)
-load_url = raw::select fromurl from bidding_raw order by id desc limit 150000
-titleSim = raw::select id,title from bidding_raw where areaid=? and intime>?
 
+wsLoadHostSql = webscan::select host from webscan_host_info where `status` =1 order by hasdetected desc,scanround asc limit 1000
+setHasDetected = webscan::UPDATE webscan_host_info set HasDetected=? , scanRound = (scanRound + 1) where host=?
+chechHostStatus = webscan::select * from webscan_host_info where host = ? and status = 1
+setHostStatus = webscan::update webscan_host_info set status=? where host = ?
+getUnInjected = webscan::select * from webscan_host_inject where type = 1 and host = ?
+setToInjected = webscan::update webscan_host_inject set type = -1 where id = ?
+getAllowsAllow = webscan::select url from webscan_host_url_allows where host = ? and status = 1
+getNumberMatchHost = webscan::select host from webscan_host_info where status=-9
 
+addHostParsedRecord = webscan::insert into webscan_source_detect( host, level_1_count, level_2_count, level_3_count, scan_num, path) values(?,?,?,?,?,?)
+addPageParsedRecord = webscan::insert into webscan_page_score(host, score, checkby)values(?,?, 'testor')
 
-
-load_config = raw::select potName,ruleSetname1,rulesetname2,configdatas,rulesetvalue1,rulesetvalue2,state, updatetime from crawlconfig where id = ?
-collect_all_config_id = raw::select id from crawlconfig where state = 0 or state = 1
-
-#mover block
-get_raw_by_mover = raw:: select id, title, content, catid, typeid, areaid, status, ae_template,fromurl,progid from bidding_raw where id > ? and (status= 3 or status = 34)  order by id
-get_type = qianlima::select * from phpcms_type
-drop_meta = qianlima::insert into phpcms_content(catid, typeid, areaid, title, url, userid, username, inputtime, updatetime, status, rawid,tmplt, progid)values(?,?,?,?,'', 1, 'root',unix_timestamp(now()), unix_timestamp(now()), 2, ?, ?, ?)
-get_meta_id = qianlima::select contentid from phpcms_content where rawid = ?
-drop_data = qianlima::insert into phpcms_c_zb(contentid, template, content,fromurl) values(?, 'show_nothing', ?,?)
-update_url = qianlima::update phpcms_content set url = ?, status = ? where contentid = ?
-
-#mover block end
+addPageParsedRecordAttach = webscan::insert into webscan_page_detail(id,title,url,path)values(?,?,?,?)

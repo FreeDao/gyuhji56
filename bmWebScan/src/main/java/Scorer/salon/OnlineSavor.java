@@ -18,7 +18,7 @@ public class OnlineSavor {
 		try {
 			File baseRoot = ScanConfig.instance.getOkFileSaveDirBase()
 					.getParentFile();
-			File scoreDir = new File(baseRoot, "HtmlScored@"
+			File scoreDir = new File(baseRoot, "HtmlScored/"
 					+ new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(System
 							.currentTimeMillis()));
 			scoreDir.mkdirs();

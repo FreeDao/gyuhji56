@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.bmtech.utils.bmfs.MFileWriter.MFileOutputStream;
 import com.bmtech.utils.bmfs.util.AssureInputStream.AssureFailException;
+import com.bmtech.utils.bmfs.util.MFileFormatErrorException;
 import com.bmtech.utils.bmfs.util.ReadProtocol;
 import com.bmtech.utils.bmfs.util.WriteProtocol;
 import com.bmtech.utils.io.FileBasedLock;
@@ -182,14 +183,12 @@ public class MDir {
 		log.debug("load ok! now size " + this.size());
 		if (fileShouldLen != this.currentLength) {
 			if (this.canWrite()) {
-				// throw new MFileFormatErrorException(
-				log.fatal("filelen not match! mdir corrupt! should be repair. requre "
-						+ fileShouldLen
-						+ ", real is "
-						+ this.currentLength
-						+ ". miss "
-						+ (fileShouldLen - this.currentLength)
-						+ "bytes");
+				throw new MFileFormatErrorException(
+						"filelen not match! mdir corrupt! should be repair. requre "
+								+ fileShouldLen + ", real is "
+								+ this.currentLength + ". miss "
+								+ (fileShouldLen - this.currentLength)
+								+ "bytes");
 			} else {
 				log.warn("file size not match! maybe corrupt. Now in read model, ignore repair. YOU MAY GET 'MFileFormatErrorException' while reading mdir");// FIXME
 			}

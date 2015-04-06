@@ -78,14 +78,14 @@ public class HostInjectTool {
 
 	public synchronized boolean injectAlwaysAllow(URL url) throws SQLException {
 		String host = CoreUtil.urlHost(url);
-		String sulr = url.toString();
-		checkAllway.setString(1, sulr);
+		String surl = url.toString();
+		checkAllway.setString(1, surl);
 		ResultSet rs = checkAllway.executeQuery();
 		if (rs.next()) {
 			return false;
 		}
 		insertAlways.setString(1, host);
-		insertAlways.setString(2, sulr);
+		insertAlways.setString(2, surl);
 		insertAlways.execute();
 		return true;
 	}
@@ -141,26 +141,7 @@ public class HostInjectTool {
 			}
 			conn.commit();
 			conn.setAutoCommit(true);
-			// if(!base.exists()){
-			// base.mkdirs();
-			// }
-			// File newURlDir = new File(base, conf.newUrlDir);
-			// if(!newURlDir.exists()){
-			// newURlDir.mkdirs();
-			// }
-			// File toInjectFile = new File(newURlDir,
-			// System.currentTimeMillis() + "." + (int)(1 + Math.random() * 100)
-			// + ".ninj");
-			//
-			// MOut out = new MOut(toInjectFile);
-			//
-			// for(URL u : urls){
-			// ScoredUrlRecord su = new ScoredUrlRecord(u,
-			// conf.injectedUrlValue);
-			// out.offer(su);
-			// }
-			//
-			// out.close();
+
 		}
 		log.info("inject OK for host %s, tot %s, ok %s, skip %s", host,
 				urls.size(), injected, skiped);

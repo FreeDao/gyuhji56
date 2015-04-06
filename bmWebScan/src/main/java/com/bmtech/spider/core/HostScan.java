@@ -219,7 +219,7 @@ public class HostScan implements Runnable {
 							link.getLink());
 					String iurl = RURL.rewrite(newURL.toString(), cs);
 					newURL = new URL(iurl);
-					if (isMyUrl(newURL)) {
+					if (hostInfo.isMyUrl(newURL)) {
 						int score = scorer.urlScore(link.text, link.title,
 								newURL.toString());
 						ScoredUrlRecord old = urlMap.get(newURL.toString());
@@ -311,16 +311,6 @@ public class HostScan implements Runnable {
 	private void setHostStatusClose() {
 		Connectioner.instance().setHostEndStatus(hostInfo.getHostName(),
 				HostFilter.Status_Number_Match);
-	}
-
-	private boolean isMyUrl(URL url) {
-
-		String prot = url.getProtocol();
-		if (!"http".equalsIgnoreCase(prot)) {
-			return false;
-		}
-
-		return CoreUtil.urlHost(url).endsWith(this.hostInfo.getMyHostSuffix());
 	}
 
 	public boolean isEnd() {

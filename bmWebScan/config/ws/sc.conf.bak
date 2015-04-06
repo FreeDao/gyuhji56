@@ -1,0 +1,8 @@
+[hostScan]
+tmpDir = ./sc-tmp
+baseDir = e:/ws/rl2ee
+
+scorerCls = 
+crawlPoolSizeCore = 200
+roundMaxCrawlRecord = 20000
+hostPoolSize = 1000

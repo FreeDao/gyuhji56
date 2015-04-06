@@ -1,5 +1,7 @@
 package com.bmtech.spider.core;
 
+import java.net.URL;
+
 public class HostInfo {
 
 	private int okCrawled = 0;
@@ -47,4 +49,13 @@ public class HostInfo {
 		return myHostSuffix;
 	}
 
+	public boolean isMyUrl(URL url) {
+
+		String prot = url.getProtocol();
+		if (!"http".equalsIgnoreCase(prot)) {
+			return false;
+		}
+
+		return CoreUtil.urlHost(url).endsWith(getMyHostSuffix());
+	}
 }
