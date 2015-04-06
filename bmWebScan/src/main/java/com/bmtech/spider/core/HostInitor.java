@@ -36,6 +36,8 @@ public class HostInitor {
 				HostInitorTool tool = new HostInitorTool(host, hostFilter,
 						sortFactor);
 				HostScan hs = tool.initHost();
+				log.fatal("init ok %s with hostbase %s", host,
+						ScanConfig.instance.getHostBase(hs.getHostInfo()));
 				afterRunnor.afterInitor(hs);
 			} catch (Exception e) {
 				e.printStackTrace();

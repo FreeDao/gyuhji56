@@ -10,7 +10,7 @@ import com.bmtech.utils.rds.RDS;
 public class HostCtrlImpl extends AbstractHostCtrl {
 
 	public HostCtrlImpl() throws Exception {
-		super(20020, "HostCtrlImpl", "HostCtrlImpl");
+		super(ScanConfig.instance.watchinPort, "HostCtrlImpl", "HostCtrlImpl");
 		Misc.del(ScanConfig.instance.tmpCrawlDir.listFiles());
 	}
 
@@ -59,8 +59,8 @@ public class HostCtrlImpl extends AbstractHostCtrl {
 					if (!needFillHostPool()
 							|| HostInitor.instance.initingNumber()
 									+ hostRunnor.getActiveCount() >= conf.hostPoolSize) {
-						log.fatal(
-								"ok init %s, now put full hostQueue.size() %s, conf.hostPoolNeedFillMargin %s",
+						log.warn(
+								"need NOT init %s, now put full hostQueue.size() %s, conf.hostPoolNeedFillMargin %s",
 								host, hostQueue.size(),
 								conf.hostPoolNeedFillMargin);
 						break;

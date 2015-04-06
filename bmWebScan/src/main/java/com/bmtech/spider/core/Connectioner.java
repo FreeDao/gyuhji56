@@ -9,13 +9,10 @@ import com.bmtech.utils.rds.RDS;
 import com.bmtech.utils.rds.SourceDefine;
 
 public class Connectioner {
-	// private RDS rds_addHas;
-	private RDS rds_setHas;
-	// private RDS rds_insert;
-	private RDS rds_path;
-	private RDS rds_chechHost;
-	private RDS rds_3, getAllowsAllow;
-	private RDS rdsGetUnInjected, rdsSetToInjected;
+	private RDS rds_setHasDetected;
+	private RDS rds_chechHostStatus;
+	private RDS rds_setHostStatus, rds_getAllowsAllow;
+	private RDS rds_getUnInjected, rds_setToInjected;
 	private Connection conn;
 	private static Connectioner instance = new Connectioner();
 
@@ -45,43 +42,12 @@ public class Connectioner {
 		conn = SourceDefine.instance().getDataSourceDefine("webscan")
 				.getNewConnection();
 
-		rds_setHas = RDS.getRDSByKey("setHas", conn);
-		// .getRDSByDefine(
-		// "webscan",
-		// "UPDATE webscan_host_info set HasDetected=? , scanRound = (scanRound + 1) where host=?",
-		// conn);
-		// rds_addHas = RDS
-		// .getRDSByDefine(
-		// "webscan",
-		// "UPDATE webscan_host_info set HasDetected=( HasDetected +?) where host=?",
-		// conn);
-		//
-		// rds_insert = RDS
-		// .getRDSByDefine(
-		// "webscan",
-		// "insert into webscan_host_crawler_log(urlHash,host,url,list_score,detail_page_score,start_time,file_seq)values(?,?,?,?,?,?,?)",
-		// conn);
-
-		rds_path = RDS.getRDSByDefine("webscan",
-				"select filePath from webscan_host_info where host = ?", conn);
-
-		rds_chechHost = RDS.getRDSByDefine("webscan",
-				"select * from webscan_host_info where host = ?", conn);
-
-		rds_3 = RDS.getRDSByDefine("webscan",
-				"update webscan_host_info set status=? where host = ?", conn);
-
-		rdsGetUnInjected = RDS
-				.getRDSByDefine(
-						"webscan",
-						"select * from webscan_host_inject where type = 1 and host = ?",
-						conn);
-
-		rdsSetToInjected = RDS.getRDSByDefine("webscan",
-				"update webscan_host_inject set type = -1 where id = ?", conn);
-		this.getAllowsAllow = RDS
-				.getRDSByDefine("webscan",
-						"select url from webscan_host_url_allows where host = ? and status = 1");
+		rds_setHasDetected = RDS.getRDSByKey("setHasDetected", conn);
+		rds_chechHostStatus = RDS.getRDSByKey("chechHostStatus", conn);
+		rds_setHostStatus = RDS.getRDSByKey("setHostStatus", conn);
+		rds_getUnInjected = RDS.getRDSByKey("getUnInjected", conn);
+		rds_setToInjected = RDS.getRDSByKey("setToInjected", conn);
+		rds_getAllowsAllow = RDS.getRDSByKey("getAllowsAllow", conn);
 
 	}
 
@@ -103,8 +69,8 @@ public class Connectioner {
 	public synchronized ArrayList<URLToInject> getUnInjected(String host)
 			throws SQLException {
 		ArrayList<URLToInject> ret = new ArrayList<URLToInject>();
-		this.rdsGetUnInjected.setString(1, host);
-		ResultSet rs = this.rdsGetUnInjected.executeQuery();
+		this.rds_getUnInjected.setString(1, host);
+		ResultSet rs = this.rds_getUnInjected.executeQuery();
 		while (rs.next()) {
 			URLToInject ut = new URLToInject(rs);
 			ret.add(ut);
@@ -113,54 +79,28 @@ public class Connectioner {
 	}
 
 	public synchronized void setToInjected(int id) throws SQLException {
-		rdsSetToInjected.setInt(1, id);
-		rdsSetToInjected.execute();
+		rds_setToInjected.setInt(1, id);
+		rds_setToInjected.execute();
 	}
-
-	// public synchronized void addHasCrawled(String host, int inc)
-	// throws SQLException {
-	// try {
-	// rds_addHas.setInt(1, inc);
-	// rds_addHas.setString(2, host);
-	// rds_addHas.execute();
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// this.getConnected();
-	// }
-	// }
 
 	public synchronized void setHasCrawled(String host, int num)
 			throws SQLException {
 		try {
-			rds_setHas.setInt(1, num);
-			rds_setHas.setString(2, host);
-			rds_setHas.execute();
+			rds_setHasDetected.setInt(1, num);
+			rds_setHasDetected.setString(2, host);
+			rds_setHasDetected.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			this.getConnected();
 		}
 	}
 
-	public synchronized String findPath(String host) throws SQLException {
-		String path = null;
-		rds_path.setString(1, host);
-		ResultSet rs = rds_path.load();
-		if (rs.next()) {
-			path = rs.getString(1);
-		}
-		return path;
-	}
-
 	public synchronized boolean checkHostValid(String host) {
 		try {
-			rds_chechHost.setString(1, host);
-			ResultSet rs = rds_chechHost.load();
+			rds_chechHostStatus.setString(1, host);
+			ResultSet rs = rds_chechHostStatus.load();
 			if (rs.next()) {
-				if (rs.getInt("status") == 1) {
-					return true;
-				} else {
-					return false;
-				}
+				return true;
 			} else {
 				return false;
 			}
@@ -176,9 +116,9 @@ public class Connectioner {
 
 	public synchronized void setHostEndStatus(String host, int status) {
 		try {
-			rds_3.setInt(1, status);
-			rds_3.setString(2, host);
-			rds_3.execute();
+			rds_setHostStatus.setInt(1, status);
+			rds_setHostStatus.setString(2, host);
+			rds_setHostStatus.execute();
 		} catch (SQLException e) {
 			try {
 				this.getConnected();
@@ -192,8 +132,8 @@ public class Connectioner {
 	public synchronized ArrayList<String> getAlwaysAllow(String host)
 			throws Exception {
 		try {
-			getAllowsAllow.setString(1, host);
-			ResultSet rs = getAllowsAllow.executeQuery();
+			rds_getAllowsAllow.setString(1, host);
+			ResultSet rs = rds_getAllowsAllow.executeQuery();
 			ArrayList<String> ret = new ArrayList<String>();
 			while (rs.next()) {
 				ret.add(rs.getString(1));

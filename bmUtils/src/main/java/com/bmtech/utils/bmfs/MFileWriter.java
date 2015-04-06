@@ -71,6 +71,7 @@ public class MFileWriter {
 				}
 				this.out.write(buf, 0, x);
 			}
+			out.flush();
 			return out;
 		}
 

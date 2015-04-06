@@ -65,15 +65,14 @@ public class ScanConfig {
 
 	public final boolean useMFileGzip;
 
+	public final int watchinPort;
+
 	@SuppressWarnings("unchecked")
 	private ScanConfig() {
 		ConfigReader cr = null;
-		try {
-			cr = new ConfigReader("config/ws/sc.conf", "hostScan");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		cr = new ConfigReader("config/ws/sc.conf", "hostScan");
+		watchinPort = cr.getInt("watchinPort", 20020);
+
 		urlCrawlItvSecond = cr.getInt("urlCrawlItvSecond", 5) * 1000;
 		try {
 			String scoreClass = cr.getValue("scorerCls");

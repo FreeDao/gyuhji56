@@ -32,7 +32,7 @@ public class ConfigReader extends SectionConfig {
 	// public ConfigReader(String path,String section){
 	// this(new File(path), section, encoder);
 	// }
-	public ConfigReader(File path, String section) throws IOException {
+	public ConfigReader(File path, String section) {
 		this(path, section, encoder);
 	}
 
@@ -41,8 +41,7 @@ public class ConfigReader extends SectionConfig {
 		this(new File(path), section, encode);
 	}
 
-	public ConfigReader(File path, String section, String encode)
-			throws IOException {
+	public ConfigReader(File path, String section, String encode) {
 		super(section, readAll(path, section, encode));
 		this.configFile = path;
 		this.encode = encode;
@@ -50,7 +49,7 @@ public class ConfigReader extends SectionConfig {
 
 	}
 
-	public ConfigReader(String string, String section) throws IOException {
+	public ConfigReader(String string, String section) {
 		this(new File(string), section);
 	}
 
@@ -62,40 +61,46 @@ public class ConfigReader extends SectionConfig {
 	 * @return never null
 	 */
 	public static Map<String, String> readAll(File configFile, String section,
-			String encode) throws IOException {
-		LineReader reader = new LineReader(configFile, encode);
-		Map<String, String> ret = new HashMap<String, String>();
-		boolean enter = false;
-		section = "[" + section + "]";
-		while (true) {
-			String str = null;
-			str = reader.readLine();
+			String encode) {
+		try {
 
-			if (str == null)
-				break;
-			str = str.trim();
-			if (enter) {
-				if (str.startsWith("[")) {// in enter,but new section started,
-											// so we break;
+			LineReader reader = new LineReader(configFile, encode);
+			Map<String, String> ret = new HashMap<String, String>();
+			boolean enter = false;
+			section = "[" + section + "]";
+			while (true) {
+				String str = null;
+				str = reader.readLine();
+
+				if (str == null)
 					break;
-				}
-			} else {
-				if (str.compareToIgnoreCase(section) == 0) {
-					enter = true;
-					continue;
+				str = str.trim();
+				if (enter) {
+					if (str.startsWith("[")) {// in enter,but new section
+												// started,
+						// so we break;
+						break;
+					}
 				} else {
-					continue;// short cut if not enter the section
+					if (str.compareToIgnoreCase(section) == 0) {
+						enter = true;
+						continue;
+					} else {
+						continue;// short cut if not enter the section
+					}
 				}
+
+				KeyValuePair<String, String> kv = KeyValuePair.parseLine(str);
+				if (kv == null)// parse failure,note line or illegal line
+					continue;// ignore the line
+				ret.put(kv.key, kv.value);
+
 			}
-
-			KeyValuePair<String, String> kv = KeyValuePair.parseLine(str);
-			if (kv == null)// parse failure,note line or illegal line
-				continue;// ignore the line
-			ret.put(kv.key, kv.value);
-
+			reader.close();
+			return ret;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		reader.close();
-		return ret;
 	}
 
 	public List<String> listSectionsInConfigFile() throws IOException {

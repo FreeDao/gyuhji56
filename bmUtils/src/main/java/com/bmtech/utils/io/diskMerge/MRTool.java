@@ -28,6 +28,27 @@ public class MRTool {
 		mergeTo(toFile, recordClass, mergeFactor, cmp, mlst);
 	}
 
+	public static void combin(File toFile, Class<?> recordClass, File... mlst)
+			throws Exception {
+		makeSureFileExists(toFile);
+		MOut mout = new MOut(toFile);
+		try {
+			for (File f : mlst) {
+				RecordReader rr = new RecordReader(f, recordClass);
+				try {
+					while (rr.peek() != null) {
+						MRecord mr = rr.take();
+						mout.offer(mr);
+					}
+				} finally {
+					rr.close();
+				}
+			}
+		} finally {
+			mout.close();
+		}
+	}
+
 	/**
 	 * 
 	 * @param toFile
