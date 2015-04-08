@@ -5,9 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -491,8 +496,8 @@ public class MDir {
 		}
 	}
 
-	public MFileReader openReader() throws Exception {
-		return new MFileReader(this);
+	public MFileReaderIterator openReader() throws Exception {
+		return new MFileReaderIterator(this);
 	}
 
 	public MFileWriter openWriter() {
@@ -580,6 +585,22 @@ public class MDir {
 		if (this.nameMap.get(mfile.getName()) == null) {
 			this.nameMap.remove(mfile.getName());
 		}
+	}
+
+	public synchronized List<MFile> getMFiles() {
+
+		Collection<MFile> collection = this.nameMap.values();
+		List<MFile> lst = new ArrayList<MFile>(collection.size());
+		lst.addAll(collection);
+		Collections.sort(lst, new Comparator<MFile>() {
+
+			@Override
+			public int compare(MFile o1, MFile o2) {
+				return o1.fsId - o2.fsId;
+			}
+		});
+		return lst;
+
 	}
 
 	public File getLocalDir() {

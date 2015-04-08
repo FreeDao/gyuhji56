@@ -8,6 +8,7 @@ import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 import com.bmtech.utils.bmfs.MFileWriter;
 
 public class MDirCopy {
@@ -35,17 +36,17 @@ public class MDirCopy {
 	}
 
 	public void read() throws Exception {
-		MFileReader itr = from.openReader();
+		MFileReaderIterator itr = from.openReader();
 		MFileWriter w = to.openWriter();
 		while (itr.hasNext()) {
-			MFile mfile = itr.next();
-
+			MFileReader reader = itr.next();
+			MFile mfile = reader.getMfile();
 			MFile add = to.createMFileIfPossible(mfile.getName());
 			if (add == null) {
 				System.out.println("SKIP " + mfile);
 				itr.skip();
 			} else {
-				InputStream ips = itr.getInputStream();
+				InputStream ips = reader.getInputStream();
 				System.out.println("adding " + mfile);
 				w.openMFile(add).write(ips).close();
 			}

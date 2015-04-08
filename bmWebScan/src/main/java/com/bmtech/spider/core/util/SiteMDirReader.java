@@ -8,6 +8,7 @@ import com.bmtech.utils.Charsets;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 import com.bmtech.utils.log.LogHelper;
 
 public class SiteMDirReader {
@@ -16,18 +17,19 @@ public class SiteMDirReader {
 
 	ScanConfig sc = ScanConfig.instance;
 	MDir mdir;
-	MFileReader reader;
+	MFileReaderIterator itrator;
 	LogHelper log;
 
 	public SiteMDirReader(MDir mdir) throws Exception {
 		this.mdir = mdir;
-		reader = mdir.openReader();
+		itrator = mdir.openReader();
 		log = new LogHelper(mdir.dataFile.getName());
 		crt = this.nextRecord();
 
 	}
 
 	public void close() {
+		itrator.close();
 		MDir.closeMDir(mdir);
 	}
 
@@ -45,15 +47,16 @@ public class SiteMDirReader {
 
 	private DecodeSynCombin nextRecord() throws Exception {
 
-		while (reader.hasNext()) {
-			MFile mf = reader.next();
+		while (itrator.hasNext()) {
+			MFileReader reader = itrator.next();
+			MFile mf = reader.getMfile();
 
 			byte[] bs;
 			if (sc.useMFileGzip) {
 				if (mf.getLength() > maxGizpSize) {
 					log.warn("skip tooooo big ZIPED %.2fKB named %s",
 							mf.getLength() / 1024.0, mf);
-					reader.skip();
+					itrator.skip();
 					continue;
 				}
 				bs = reader.getBytesUnGZiped();
@@ -61,7 +64,7 @@ public class SiteMDirReader {
 				if (mf.getLength() > maxUnzipSize) {
 					log.warn("skip tooooo big  %.2fKB named %s",
 							mf.getLength() / 1024.0, mf);
-					reader.skip();
+					itrator.skip();
 					continue;
 				}
 				bs = reader.getBytes();

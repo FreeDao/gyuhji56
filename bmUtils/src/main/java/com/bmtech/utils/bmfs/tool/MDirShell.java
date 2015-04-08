@@ -6,8 +6,8 @@ import java.io.InputStream;
 
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
-import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 
 public class MDirShell {
 	public static void main(String[] args) throws Exception {
@@ -15,11 +15,11 @@ public class MDirShell {
 
 		File dir = new File(path);
 		MDir mdir = MDir.makeMDir(dir, false);
-		MFileReader reader = mdir.openReader();
+		MFileReaderIterator reader = mdir.openReader();
 		while (reader.hasNext()) {
-			MFile mfile = reader.next();
-			System.out.println(mfile);
-			InputStream ips = reader.getInputStreamUnGZiped();
+			MFileReader r = reader.next();
+			System.out.println(r.getMfile());
+			InputStream ips = r.getInputStream();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			while (true) {
 				int x = ips.read();

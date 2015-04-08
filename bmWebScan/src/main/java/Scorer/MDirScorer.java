@@ -14,6 +14,7 @@ import com.bmtech.utils.Charsets;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 import com.bmtech.utils.log.LogHelper;
 
 public class MDirScorer {
@@ -41,11 +42,12 @@ public class MDirScorer {
 	private String lastParseFileName;
 
 	void score() throws Exception {
-		MFileReader reader = mdir.openReader();
+		MFileReaderIterator itr = mdir.openReader();
 
-		while (reader.hasNext()) {
+		while (itr.hasNext()) {
 			scanNum++;
-			MFile mf = reader.next();
+			MFileReader reader = itr.next();
+			MFile mf = reader.getMfile();
 			lastParseFileName = mf.getName();
 
 			byte[] bs;
@@ -53,7 +55,7 @@ public class MDirScorer {
 				if (mf.getLength() > maxGizpSize) {
 					log.warn("skip tooooo big ZIPED %.2fKB named %s",
 							mf.getLength() / 1024.0, mf);
-					reader.skip();
+					itr.skip();
 					continue;
 				}
 				bs = reader.getBytesUnGZiped();
@@ -61,7 +63,7 @@ public class MDirScorer {
 				if (mf.getLength() > maxUnzipSize) {
 					log.warn("skip tooooo big  %.2fKB named %s",
 							mf.getLength() / 1024.0, mf);
-					reader.skip();
+					itr.skip();
 					continue;
 				}
 				bs = reader.getBytes();

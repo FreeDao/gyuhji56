@@ -12,6 +12,7 @@ import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 import com.bmtech.utils.io.LineWriter;
 
 public class UrlExt {
@@ -32,9 +33,11 @@ public class UrlExt {
 	}
 
 	void parse(MDir mdir) throws Exception {
-		MFileReader reader = mdir.openReader();
-		while (reader.hasNext()) {
-			MFile mf = reader.next();
+		MFileReaderIterator itr = mdir.openReader();
+		while (itr.hasNext()) {
+			MFileReader reader = itr.next();
+
+			MFile mf = reader.getMfile();
 			System.out.println(mf);
 			byte[] bytes = reader.getBytesUnGZiped();
 			String str = new String(bytes, Charsets.UTF8_CS);

@@ -116,4 +116,7 @@ public final class MFile {
 		return this.getFullFilePath();
 	}
 
+	public MFileReader openReader() throws IOException {
+		return new MFileReader(this);
+	}
 }

@@ -10,15 +10,18 @@ import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
+import com.bmtech.utils.bmfs.MFileReaderIterator;
 
 public class KK {
 
 	public static void main(String[] args) throws Exception {
 		MDir dir = MDir.open(new File(
 				"E:\\datas\\rl2ee\\okCrawled\\aqv.h\\aqvtc.cn"));
-		MFileReader reader = dir.openReader();
-		while (reader.hasNext()) {
-			MFile mf = reader.next();
+		MFileReaderIterator itr = dir.openReader();
+		while (itr.hasNext()) {
+			MFileReader reader = itr.next();
+
+			MFile mf = reader.getMfile();
 
 			System.out.println(mf);
 			byte[] bs = reader.getBytes();
