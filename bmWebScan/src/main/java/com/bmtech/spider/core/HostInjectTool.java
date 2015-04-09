@@ -125,14 +125,19 @@ public class HostInjectTool {
 			Set<String> set = getHasInjected(host);
 			conn.setAutoCommit(false);
 			for (URL u : urls) {
-
-				if (set.contains(u.toString())) {
+				String uStr = u.toString();
+				if (uStr.length() > 500) {
+					System.out.print("trunck " + uStr);
+					uStr = uStr.substring(0, 500);
+					System.out.println(" to " + uStr);
+				}
+				if (set.contains(uStr)) {
 					skiped++;
 					log.debug("skip already host %s", u);
 				} else {
 					injected++;
 					injectInsertUrl.setString(1, host);
-					injectInsertUrl.setString(2, u.toString());
+					injectInsertUrl.setString(2, uStr);
 					injectInsertUrl.execute();
 				}
 
