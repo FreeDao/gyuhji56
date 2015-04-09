@@ -27,12 +27,12 @@ public class MFileReader {
 		this(mfile, null);
 	}
 
-	MFileReader(MFile mfile, RandomAccessFile raf) throws IOException {
-		if (raf == null) {
+	MFileReader(MFile mfile, RandomAccessFile rafs) throws IOException {
+		if (rafs == null) {
 			this.raf = new RandomAccessFile(mfile.dir.dataFile, "r");
 			openByMe = false;
 		} else {
-			this.raf = raf;
+			this.raf = rafs;
 		}
 		this.mfile = mfile;
 		raf.seek(mfile.getOffset());
@@ -91,8 +91,7 @@ public class MFileReader {
 		final GZIPInputStream ips;
 
 		GZipReadAllInputStream(InputStream ips) throws IOException {
-			GZIPInputStream ret = new GZIPInputStream(ips, 4096);
-			this.ips = ret;
+			this.ips = new GZIPInputStream(ips, 4096);
 		}
 
 		@Override
@@ -113,7 +112,6 @@ public class MFileReader {
 		public void close() throws IOException {
 			this.ips.close();
 		}
-
 	}
 
 	private class MFileInputStream extends ReadAllInputStream {
@@ -129,7 +127,7 @@ public class MFileReader {
 			if (readed >= fileLen) {
 				return -1;
 			}
-			int ret = raf.readByte();
+			int ret = raf.read();// .readByte();
 			if (ret == -1) {
 				throw new MFileFormatErrorException("corrupt mdir "
 						+ getMfile());
@@ -169,14 +167,11 @@ public class MFileReader {
 			if (buf == null) {
 				setBuf(new byte[1024 * 8]);
 			}
-			bos.reset();
-
 			return this.readAll(bos, buf);
 		}
 
 		@Override
 		public void close() {
-
 		}
 	}
 
@@ -186,8 +181,7 @@ public class MFileReader {
 		final long fileLen = getMfile().getLength();
 		ReadAllInputStream ips = new MFileInputStream(fileLen);
 		if (unGzip) {
-			GZipReadAllInputStream ret = new GZipReadAllInputStream(ips);
-			return ret;
+			return new GZipReadAllInputStream(ips);
 		} else {
 			return ips;
 		}

@@ -56,6 +56,10 @@ public class MDir {
 		}
 	}
 
+	public void close() {
+		MDir.closeMDir(this);
+	}
+
 	public synchronized static void closeMDir(MDir mdir) {
 		if (mdir == null) {
 			return;
@@ -496,7 +500,7 @@ public class MDir {
 		}
 	}
 
-	public MFileReaderIterator openReader() throws Exception {
+	public MFileReaderIterator openReader() throws IOException {
 		return new MFileReaderIterator(this);
 	}
 

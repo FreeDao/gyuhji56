@@ -19,7 +19,7 @@ public class MDirShell {
 		while (reader.hasNext()) {
 			MFileReader r = reader.next();
 			System.out.println(r.getMfile());
-			InputStream ips = r.getInputStream();
+			InputStream ips = r.getInputStreamUnGZiped();// r.getInputStream();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			while (true) {
 				int x = ips.read();
