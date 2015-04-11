@@ -50,13 +50,18 @@ public class SiteMDirEntranceFinder {
 				for (int x = 0; x < links.size(); x++) {
 					LinkTag lt = (LinkTag) links.elementAt(x);
 					String sU = lt.getLink();
-
-					URL url = new URL(entry.url, sU);
+					URL url;
+					try {
+						url = new URL(entry.url, sU);
+					} catch (Exception e) {
+						continue;
+					}
 					if (hi.isMyUrl(url)) {
 						countLinkOut(entry.url, url, lt.getLink());
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
