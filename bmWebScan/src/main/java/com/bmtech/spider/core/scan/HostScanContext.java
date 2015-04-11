@@ -24,8 +24,8 @@ public class HostScanContext {
 		return isEnd;
 	}
 
-	public void setEnd(boolean isEnd) {
-		this.isEnd = isEnd;
+	public void setEnd() {
+		this.isEnd = true;
 	}
 
 	public CrawlContext getCrawlContext() {

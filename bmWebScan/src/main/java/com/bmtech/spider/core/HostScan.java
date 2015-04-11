@@ -22,6 +22,7 @@ import com.bmtech.utils.http.CrawlContext;
 import com.bmtech.utils.http.HttpHandler;
 import com.bmtech.utils.http.RURL;
 import com.bmtech.utils.log.BmtLogHelper;
+import com.bmtech.utils.log.LogHelper;
 
 public class HostScan implements Runnable {
 
@@ -30,20 +31,24 @@ public class HostScan implements Runnable {
 		return "host scan " + hostInfo;
 	}
 
-	private HostScanUrlIn urlIn;
-	private BmtLogHelper log;
-	private ScanConfig conf;
-	private HostScanUrlOut urlOut;
-	private final HostScanSiteOut siteOut;
-	private boolean isInit = false;
+	private final LogHelper log;
+	private final ScanConfig conf;
 	private final HostScanContext hostContext = new HostScanContext();
+	private final HostInfo hostInfo;
+
+	private HostScanUrlIn urlIn;
+	private HostScanUrlOut urlOut;
+	private HostScanSiteOut siteOut;
+	private boolean isInit = false;
 
 	int roundCrawl = 0, roundCrawOKlNum = 0;
-	private final HostInfo hostInfo;
+	private long lastRun = 0;
 
 	public HostScan(HostInfo hostInfo) throws IOException {
 		this.hostInfo = hostInfo;
-		siteOut = new HostScanSiteOut(hostInfo);
+		final String hostName = hostInfo.getHostName();
+		this.conf = ScanConfig.instance;
+		log = new BmtLogHelper(hostName);
 	}
 
 	private void init() {
@@ -52,107 +57,101 @@ public class HostScan implements Runnable {
 		}
 		this.isInit = true;
 		try {
-			final String hostName = hostInfo.getHostName();
-			this.conf = ScanConfig.instance;
-			log = new BmtLogHelper(hostName);
 
-			if (siteOut.savedFileCount() >= ScanConfig.instance.maxPagePerHost) {
-				this.hostContext.setEnd(true);
-				return;
-			}
-			urlOut = new HostScanUrlOut(hostInfo);
-
-			log.info("start crawl:%s", hostName);
-			if (!Connectioner.instance().checkHostValid(hostName)) {
-				log.warn("host valid check false!");
-				hostContext.setEnd(true);
+			log.info("initing:%s", hostInfo);
+			if (!Connectioner.instance().checkHostValid(hostInfo.getHostName())) {
+				throw new Exception("host valid check false!");
 			}
 			urlIn = new HostScanUrlIn(hostInfo);
 
+			siteOut = new HostScanSiteOut(hostInfo);
+			if (ScanConfig.instance.isHostTotalPageReached(hostInfo)) {
+				throw new Exception("host max page reached");
+			}
+			urlOut = new HostScanUrlOut(hostInfo);
 		} catch (Throwable e) {
-			this.hostContext.setEnd(true);
+			log.fatal(e, "when initing %s", hostInfo);
+			this.hostContext.setEnd();
 		}
 	}
 
 	public void close() {
 		saveCount();
-		refreshHostStatus();
-		if (roundCrawOKlNum < 5 && siteOut.getOkCount() > 10) {
-			setHostStatusClose();// FIXME should check round numbers, if round >
-									// x
-									// and number < y then close
+		if (ScanConfig.instance.isHostTotalPageReached(hostInfo)) {
+			setHostStatusClose();
+		}
+		if (roundCrawOKlNum < 5 && hostInfo.getTotalCrawled() > 10) {
+			setHostStatusClose();
 			log.fatal("find too few pages, round get %s,  has already %s",
-					roundCrawOKlNum, siteOut.getOkCount());
+					roundCrawOKlNum, hostInfo.getTotalCrawled());
 		}
 		if (urlOut != null) {
 			urlOut.close();
 		}
-		this.siteOut.close();
+		if (this.siteOut != null) {
+			this.siteOut.close();
+		}
+
 		if (urlIn != null) {
 			urlIn.close();
 		}
 	}
-
-	private long lastRun = 0;
 
 	@Override
 	public void run() {
 
 		if (!this.isInit) {
 			this.init();
+			hostContext.setPreStage(true);
 		}
-		if (this.roundCrawl > conf.maxCrawlPagesPerRound) {
-			this.hostContext.setEnd(true);
+
+		if (hostContext.isEnd()
+				|| this.roundCrawl >= conf.maxCrawlPagesPerRound
+				|| ScanConfig.instance.isHostTotalPageReached(hostInfo)) {
+			this.hostContext.setEnd();
 			return;
 		}
+		try {
+			if (hostContext.isPreCrawl()) {
 
-		if (hostContext.isEnd()) {
-			return;
+				try {
+
+					long now = System.currentTimeMillis();
+					long passed = (now - lastRun) / 1000;
+					long left = conf.urlCrawlItvSecond - passed;
+					if (left > 0) {
+						Misc.sleep(10);
+						return;
+					}
+					lastRun = now;
+					hostContext.setCurrentUrl(urlIn.nextUrl());
+					if (hostContext.getCurrentUrl() == null) {
+						log.warn("ERROR: no more URL");
+						hostContext.setEnd();
+						return;
+					}
+					runCrawlStage();
+				} finally {
+					hostContext.setPreStage(false);
+				}
+			} else {
+				try {
+					runAfterCrawl();
+				} finally {
+					hostContext.setPreStage(true);
+				}
+			}
+		} catch (Throwable e) {
+			log.fatal(e, "crawl for %s", hostContext.getCurrentUrl());
+			hostContext.setEnd();
 		}
 
-		if (hostContext.isPreCrawl()) {
-
-			try {
-				preCrawl();
-			} catch (Exception e) {
-				log.fatal(e, "when pre-crawl %s", hostContext.getCurrentUrl());
-				hostContext.setEnd(true);
-				return;
-			}
-		} else {
-			try {
-				afterCrawl();
-			} catch (Throwable e) {
-				log.fatal(e, "when after crawl for %s",
-						hostContext.getCurrentUrl());
-				hostContext.setEnd(true);
-			} finally {
-				hostContext.setPreStage(true);
-			}
-		}
 	}
 
-	protected void preCrawl() throws Exception {
+	protected void runCrawlStage() throws Exception {
 
-		long now = System.currentTimeMillis();
-		long passed = now - lastRun;
-		long left = conf.urlCrawlItvSecond - passed;
-		if (left > 0) {
-			Misc.sleep(10);
-			return;
-		}
-		lastRun = now;
-		hostContext.setCurrentUrl(urlIn.nextUrl());
-		if (hostContext.getCurrentUrl() == null) {
-			log.warn("ERROR: no more URL");
-			hostContext.setEnd(true);
-			return;
-		} else {
-			log.info("crawling url %s", hostContext.getCurrentUrl());
-		}
 		roundCrawl++;
-
-		log.info("crawl next url %s", hostContext.getCurrentUrl());
+		log.info("crawling %s", hostContext.getCurrentUrl());
 
 		HttpHandler hdl = HttpHandler.getCrawlHandler();
 		hdl.setConnectTimeout(conf.crawlConnectTimeout);
@@ -164,11 +163,10 @@ public class HostScan implements Runnable {
 				.getCurrentUrl().getUrl(), out, hdl, log,
 				ScanConfig.instance.allowDownload));
 		hostContext.getCrawlContext().run();
-		hostContext.setPreStage(false);
 
 	}
 
-	protected void afterCrawl() throws Exception {
+	protected void runAfterCrawl() throws Exception {
 		HostScanCrawlOut out = (HostScanCrawlOut) hostContext.getCrawlContext()
 				.getCrawlOut();
 
@@ -186,7 +184,8 @@ public class HostScan implements Runnable {
 				log.warn(" downloadType, url=%s", hostContext.getCurrentUrl()
 						.getUrl());
 				if (conf.allowDownload) {
-					siteOut.saveOkUrlDir(out, hostContext.getCurrentUrl());
+					// FIXME should use saveDownload page
+					siteOut.saveHtmlPage(out, hostContext.getCurrentUrl());
 				}
 				return;
 			} else if (out.tooBig()) {
@@ -263,48 +262,29 @@ public class HostScan implements Runnable {
 					.getCurrentUrl().getUrl());
 
 			if (scorer.isGoodScore(pageScore, listScore)) {
-				siteOut.saveOkUrlDir(out, hostContext.getCurrentUrl());
+				siteOut.saveHtmlPage(out, hostContext.getCurrentUrl());
 			}
 		} catch (Exception e) {
 			log.error(e, "when after crawl %s", e);
 		} finally {
-			if (!conf.allowSaveTmpFile) {
-				out.clear();
-			}
 			if (crawled) {
 				roundCrawOKlNum++;
-				int okCrawlNum = this.hostInfo.inOkCrawled(1);
-				boolean endCrawl = okCrawlNum >= ScanConfig.instance.maxPagePerHost;
-				this.refreshHostStatus();
-				int okCount = siteOut.getOkCount();
-				if ((okCount > 0 && okCount % 10 == 0) || endCrawl) {
+				hostInfo.incTotalCrawled();
+				if (roundCrawOKlNum % 10 == 0) {
 					saveCount();
 				}
-
 				urlOut.hasCrawledFlush(hostContext.getCurrentUrl());
 			}
-
 		}
 	}
 
 	private void saveCount() {
 		try {
-			int count = siteOut.getOkCount();
+			int count = hostInfo.getTotalCrawled();
 			Connectioner.instance()
 					.setHasCrawled(hostInfo.getHostName(), count);
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
-	}
-
-	private void refreshHostStatus() {
-		try {
-			int okCrawlNum = siteOut.getOkCount();
-			if (okCrawlNum >= ScanConfig.instance.maxPagePerHost) {
-				setHostStatusClose();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

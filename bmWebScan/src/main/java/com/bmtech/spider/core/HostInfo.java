@@ -4,13 +4,13 @@ import java.net.URL;
 
 public class HostInfo {
 
-	private int okCrawled = 0;
+	private int totalCrawled = 0;
 	private final String hostName;
 	private final String myHostSuffix;
 
-	public HostInfo(String host, int okCrawled) {
+	public HostInfo(String host, int totalCrawled) {
 		this.hostName = host.toLowerCase().trim();
-		this.setOkCrawled(okCrawled);
+		this.setHostTotalCrawled(totalCrawled);
 		if (hostName.startsWith("www.")) {
 			myHostSuffix = hostName.substring(4);
 		} else {
@@ -26,23 +26,23 @@ public class HostInfo {
 		return hostName;
 	}
 
-	public int getOkCrawled() {
-		return okCrawled;
+	public int getTotalCrawled() {
+		return totalCrawled;
 	}
 
-	public void setOkCrawled(int okCrawled) {
-		this.okCrawled = okCrawled;
+	public void setHostTotalCrawled(int totalCrawled) {
+		this.totalCrawled = totalCrawled;
 	}
 
 	@Override
 	public String toString() {
-		return "HostInfo [okCrawled=" + okCrawled + ", hostName=" + hostName
-				+ "]";
+		return "HostInfo [totalCrawled=" + totalCrawled + ", hostName="
+				+ hostName + "]";
 	}
 
-	public int inOkCrawled(int i) {
-		this.okCrawled++;
-		return this.okCrawled;
+	public int incTotalCrawled() {
+		this.totalCrawled++;
+		return this.totalCrawled;
 	}
 
 	public String getMyHostSuffix() {

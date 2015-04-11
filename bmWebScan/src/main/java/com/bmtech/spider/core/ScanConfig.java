@@ -1,16 +1,11 @@
 package com.bmtech.spider.core;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.bmtech.spider.core.scan.HostScanCrawlOut;
-import com.bmtech.spider.core.util.SynCombin;
 import com.bmtech.utils.Misc;
-import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.io.ConfigReader;
-import com.bmtech.utils.io.InputStreamCombin;
 import com.bmtech.utils.log.BmtLogHelper;
 
 public class ScanConfig {
@@ -60,7 +55,7 @@ public class ScanConfig {
 	public final int mergeFactor;
 	public final int sortFactor;
 
-	public int maxPagePerHost;
+	private int maxPagePerHost;
 
 	public final boolean useMFileGzip;
 
@@ -149,8 +144,8 @@ public class ScanConfig {
 		maxFileLen = cr.getInt("maxFileLenKB", 3000) * 1000L;
 		controllerCheckItv = cr.getInt("controllerCheckItvSecond", 5) * 1000L;
 
-		maxCrawlPagesPerRound = cr.getInt("maxPagePerHost", 500);
-		maxPagePerHost = cr.getInt("maxPagePerHost", Integer.MAX_VALUE);
+		maxCrawlPagesPerRound = cr.getInt("maxCrawlPagesPerRound", 500);
+		maxPagePerHost = cr.getInt("maxPagePerHost", -1);
 
 		hostPoolSize = cr.getInt("hostPoolSize", 100);
 		hostPoolNeedFillMargin = cr.getInt("hostPoolNeedFillMargin", 5);
@@ -182,20 +177,6 @@ public class ScanConfig {
 			f.mkdirs();
 		}
 		return f;
-	}
-
-	public synchronized boolean saveOkPage(HostScanCrawlOut out,
-			ScoredUrlRecord url, MDir dir) throws IOException {
-		if (!allowSaveOKFile) {
-			return false;
-		}
-
-		InputStreamCombin cmbIpt = SynCombin.getCombin(url.getUrl(),
-				out.getInputStream());
-		// FIXME shouldWithSUffix out.getSuffix();
-		dir.addFile(cmbIpt, ScanConfig.instance.useMFileGzip);
-		return true;
-
 	}
 
 	// public synchronized boolean saveOkUrlDir(HostScanCrawlOut out, long seq,
@@ -267,36 +248,10 @@ public class ScanConfig {
 		return this.saveDir;
 	}
 
-	@Override
-	public String toString() {
-		return "ScanConfig [readyToCrawl=" + readyToCrawl
-				+ ", hasFailedFileName=" + hasFailedFileName + ", urlDataBase="
-				+ urlDataBase + ", crawledUrlDB=" + crawledUrlDB
-				+ ", crawledUrlTmp=" + crawledUrlTmp + ", newUrlDir="
-				+ newUrlDir + ", iUrl=" + iUrl + ", tmpCrawlDir=" + tmpCrawlDir
-
-				+ ", foreignUrlCheckClass=" + foreignUrlCheckClass
-				+ ", scorerCls=" + scorerCls + ", crawlDir=" + crawlDir
-				+ ", saveDir=" + saveDir + ", urlCrawlItvSecond="
-				+ urlCrawlItvSecond + ", maxFileLen=" + maxFileLen
-				+ ", controllerCheckItv=" + controllerCheckItv
-				+ ", injectedUrlValue=" + injectedUrlValue
-				+ ", maxErrorForEveryPage=" + maxErrorForEveryPage
-				+ ", hostPoolSize=" + hostPoolSize
-				+ ", hostPoolNeedFillMargin=" + hostPoolNeedFillMargin
-				+ ", allowDownload=" + allowDownload + ", allowSaveOKFile="
-				+ allowSaveOKFile + ", allowSaveTmpFile=" + allowSaveTmpFile
-				+ ", hostInitThreads=" + hostInitThreads + ", scoreInjected="
-				+ scoreInjected + ", scoreAllwaysAllow=" + scoreAllwaysAllow
-				+ ", scoreFirstPage=" + scoreFirstPage
-				+ ", injectHomePagePerHost=" + injectHomePagePerHost
-				+ ", crawlConnectTimeout=" + crawlConnectTimeout
-				+ ", crawlReadTimeout=" + crawlReadTimeout + ", useMDir="
-				+ useMDir + ", maxCrawlPagesPerRound=" + maxCrawlPagesPerRound
-				+ ", parseThread=" + parseThread + ", parseQueueMaxSize="
-				+ parseQueueMaxSize + ", mergeFactor=" + mergeFactor
-				+ ", sortFactor=" + sortFactor + ", maxPagePerHost="
-				+ maxPagePerHost + ", useMFileGzip=" + useMFileGzip + "]";
+	public boolean isHostTotalPageReached(HostInfo hi) {
+		if (this.maxPagePerHost < 0) {
+			return false;
+		}
+		return this.maxPagePerHost < hi.getTotalCrawled();
 	}
-
 }

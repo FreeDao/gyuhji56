@@ -9,7 +9,7 @@ import com.bmtech.spider.core.ScoredUrlRecord;
 import com.bmtech.utils.io.diskMerge.MOut;
 
 public class HostScanUrlOut {
-	private MOut hasCrawled, hasFailed, newUrlOut;
+	private final MOut hasCrawled, hasFailed, newUrlOut;
 
 	public HostScanUrlOut(HostInfo info) throws IOException {
 		File baseDir = ScanConfig.instance.getHostBase(info);

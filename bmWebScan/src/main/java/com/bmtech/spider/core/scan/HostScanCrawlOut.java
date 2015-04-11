@@ -28,9 +28,6 @@ public class HostScanCrawlOut extends CrawlOut {
 		return ((HostScanOutputStream) super.out).toByteArray();
 	}
 
-	public void clear() {
-	}
-
 	public InputStream getInputStream() {
 		return new ByteArrayInputStream(this.getBytes());
 	}
