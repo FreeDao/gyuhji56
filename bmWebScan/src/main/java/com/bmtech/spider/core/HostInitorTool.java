@@ -96,7 +96,7 @@ public class HostInitorTool {
 		}
 		tmp2.renameTo(allUrlFile);
 
-		Misc.copyFile(tmp2, hasCrawled);
+		Misc.copyFile(allUrlFile, hasCrawled);
 		Consoler.confirm("reinit ok " + hostBase.getCanonicalPath());
 	}
 
