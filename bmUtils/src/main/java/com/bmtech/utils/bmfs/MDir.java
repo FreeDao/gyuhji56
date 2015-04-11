@@ -94,7 +94,6 @@ public class MDir {
 		return dir;
 	}
 
-	// FIXME use random accessfile
 	// FIXME add log support
 	class MFileAlreadyExistsException extends IOException {
 		private static final long serialVersionUID = 1L;
@@ -192,14 +191,33 @@ public class MDir {
 		log.debug("load ok! now size " + this.size());
 		if (fileShouldLen != this.currentLength) {
 			if (this.canWrite()) {
-				throw new MFileFormatErrorException(
-						"filelen not match! mdir corrupt! should be repair. requre "
-								+ fileShouldLen + ", real is "
-								+ this.currentLength + ". miss "
-								+ (fileShouldLen - this.currentLength)
-								+ "bytes");
+				boolean autoRepair = !"false".equals(System
+						.getProperty("MdirAutoRepair"));
+				if (autoRepair) {
+					List<MFile> mfList = this.getMFiles();
+					log.fatal("try repairing %s", this);
+					for (MFile mfile : mfList) {
+						if (mfile.getOffset() + mfile.getLength()
+								+ MFile.headLen > fileShouldLen) {
+							log.fatal("deleting %s", mfile);
+							try {
+								this.delete(mfile);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+
+				} else {
+					throw new MFileFormatErrorException(
+							"filelen not match! mdir corrupt! should be repair. requre "
+									+ fileShouldLen + ", real is "
+									+ this.currentLength + ". miss "
+									+ (fileShouldLen - this.currentLength)
+									+ "bytes");
+				}
 			} else {
-				log.warn("file size not match! maybe corrupt. Now in read model, ignore repair. YOU MAY GET 'MFileFormatErrorException' while reading mdir");// FIXME
+				log.warn("file size not match! maybe corrupt. Now in read model, ignore repair. YOU MAY GET 'MFileFormatErrorException' while reading mdir");
 			}
 		}
 
@@ -345,7 +363,7 @@ public class MDir {
 					continue;
 				}
 				if (!line.endsWith("`")) {
-					throw new IOException("delFile cortupt!");
+					throw new IOException("delFile corupt!");
 				}
 				int x = Integer.parseInt(line);
 				set.add(x);
@@ -482,6 +500,7 @@ public class MDir {
 		proc.writeI64(mfile.getOffset());
 		proc.writeI64(mfile.getLength());
 		proc.writeString(mfile.getName());
+		indexWriter.flush();
 	}
 
 	public synchronized int size() {

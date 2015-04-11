@@ -60,6 +60,7 @@ public final class MFile {
 	// }
 
 	public static final int marginLen = 16;
+	public static final int headLen = marginLen + 4;
 
 	public byte[] marginBytes() {
 		byte[] ret = new byte[] { (byte) 'x',// 0
