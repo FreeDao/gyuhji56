@@ -41,21 +41,22 @@ public class SiteMDirEntranceFinder {
 
 	public void caculate() throws Exception {
 		while (reader.hasNext()) {
-			DecodeSynCombin entry = reader.next();
-			Parser p = new Parser(entry.html);
-			NodeList nl = p.parse(null);
-			NodeList links = nl.extractAllNodesThatMatch(new NodeClassFilter(
-					LinkTag.class), true);
-			for (int x = 0; x < links.size(); x++) {
-				LinkTag lt = (LinkTag) links.elementAt(x);
-				String sU = lt.getLink();
-				try {
+			try {
+				DecodeSynCombin entry = reader.next();
+				Parser p = new Parser(entry.html);
+				NodeList nl = p.parse(null);
+				NodeList links = nl.extractAllNodesThatMatch(
+						new NodeClassFilter(LinkTag.class), true);
+				for (int x = 0; x < links.size(); x++) {
+					LinkTag lt = (LinkTag) links.elementAt(x);
+					String sU = lt.getLink();
+
 					URL url = new URL(entry.url, sU);
 					if (hi.isMyUrl(url)) {
 						countLinkOut(entry.url, url, lt.getLink());
 					}
-				} catch (Exception e) {
 				}
+			} catch (Exception e) {
 			}
 		}
 	}

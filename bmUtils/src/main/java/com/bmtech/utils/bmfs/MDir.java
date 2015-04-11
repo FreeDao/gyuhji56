@@ -217,7 +217,7 @@ public class MDir {
 									+ "bytes");
 				}
 			} else {
-				log.warn("file size not match! maybe corrupt. Now in read model, ignore repair. YOU MAY GET 'MFileFormatErrorException' while reading mdir");
+				log.fatal("file size not match! maybe corrupt. Now in read model, ignore repair. YOU MAY GET 'MFileFormatErrorException' while reading mdir");
 			}
 		}
 
