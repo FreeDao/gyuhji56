@@ -1,6 +1,7 @@
 package com.bmtech.utils;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Consoler {
 	/**
@@ -94,7 +95,14 @@ public class Consoler {
 	}
 
 	public static void println(String pattern, Object... paras) {
-		System.out.println(String.format(pattern, paras));
+		String xx = null;
+		try {
+			xx = String.format(pattern, paras);
+		} catch (Exception e) {
+			xx = String.format("%s  %s", pattern,
+					paras == null ? "" : Arrays.asList(paras));
+		}
+		System.out.println(xx);
 	}
 
 }
