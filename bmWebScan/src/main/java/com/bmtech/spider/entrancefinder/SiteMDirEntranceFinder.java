@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import Scorer.scorers.MultiScorer;
-
 import com.bmtech.htmls.parser.Parser;
 import com.bmtech.htmls.parser.filters.NodeClassFilter;
 import com.bmtech.htmls.parser.tags.LinkTag;
@@ -20,6 +18,7 @@ import com.bmtech.spider.core.HostInfo;
 import com.bmtech.spider.core.ScanConfig;
 import com.bmtech.spider.core.util.SiteMDirReader;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
+import com.bmtech.spider.ext.scorer.scorers.MultiScorer;
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.log.LogHelper;
@@ -148,6 +147,7 @@ public class SiteMDirEntranceFinder {
 			if (arrIndex >= arr.length) {
 				arrIndex = 0;
 			}
+			@SuppressWarnings("unchecked")
 			Iterator<PageInfo> itr = (Iterator<PageInfo>) arr[arrIndex];
 			arrIndex++;
 			if (itr.hasNext()) {

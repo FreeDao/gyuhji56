@@ -1,4 +1,4 @@
-package Scorer.scorers;
+package com.bmtech.spider.ext.scorer.scorers;
 
 abstract class ScorerItem {
 	final int score;

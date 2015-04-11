@@ -1,8 +1,6 @@
-package Scorer;
+package com.bmtech.spider.ext.scorer;
 
 import java.nio.charset.Charset;
-
-import Scorer.scorers.MultiScorer;
 
 import com.bmtech.htmls.parser.Parser;
 import com.bmtech.htmls.parser.util.NodeList;
@@ -10,6 +8,7 @@ import com.bmtech.spider.core.CoreUtil;
 import com.bmtech.spider.core.ScanConfig;
 import com.bmtech.spider.core.util.SynCombin;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
+import com.bmtech.spider.ext.scorer.scorers.MultiScorer;
 import com.bmtech.utils.Charsets;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;

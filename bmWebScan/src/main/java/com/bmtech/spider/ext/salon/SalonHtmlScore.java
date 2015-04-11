@@ -1,15 +1,20 @@
-package Scorer.salon;
+package com.bmtech.spider.ext.salon;
 
 import java.net.URL;
-
-import Scorer.MDirScorer;
-import Scorer.scorers.MultiScorer;
 
 import com.bmtech.htmls.parser.util.NodeList;
 import com.bmtech.spider.core.CoreUtil;
 import com.bmtech.spider.core.HtmlScore;
+import com.bmtech.spider.ext.scorer.MDirScorer;
+import com.bmtech.spider.ext.scorer.scorers.MultiScorer;
 import com.bmtech.utils.HtmlRemover;
 
+/**
+ * score for incremental crawler
+ * 
+ * @author Administrator
+ *
+ */
 public class SalonHtmlScore extends HtmlScore {
 	private static MultiScorer instance = MultiScorer.getInstance();
 

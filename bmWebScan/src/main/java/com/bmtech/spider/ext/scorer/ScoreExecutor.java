@@ -1,4 +1,4 @@
-package Scorer;
+package com.bmtech.spider.ext.scorer;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

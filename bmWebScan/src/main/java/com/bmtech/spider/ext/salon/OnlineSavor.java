@@ -1,12 +1,11 @@
-package Scorer.salon;
+package com.bmtech.spider.ext.salon;
 
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
-import Scorer.SiteScoreDao;
-
 import com.bmtech.spider.core.ScanConfig;
+import com.bmtech.spider.ext.scorer.SiteScoreDao;
 import com.bmtech.utils.bmfs.MDir;
 
 public class OnlineSavor {

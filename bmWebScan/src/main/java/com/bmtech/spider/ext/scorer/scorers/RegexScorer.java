@@ -1,4 +1,4 @@
-package Scorer.scorers;
+package com.bmtech.spider.ext.scorer.scorers;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

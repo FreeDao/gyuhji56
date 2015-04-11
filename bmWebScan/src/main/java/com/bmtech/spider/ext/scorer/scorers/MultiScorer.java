@@ -1,4 +1,4 @@
-package Scorer.scorers;
+package com.bmtech.spider.ext.scorer.scorers;
 
 import java.io.File;
 import java.io.IOException;

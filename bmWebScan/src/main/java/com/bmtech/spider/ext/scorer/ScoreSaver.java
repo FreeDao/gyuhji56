@@ -1,4 +1,4 @@
-package Scorer;
+package com.bmtech.spider.ext.scorer;
 
 import java.net.URL;
 

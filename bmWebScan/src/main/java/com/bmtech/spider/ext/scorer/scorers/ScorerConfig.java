@@ -1,4 +1,4 @@
-package Scorer.scorers;
+package com.bmtech.spider.ext.scorer.scorers;
 
 import java.util.ArrayList;
 import java.util.List;
