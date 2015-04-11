@@ -309,8 +309,7 @@ public class HostScan implements Runnable {
 	}
 
 	private void setHostStatusClose() {
-		Connectioner.instance().setHostEndStatus(hostInfo.getHostName(),
-				HostFilter.Status_Number_Match);
+		Connectioner.instance().setHostEndStatus(hostInfo.getHostName());
 	}
 
 	public boolean isEnd() {

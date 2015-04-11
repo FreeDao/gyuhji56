@@ -11,7 +11,7 @@ import com.bmtech.utils.rds.SourceDefine;
 public class Connectioner {
 	private RDS rds_setHasDetected;
 	private RDS rds_chechHostStatus;
-	private RDS rds_setHostStatus, rds_getAllowsAllow;
+	private RDS rds_setHostStatus, rds_setHostEndStatus, rds_getAllowsAllow;
 	private RDS rds_getUnInjected, rds_setToInjected;
 	private Connection conn;
 	private static Connectioner instance = new Connectioner();
@@ -45,6 +45,7 @@ public class Connectioner {
 		rds_setHasDetected = RDS.getRDSByKey("setHasDetected", conn);
 		rds_chechHostStatus = RDS.getRDSByKey("chechHostStatus", conn);
 		rds_setHostStatus = RDS.getRDSByKey("setHostStatus", conn);
+		rds_setHostEndStatus = RDS.getRDSByKey("setHostEndStatus", conn);
 		rds_getUnInjected = RDS.getRDSByKey("getUnInjected", conn);
 		rds_setToInjected = RDS.getRDSByKey("setToInjected", conn);
 		rds_getAllowsAllow = RDS.getRDSByKey("getAllowsAllow", conn);
@@ -114,11 +115,25 @@ public class Connectioner {
 		}
 	}
 
-	public synchronized void setHostEndStatus(String host, int status) {
+	public synchronized void setHostStatus(String host, int status) {
 		try {
 			rds_setHostStatus.setInt(1, status);
 			rds_setHostStatus.setString(2, host);
 			rds_setHostStatus.execute();
+		} catch (SQLException e) {
+			try {
+				this.getConnected();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized void setHostEndStatus(String host) {
+		try {
+			rds_setHostEndStatus.setString(1, host);
+			rds_setHostEndStatus.execute();
 		} catch (SQLException e) {
 			try {
 				this.getConnected();

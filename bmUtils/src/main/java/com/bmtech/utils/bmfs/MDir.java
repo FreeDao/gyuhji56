@@ -197,8 +197,7 @@ public class MDir {
 					List<MFile> mfList = this.getMFiles();
 					log.fatal("try repairing %s", this);
 					for (MFile mfile : mfList) {
-						if (mfile.getOffset() + mfile.getLength()
-								+ MFile.headLen > fileShouldLen) {
+						if (mfile.getOffset() + mfile.getLength() + preHeadLen > fileShouldLen) {
 							log.fatal("deleting %s", mfile);
 							try {
 								this.delete(mfile);
@@ -423,6 +422,7 @@ public class MDir {
 			this.dataOutStream.write(this.writeBuffer, 0, x);
 			len += x;
 		}
+		dataOutStream.flush();
 		mfile.setOffset(this.currentLength);
 		mfile.setLength(len);
 		this.currentLength += len + preHeadLen;
@@ -431,7 +431,9 @@ public class MDir {
 		mountIndex(mfile, true);
 	}
 
-	private void mountIndex(MFile mfile, boolean forceCheckSameFileNameExists) {
+	private void mountIndex(MFile mfile, boolean forceCheckSameFileNameExists)
+			throws IOException {
+
 		int locate[] = this.locateFsId(mfile.fsId);
 		if (isMount(mfile, locate)) {
 			return;

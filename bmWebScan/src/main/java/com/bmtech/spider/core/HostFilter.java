@@ -15,7 +15,7 @@ public abstract class HostFilter {
 	protected abstract boolean isForbidden(String host);
 
 	protected void forbidden(String host) {
-		Connectioner.instance().setHostEndStatus(host, Status_FBD);
+		Connectioner.instance().setHostEndStatus(host);
 	}
 
 	public boolean checkAndForbidden(String host) {

@@ -84,8 +84,8 @@ public class ConvertHostStatus2Incremental {
 							e.printStackTrace();
 						}
 					}
-					Connectioner.instance().setHostEndStatus(
-							info.getHostName(), HostFilter.Status_Incr_watch);
+					Connectioner.instance().setHostStatus(info.getHostName(),
+							HostFilter.Status_Incr_watch);
 					setted.add(info);
 				}
 			} catch (Exception e) {
