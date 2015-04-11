@@ -25,12 +25,10 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 			putBack = new AtomicInteger(0);
 	protected AtomicInteger hasFinished = new AtomicInteger(0);
 	protected BmtLogHelper log = new BmtLogHelper("hostCtrl");
-	protected HostFilter filter;
 
 	public AbstractHostCtrl(int port, String enc, String sysName)
 			throws InstantiationException, IllegalAccessException, IOException {
 		super(port, enc, sysName);
-		filter = conf.hostFilterCls.newInstance();
 
 		hostRunnor = new ThreadPoolExecutor(conf.hostPoolSize,
 				conf.hostPoolSize, 100, TimeUnit.SECONDS, hostQueue) {
@@ -153,7 +151,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 		}
 		log.warn("prepare initing :%s ", host);
 		try {
-			HostInitor.instance.initialize(host, filter, new AfterInitor(host));
+			HostInitor.instance.initialize(host, new AfterInitor(host));
 		} catch (Exception e) {
 			log.error(e, "when init %s", host);
 			e.printStackTrace();
@@ -174,10 +172,6 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 				log.fatal("Strange! init fail for host %s", host);
 			}
 		}
-	}
-
-	public HostFilter getFilter() {
-		return filter;
 	}
 
 }

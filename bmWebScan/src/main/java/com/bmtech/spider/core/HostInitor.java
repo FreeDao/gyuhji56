@@ -14,13 +14,11 @@ public class HostInitor {
 	class TRun implements Runnable {
 
 		String host;
-		HostFilter hostFilter;
 		AfterInitor afterRunnor;
 		private int runNum = 0;
 
-		TRun(String host, HostFilter hostFilter, AfterInitor afterRunnor) {
+		TRun(String host, AfterInitor afterRunnor) {
 			this.host = host;
-			this.hostFilter = hostFilter;
 			this.afterRunnor = afterRunnor;
 		}
 
@@ -33,8 +31,7 @@ public class HostInitor {
 			}
 			runNum++;
 			try {
-				HostInitorTool tool = new HostInitorTool(host, hostFilter,
-						sortFactor);
+				HostInitorTool tool = new HostInitorTool(host, sortFactor);
 				HostScan hs = tool.initHost();
 				log.fatal("init ok %s with hostbase %s", host,
 						ScanConfig.instance.getHostBase(hs.getHostInfo()));
@@ -67,9 +64,9 @@ public class HostInitor {
 		}.start();
 	}
 
-	public void initialize(String host, HostFilter hostFilter,
-			AfterInitor afterRunnor) throws Exception {
-		TRun tr = new TRun(host, hostFilter, afterRunnor);
+	public void initialize(String host, AfterInitor afterRunnor)
+			throws Exception {
+		TRun tr = new TRun(host, afterRunnor);
 		exe.execute(tr);
 	}
 

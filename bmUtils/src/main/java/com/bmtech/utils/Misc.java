@@ -2,6 +2,8 @@ package com.bmtech.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -361,5 +363,35 @@ public class Misc {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void copyFile(File from, File to) throws IOException {
+		byte[] buf = new byte[4096];
+		FileInputStream fis = new FileInputStream(from);
+		try {
+			if (!to.exists()) {
+				to.createNewFile();
+			} else {
+				if (to.isDirectory()) {
+					throw new IOException("can not copy to a directory:" + to);
+				}
+			}
+			FileOutputStream fos = new FileOutputStream(to);
+			try {
+
+				while (true) {
+					int read = fis.read(buf);
+					if (read < 0) {
+						break;
+					}
+					fos.write(buf, 0, read);
+				}
+			} finally {
+				fos.close();
+			}
+		} finally {
+			fis.close();
+		}
+
 	}
 }

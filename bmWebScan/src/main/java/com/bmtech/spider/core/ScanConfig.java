@@ -34,7 +34,6 @@ public class ScanConfig {
 	public final Class<HtmlScore> scorerCls;
 	private final File crawlDir;
 	private final File saveDir;
-	// public final AtomicLong systemSeq;
 	public final long urlCrawlItvSecond;
 	public final long maxFileLen;
 	public final long controllerCheckItv;
@@ -275,7 +274,7 @@ public class ScanConfig {
 				+ urlDataBase + ", crawledUrlDB=" + crawledUrlDB
 				+ ", crawledUrlTmp=" + crawledUrlTmp + ", newUrlDir="
 				+ newUrlDir + ", iUrl=" + iUrl + ", tmpCrawlDir=" + tmpCrawlDir
-				+ ", hostFilterCls=" + hostFilterCls
+
 				+ ", foreignUrlCheckClass=" + foreignUrlCheckClass
 				+ ", scorerCls=" + scorerCls + ", crawlDir=" + crawlDir
 				+ ", saveDir=" + saveDir + ", urlCrawlItvSecond="

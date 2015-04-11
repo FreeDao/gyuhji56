@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.bmtech.spider.core.Connectioner.URLToInject;
+import com.bmtech.utils.Consoler;
 import com.bmtech.utils.Misc;
 import com.bmtech.utils.io.diskMerge.MOut;
 import com.bmtech.utils.io.diskMerge.MRTool;
@@ -27,11 +28,10 @@ public class HostInitorTool {
 	final File allUrlFile, newURLDir, hasCrawled, notCrawled, crawledUrlDBTmp;
 	final String randomFilePrefix = "radmonFile.";
 
-	HostInitorTool(String host, HostFilter hostFilter, int sortFactor)
-			throws Exception {
+	public HostInitorTool(String host, int sortFactor) throws Exception {
 		this.host = host.toLowerCase().trim();
 		log = new BmtLogHelper("hInit-" + host);
-		this.hostFilter = hostFilter;
+		this.hostFilter = conf.hostFilterCls.newInstance();
 		this.sortFactor = sortFactor;
 		if (!Connectioner.instance().checkHostValid(host)) {
 			throw new Exception("host is forbidden : " + host);
@@ -61,6 +61,43 @@ public class HostInitorTool {
 				}
 			}
 		}
+	}
+
+	public void markAllUrlToCrawled() throws Exception {
+		List<File> toMerge = new ArrayList<File>();
+		for (File f : hostBase.listFiles()) {
+			if (f.isDirectory()) {
+				File[] xx = f.listFiles();
+				for (File fx : xx) {
+					if (fx.isDirectory()) {
+						System.err.println("SKIP " + fx.getAbsolutePath());
+					} else {
+						toMerge.add(fx);
+					}
+				}
+			} else {
+				toMerge.add(f);
+			}
+		}
+		File[] fsx = new File[toMerge.size()];
+		toMerge.toArray(fsx);
+		File tmp = this.createRandomFile(hostBase, "toMerge");
+		MRTool.combin(tmp, ScoredUrlRecord.class, fsx);
+		File tmp2 = this.createRandomFile(hostBase, "toMerge2");
+		MRTool.sortFile(tmp2, tmp, ScoredUrlRecord.class,
+				ScoredUrlRecord.urlHashCmp, sortFactor);
+		File xxxx[] = hostBase.listFiles();
+		for (File f : xxxx) {
+			if (!f.equals(tmp2)) {
+				System.out.println("deleting " + f);
+				Misc.del(f);
+
+			}
+		}
+		tmp2.renameTo(allUrlFile);
+
+		Misc.copyFile(tmp2, hasCrawled);
+		Consoler.confirm("reinit ok " + hostBase.getCanonicalPath());
 	}
 
 	public HostScan initHost() throws Exception {
@@ -300,6 +337,6 @@ public class HostInitorTool {
 				throw new IOException("can not create dir " + dir);
 			}
 		}
-
 	}
+
 }
