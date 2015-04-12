@@ -32,6 +32,8 @@
 	<!--设置别名 -->
 	<typeAliases>
 		<typeAlias alias="SourceDetectVo" type="rays.web.rays.vo.SourceDetectVo" />
+		<typeAlias alias="HostDetectedVo" type="rays.web.rays.vo.HostDetectedVo" />
+		<typeAlias alias="PageDetectedVo" type="rays.web.rays.vo.PageDetectedVo" />
 	</typeAliases>
 
 

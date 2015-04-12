@@ -29,7 +29,7 @@ public class MFileReader {
 
 	MFileReader(MFile mfile, RandomAccessFile rafs) throws IOException {
 		if (rafs == null) {
-			this.raf = new RandomAccessFile(mfile.dir.dataFile, "r");
+			this.raf = new RandomAccessFile(mfile.dir.getDataFile(), "r");
 			openByMe = false;
 		} else {
 			this.raf = rafs;
@@ -195,4 +195,13 @@ public class MFileReader {
 		return mfile;
 	}
 
+	public byte[] getBytes(boolean unGzip) throws IOException {
+		byte[] bs;
+		if (unGzip) {
+			bs = this.getBytesUnGZiped();
+		} else {
+			bs = this.getBytes();
+		}
+		return bs;
+	}
 }

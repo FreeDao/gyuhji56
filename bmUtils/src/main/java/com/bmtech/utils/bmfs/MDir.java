@@ -31,7 +31,7 @@ import com.bmtech.utils.log.LogHelper;
 
 public class MDir {
 	private static Map<File, MDir> dirMap = new ConcurrentHashMap<File, MDir>();
-
+	public static final String mdirUriPrefix = "mdir://";
 	private static Thread shutdown;
 
 	private static void besureClose(MDir mDir) {
@@ -119,7 +119,7 @@ public class MDir {
 	private final WriteProtocol dataOutStream;
 	private final FileOutputStream indexWriter;
 	private final AtomicInteger fsIdSeq = new AtomicInteger();
-	public final File dataFile;
+	private final File dataFile;
 	private static final byte[] magic = new byte[] { 0x4d, 0x44, 0x49, 0x52 };
 	private static final byte entryPrefix = magic[0];
 	private final byte[] writeBuffer;
@@ -376,7 +376,7 @@ public class MDir {
 
 	@Override
 	public String toString() {
-		return "mdir://" + getLocalDir().getName() + "/";
+		return mdirUriPrefix + getLocalDir().getName() + "/";
 	}
 
 	public boolean canWrite() {
@@ -639,5 +639,9 @@ public class MDir {
 	public MFile addFile(InputStreamCombin ips, boolean gzipOut)
 			throws IOException {
 		return this.addFile(null, ips, gzipOut);
+	}
+
+	public File getDataFile() {
+		return dataFile;
 	}
 }

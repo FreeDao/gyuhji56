@@ -119,4 +119,21 @@ public final class MFile {
 	public MFileReader openReader() throws IOException {
 		return new MFileReader(this);
 	}
+
+	public static String[] parseUri(String str) throws IOException {
+		if (str.startsWith(MDir.mdirUriPrefix)) {
+			str = str.substring(MDir.mdirUriPrefix.length());
+			int pos = str.lastIndexOf("/");
+			if (pos > 0) {
+				return new String[] { str.substring(0, pos),
+						str.substring(pos + 1) };
+			} else {
+				throw new IOException(" invalid mfile uri. '/' not found! in '"
+						+ str + "'");
+			}
+		} else {
+			throw new IOException(" invalid mfile uri. mdirUriPrefix '"
+					+ MDir.mdirUriPrefix + "' not found in '" + str + "'");
+		}
+	}
 }

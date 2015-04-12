@@ -1,0 +1,1 @@
+try{parent.webimCB._callback7([{"id":"8","successful":true,"channel":"/meta/connect","ext":{"ack":4}}])}catch(e){}

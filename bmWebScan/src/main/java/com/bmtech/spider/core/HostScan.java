@@ -143,6 +143,7 @@ public class HostScan implements Runnable {
 			}
 		} catch (Throwable e) {
 			log.fatal(e, "crawl for %s", hostContext.getCurrentUrl());
+			e.printStackTrace();
 			hostContext.setEnd();
 		}
 

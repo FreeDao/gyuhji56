@@ -16,7 +16,7 @@ import com.bmtech.htmls.parser.tags.LinkTag;
 import com.bmtech.htmls.parser.util.NodeList;
 import com.bmtech.spider.core.HostInfo;
 import com.bmtech.spider.core.ScanConfig;
-import com.bmtech.spider.core.util.SiteMDirReader;
+import com.bmtech.spider.core.util.SiteMDirReaderIterator;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
 import com.bmtech.spider.ext.scorer.scorers.MultiScorer;
 import com.bmtech.utils.Consoler;
@@ -29,14 +29,14 @@ public class SiteMDirEntranceFinder {
 	ScanConfig sc = ScanConfig.instance;
 	MDir mdir;
 	LogHelper log;
-	SiteMDirReader reader;
+	SiteMDirReaderIterator reader;
 	HostInfo hi;
 
 	SiteMDirEntranceFinder(MDir mdir, HostInfo hi) throws Exception {
 		this.mdir = mdir;
 		this.hi = hi;
-		log = new LogHelper(mdir.dataFile.getName());
-		reader = new SiteMDirReader(mdir);
+		log = new LogHelper(mdir.getLocalDir().getName());
+		reader = new SiteMDirReaderIterator(mdir);
 	}
 
 	public void caculate() throws Exception {

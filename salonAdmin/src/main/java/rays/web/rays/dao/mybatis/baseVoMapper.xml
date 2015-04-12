@@ -25,13 +25,13 @@
 	<select id="selectSourceDetectedListByHostNames" resultType="SourceDetectVo">
 		select
 		*
-		from webscan_source_detect where  host in
+		from webscan_source_detect where host in
 		<foreach collection="hosts" item="hostName" index="index"
 			open="(" close=")" separator=",">
 			#{hostName}
 		</foreach>
 		<if test="onlyUnAudit">
-		and audit_status = 0 
+			and audit_status = 0
 		</if>
 		order by level_3_count desc,level_2_count desc,level_2_count desc
 	</select>
@@ -48,4 +48,21 @@
 		#{hostName}
 	</update>
 
+
+	<select id="selectHostDetectedList" resultType="HostDetectedVo">
+		select i.host as
+		'host', count(*) as 'count' from webscan_page_score i
+		where i.audit_status = 0 group by i.host order by 'count' DESC
+		limit
+		#{offset}, #{len}
+	</select>
+
+	<select id="selectHostDetectedPages" resultType="PageDetectedVo">
+		select a.id as
+		id ,a.host as host ,a.score as score ,a.audit_status as audit_status
+		,a.checkBy as checkBy ,a.update_time as update_time ,b.title as title
+		,b.url as url ,b.path as path
+		from webscan_page_score a ,webscan_page_detail b where a.id = b.id and
+		a.`host`=#{host} and a.audit_status = 0 order by a.score desc limit 30
+	</select>
 </mapper> 

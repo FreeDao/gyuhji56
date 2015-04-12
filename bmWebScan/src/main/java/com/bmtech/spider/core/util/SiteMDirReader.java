@@ -8,7 +8,6 @@ import com.bmtech.utils.Charsets;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
 import com.bmtech.utils.bmfs.MFileReader;
-import com.bmtech.utils.bmfs.MFileReaderIterator;
 import com.bmtech.utils.log.LogHelper;
 
 public class SiteMDirReader {
@@ -17,64 +16,33 @@ public class SiteMDirReader {
 
 	ScanConfig sc = ScanConfig.instance;
 	MDir mdir;
-	MFileReaderIterator itrator;
 	LogHelper log;
 
 	public SiteMDirReader(MDir mdir) throws Exception {
 		this.mdir = mdir;
-		itrator = mdir.openReader();
-		log = new LogHelper(mdir.dataFile.getName());
-		crt = this.nextRecord();
+		log = new LogHelper(mdir.getLocalDir().getName());
 
 	}
 
-	public void close() {
-		itrator.close();
-		MDir.closeMDir(mdir);
-	}
-
-	DecodeSynCombin crt;
-
-	public boolean hasNext() {
-		return crt != null;
-	}
-
-	public DecodeSynCombin next() throws Exception {
-		DecodeSynCombin ret = crt;
-		crt = this.nextRecord();
-		return ret;
-	}
-
-	private DecodeSynCombin nextRecord() throws Exception {
-
-		while (itrator.hasNext()) {
-			MFileReader reader = itrator.next();
-			MFile mf = reader.getMfile();
-
-			byte[] bs;
-			if (sc.useMFileGzip) {
-				if (mf.getLength() > maxGizpSize) {
-					log.warn("skip tooooo big ZIPED %.2fKB named %s",
-							mf.getLength() / 1024.0, mf);
-					itrator.skip();
-					continue;
-				}
-				bs = reader.getBytesUnGZiped();
-			} else {
-				if (mf.getLength() > maxUnzipSize) {
-					log.warn("skip tooooo big  %.2fKB named %s",
-							mf.getLength() / 1024.0, mf);
-					itrator.skip();
-					continue;
-				}
-				bs = reader.getBytes();
-			}
-			Charset cs = Charsets.getCharset(bs, true);
-			String htmlEnc = new String(bs, cs);
-			DecodeSynCombin cmb = SynCombin.parse(htmlEnc);
-			return cmb;
+	public DecodeSynCombin getFile(String fileName) throws Exception {
+		MFile mfile = mdir.getMFileByName(fileName);
+		MFileReader reader = mfile.openReader();
+		try {
+			return getFile(reader);
+		} finally {
+			reader.close();
 		}
-		return null;
+
+	}
+
+	public DecodeSynCombin getFile(MFileReader reader) throws Exception {
+
+		byte[] bs = reader.getBytes(sc.useMFileGzip);
+		Charset cs = Charsets.getCharset(bs, true);
+		String htmlEnc = new String(bs, cs);
+		DecodeSynCombin cmb = SynCombin.parse(htmlEnc);
+		return cmb;
+
 	}
 
 }

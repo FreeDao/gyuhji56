@@ -1,0 +1,1 @@
+try{parent.webimCB._callback9([{"id":"10","minimumVersion":"1.0","supportedConnectionTypes":["callback-polling","long-polling"],"successful":true,"channel":"/meta/handshake","ext":{"timesync":{"ts":1423186818247,"tc":1423187004673,"p":0,"a":-1993},"ack":true},"clientId":"1mdm01gm6iucr6w34khvhq4cuftjsr","version":"1.0"}])}catch(e){}

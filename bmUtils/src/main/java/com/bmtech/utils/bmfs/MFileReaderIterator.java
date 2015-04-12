@@ -23,7 +23,7 @@ public class MFileReaderIterator implements Iterator<MFileReader>, Closeable {
 	MFileReaderIterator(MDir mdir) throws IOException {
 		this.mdir = mdir;
 		this.mfiles = mdir.getMFiles();
-		this.raf = new RandomAccessFile(mdir.dataFile, "r");
+		this.raf = new RandomAccessFile(mdir.getDataFile(), "r");
 
 	}
 

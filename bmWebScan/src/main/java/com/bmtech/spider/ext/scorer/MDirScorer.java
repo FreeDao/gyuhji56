@@ -35,7 +35,7 @@ public class MDirScorer {
 	MDirScorer(MDir mdir, ScoreSaver savor) throws Exception {
 		this.savor = savor;
 		this.mdir = mdir;
-		log = new LogHelper(mdir.dataFile.getName());
+		log = new LogHelper(mdir.getLocalDir().getName());
 	}
 
 	private String lastParseFileName;

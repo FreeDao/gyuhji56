@@ -1,0 +1,28 @@
+#rule-define
+	#match-start
+		
+	
+	#match-end
+	#do-start
+		
+	#do-end
+#rule-define-end
+
+
+if 
+	httpHeader userAgent match Mazalia
+	domain match-reg weibo.com*
+	
+then
+	httpHeader delete userAgent
+	and
+	httpHeader replace-reg Mazalia 
+	content inject <script></script>
+end
+
+
+matchHeader=function(name, value){
+	if(name.equals("xxxx")){
+		return 
+	}
+}
