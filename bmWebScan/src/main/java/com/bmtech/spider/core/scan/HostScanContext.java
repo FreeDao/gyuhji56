@@ -10,13 +10,13 @@ public class HostScanContext {
 	private ScoredUrlRecord currentUrl;
 	private CrawlContext crawlContext;
 
-	public void setPreStage(boolean isPre) {
+	public void setStage(boolean isPre) {
 		if (isPre) {
-			setPreCrawl(true);
+			this.preCrawl = true;
 			setCurrentUrl(null);
 			setCrawlContext(null);
 		} else {
-			this.setPreCrawl(false);
+			this.preCrawl = false;
 		}
 	}
 
@@ -48,7 +48,4 @@ public class HostScanContext {
 		return preCrawl;
 	}
 
-	public void setPreCrawl(boolean preCrawl) {
-		this.preCrawl = preCrawl;
-	}
 }

@@ -102,7 +102,7 @@ public class HostScan implements Runnable {
 
 		if (!this.isInit) {
 			this.init();
-			hostContext.setPreStage(true);
+			hostContext.setStage(true);
 		}
 
 		if (hostContext.isEnd()
@@ -114,31 +114,30 @@ public class HostScan implements Runnable {
 		try {
 			if (hostContext.isPreCrawl()) {
 
+				long now = System.currentTimeMillis();
+				long passed = (now - lastRun) / 1000;
+				long left = conf.urlCrawlItvSecond - passed;
+				if (left > 0) {
+					Misc.sleep(10);
+					return;
+				}
+				lastRun = now;
+				hostContext.setCurrentUrl(urlIn.nextUrl());
+				if (hostContext.getCurrentUrl() == null) {
+					log.warn("ERROR: no more URL");
+					hostContext.setEnd();
+					return;
+				}
 				try {
-
-					long now = System.currentTimeMillis();
-					long passed = (now - lastRun) / 1000;
-					long left = conf.urlCrawlItvSecond - passed;
-					if (left > 0) {
-						Misc.sleep(10);
-						return;
-					}
-					lastRun = now;
-					hostContext.setCurrentUrl(urlIn.nextUrl());
-					if (hostContext.getCurrentUrl() == null) {
-						log.warn("ERROR: no more URL");
-						hostContext.setEnd();
-						return;
-					}
 					runCrawlStage();
 				} finally {
-					hostContext.setPreStage(false);
+					hostContext.setStage(false);
 				}
 			} else {
 				try {
 					runAfterCrawl();
 				} finally {
-					hostContext.setPreStage(true);
+					hostContext.setStage(true);
 				}
 			}
 		} catch (Throwable e) {
