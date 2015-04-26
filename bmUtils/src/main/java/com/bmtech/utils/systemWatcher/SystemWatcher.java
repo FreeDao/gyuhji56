@@ -56,7 +56,7 @@ public class SystemWatcher {
 	}
 
 	public static WatcherVo getWatcherConfig(File confFile) throws IOException {
-		ConfigReader crx = new ConfigReader(confFile, "port");
+		ConfigReader crx = new ConfigReader(confFile, "watcher");
 		int port = crx.getInt("port", -1);
 		if (port < 0) {
 			throw new IOException("port config fail! in file "

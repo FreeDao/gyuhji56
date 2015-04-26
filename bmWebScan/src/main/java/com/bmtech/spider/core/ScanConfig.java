@@ -62,12 +62,9 @@ public class ScanConfig {
 
 	public final boolean useMFileGzip;
 
-	public final int watchinPort;
-
 	private ScanConfig() {
 		ConfigReader cr = null;
 		cr = new ConfigReader("config/ws/sc.conf", "hostScan");
-		watchinPort = cr.getInt("watchinPort", 20020);
 
 		urlCrawlItvSecond = cr.getInt("urlCrawlItvSecond", 5);
 
