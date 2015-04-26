@@ -61,11 +61,11 @@
 		<put-attribute name="metronCss"
 			value="/WEB-INF/jsp/metronics/admin/detectedListV2_css.jsp" />
 	</definition>
-	<definition name="metronics.detectedHost" extends="metronics.base">
+	<definition name="metronics.detectedHostV2" extends="metronics.base">
 		<put-attribute name="metronMainContent"
 			value="/WEB-INF/jsp/metronics/admin/detectedHostV2.jsp" />
 		<put-attribute name="metronJScript"
-			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_js.jsp" />
+			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_js.js" />
 		<put-attribute name="metronCss"
 			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_css.jsp" />
 	</definition>

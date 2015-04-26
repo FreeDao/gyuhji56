@@ -62,6 +62,7 @@ public class ConfigReader extends SectionConfig {
 	 */
 	public static Map<String, String> readAll(File configFile, String section,
 			String encode) {
+		boolean hasConfigSection = false;
 		try {
 
 			LineReader reader = new LineReader(configFile, encode);
@@ -69,8 +70,7 @@ public class ConfigReader extends SectionConfig {
 			boolean enter = false;
 			section = "[" + section + "]";
 			while (true) {
-				String str = null;
-				str = reader.readLine();
+				String str = reader.readLine();
 
 				if (str == null)
 					break;
@@ -84,6 +84,7 @@ public class ConfigReader extends SectionConfig {
 				} else {
 					if (str.compareToIgnoreCase(section) == 0) {
 						enter = true;
+						hasConfigSection = true;
 						continue;
 					} else {
 						continue;// short cut if not enter the section
@@ -97,10 +98,15 @@ public class ConfigReader extends SectionConfig {
 
 			}
 			reader.close();
+			if (!hasConfigSection) {
+				throw new Exception("section '" + section
+						+ "' not found in file " + configFile);
+			}
 			return ret;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
 	}
 
 	public List<String> listSectionsInConfigFile() throws IOException {

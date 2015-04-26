@@ -40,7 +40,7 @@ public class HostInjectTool {
 				"insert into webscan_host_inject(host, type, url, score)values(?, 1, ?, "
 						+ conf.injectedUrlValue + ")", conn);
 		log.info("inject ready!");
-		flt = conf.hostFilterCls.newInstance();
+		flt = (HostFilter) conf.hostFilterCls.newInstance();
 
 		checkAllway = RDS.getRDSByKey("checkAllway", conn);
 

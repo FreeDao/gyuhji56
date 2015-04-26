@@ -1,5 +1,6 @@
 package rays.web.salon.controllers;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,9 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/auditNextHostV2")
 	public Object auditNextHost() {
 		PageScoreDao imp = new PageScoreDaoImpl();
-		List<HostDetectedVo> result = imp.selectHostDetectedList(0, 1);
+		List<HostDetectedVo> result = imp.selectHostDetectedList(0, 10,
+				PageDetectedVo.STATUS_UNAUDIT);
+		System.out.println(result);
 		if (result.size() > 0) {
 			HostDetectedVo vo = result.get(0);
 			return new RedirectView("detectedHostV2.html?host=" + vo.getHost());
@@ -69,6 +72,22 @@ public class DetectHostControllerV2 extends AbstractController {
 		return jsonView(msg);
 	}
 
+	@RequestMapping("/admin/control/setPageAuditStatusV2")
+	public ModelAndView detectedPageStatusModify(
+			@RequestParam(required = true) String pageId_p,
+			@RequestParam(required = true) String status_p) {
+		int pageId = this.parseInt(pageId_p, 0);
+		int status = this.parseInt(status_p, 0);
+		System.out.println("status:" + status + ",pageId=" + pageId);
+		PageScoreDao imp = new PageScoreDaoImpl();
+		imp.setPageStatus(pageId, status);
+		Map<String, Object> msg = this.newMsgMap();
+
+		setRetMsg(msg, 200, "OK");
+		System.out.println("msg:" + msg);
+		return jsonView(msg);
+	}
+
 	private int statusCode(String status) {
 		status = status.trim();
 
@@ -83,46 +102,68 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/detectedHostV2")
 	public ModelAndView detectedHost(
 			@RequestParam(required = true, defaultValue = "") String host,
-			@RequestParam(required = false, defaultValue = "") String filePath)
-			throws Exception {
+			@RequestParam(required = false) String status_p) throws Exception {
+		int status = this.parseInt(status_p, PageDetectedVo.STATUS_ALL);
+		System.out.println("status nows " + status);
 		HashMap<String, Object> msg = new HashMap<String, Object>();
 		PageScoreDao impl = new PageScoreDaoImpl();
-		List<PageDetectedVo> vos = impl.selectHostDetectedPages(host);
-		boolean isWatching = false;
-		boolean audited = false;
+		List<PageDetectedVo> vos = impl.selectHostDetectedPages(host, status);
 		msg.put("host", host);
-		msg.put("watching", isWatching);
-		msg.put("audited", audited);
 		msg.put("vos", vos);
-		msg.put("curPage", getPageData(filePath));
+		System.out.println(vos);
 
 		return new ModelAndView("metronics.detectedHostV2", "msg", msg);
 	}
 
 	private DecodeSynCombin getPageData(String mdirPath) throws Exception {
-		MDir mdir;
+		System.out.println(mdirPath);
 		String fileName[] = MFile.parseUri(mdirPath);
+		File mdirFile = new File(mdirPath);
+		MDir mdir = MDir.open(mdirFile);
 		SiteMDirReader reader = new SiteMDirReader(mdir);
 		return reader.getFile(fileName[1]);
 
 	}
 
+	@RequestMapping("/admin/control/getDetectedPageV2")
+	public ModelAndView getDetectedPageV2(
+			@RequestParam(required = false, defaultValue = "0") int pageId) {
+		HashMap<String, Object> msg = new HashMap<String, Object>();
+		PageScoreDao imp = new PageScoreDaoImpl();
+		PageDetectedVo vo = null;
+		if (pageId > 0) {
+			vo = imp.selectDetectedPage(pageId);
+		}
+		if (vo == null) {
+			setRetMsg(msg, 404, "没有找到页面， pageId=" + pageId);
+		} else {
+			setRetMsg(msg, 200, "OK");
+			msg.put("PageDetectedVo", vo);
+		}
+		return new ModelAndView("jsonView", "msg", msg);
+	}
+
 	@RequestMapping("/admin/control/detectedListV2")
-	public ModelAndView DetectedHostsList(
+	public ModelAndView detectedHostsList(
 			@RequestParam(required = false, defaultValue = "1") int pageIndex,
-			@RequestParam(defaultValue = "1") int sortBy) {
+			@RequestParam(defaultValue = "1") int sortBy,
+			@RequestParam(required = false) String statusPara) {
+		int status = this.parseInt(statusPara, PageDetectedVo.STATUS_ALL);
 		Map<String, Object> msg = this.newMsgMap();
 		if (pageIndex < 1) {
 			pageIndex = 1;
-
 		}
 		int offset = (pageIndex - 1) * pageSize;
 
 		PageScoreDao imp = new PageScoreDaoImpl();
 		List<HostDetectedVo> result = imp.selectHostDetectedList(offset,
-				pageSize);
-		int totalUnAudit = 345678;
+				pageSize, status);
+		System.out.println("status now " + status);
 
+		System.out.println(result);
+
+		int totalUnAudit = imp.selectHostDetectedHost(status);
+		System.out.println(result);
 		PageSplit pageSplit = new PageSplit(totalUnAudit, pageSize, pageIndex);
 		msg.put("list", result);
 		msg.put("total", totalUnAudit);

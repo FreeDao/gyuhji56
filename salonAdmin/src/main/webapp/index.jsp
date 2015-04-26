@@ -11,5 +11,6 @@
 	<a href="contacts.html">contacts.html</a>
 	<a href="admin/metronics.html">metronics</a>
 	<a href="admin/control/detectedList.html">list</a>
+	<a href="/salonAdmin//admin/control/auditNextHostV2.html">auditNextHostV2</a>
 </body>
 </html>

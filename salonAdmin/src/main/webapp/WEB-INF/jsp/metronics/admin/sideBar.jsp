@@ -65,7 +65,9 @@
 						<li>
 							<a href="detectedList.html">探针结果</a>
 						</li>
-						
+						<li>
+							<a href="detectedListV2.html">detectedListV2</a>
+						</li>
 					</ul>
 				</li>
 

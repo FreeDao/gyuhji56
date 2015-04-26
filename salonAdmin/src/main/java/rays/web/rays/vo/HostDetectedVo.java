@@ -20,4 +20,9 @@ public class HostDetectedVo {
 		this.count = count;
 	}
 
+	@Override
+	public String toString() {
+		return "HostDetectedVo [host=" + host + ", count=" + count + "]";
+	}
+
 }

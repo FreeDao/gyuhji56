@@ -31,7 +31,7 @@ public class HostInitorTool {
 	public HostInitorTool(String host, int sortFactor) throws Exception {
 		this.host = host.toLowerCase().trim();
 		log = new BmtLogHelper("hInit-" + host);
-		this.hostFilter = conf.hostFilterCls.newInstance();
+		this.hostFilter = (HostFilter) conf.hostFilterCls.newInstance();
 		this.sortFactor = sortFactor;
 		if (!Connectioner.instance().checkHostValid(host)) {
 			throw new Exception("host is forbidden : " + host);

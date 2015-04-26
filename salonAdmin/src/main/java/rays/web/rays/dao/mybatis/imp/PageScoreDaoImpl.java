@@ -12,22 +12,57 @@ import rays.web.rays.vo.PageDetectedVo;
 public class PageScoreDaoImpl extends MybatisBaseDao implements PageScoreDao {
 
 	@Override
-	public List<HostDetectedVo> selectHostDetectedList(int offset, int len) {
+	public List<HostDetectedVo> selectHostDetectedList(int offset, int len,
+			int status) {
 		SqlSession session = this.newSession();
 		try {
 			PageScoreDao dao = session.getMapper(PageScoreDao.class);
-			return dao.selectHostDetectedList(offset, len);
+			return dao.selectHostDetectedList(offset, len, status);
 		} finally {
 			session.close();
 		}
 	}
 
 	@Override
-	public List<PageDetectedVo> selectHostDetectedPages(String host) {
+	public List<PageDetectedVo> selectHostDetectedPages(String host, int status) {
 		SqlSession session = this.newSession();
 		try {
 			PageScoreDao dao = session.getMapper(PageScoreDao.class);
-			return dao.selectHostDetectedPages(host);
+			return dao.selectHostDetectedPages(host, status);
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public int selectHostDetectedHost(int status) {
+		SqlSession session = this.newSession();
+		try {
+			PageScoreDao dao = session.getMapper(PageScoreDao.class);
+			return dao.selectHostDetectedHost(status);
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public PageDetectedVo selectDetectedPage(int pageId) {
+		SqlSession session = this.newSession();
+		try {
+			PageScoreDao dao = session.getMapper(PageScoreDao.class);
+			return dao.selectDetectedPage(pageId);
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void setPageStatus(int pageId, int status) {
+		SqlSession session = this.newSession();
+		try {
+			PageScoreDao dao = session.getMapper(PageScoreDao.class);
+			dao.setPageStatus(pageId, status);
+			session.commit();
 		} finally {
 			session.close();
 		}

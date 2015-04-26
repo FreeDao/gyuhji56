@@ -39,15 +39,15 @@
 							<c:forEach items="${msg.list}" var="art">
 
 								<tr>
+									<td></td>
 									<td><a target=_blank
-										href='detectedHost.html?host=<c:out value="${art.host}"/>'>
-											${art.id} </a></td>
-									<td>${art.host}</td>
-									<td>${art.level_3_count}</td>
-									<td>${art.level_2_count}</td>
-									<td>${art.level_1_count}</td>
-									<td>${art.scan_num}</td>
-									<td><a href='file:///${art.path}' target=_blank>art.path</a></td>
+										href='detectedHostV2.html?host=<c:out value="${art.host}"/>'>
+											${art.host} </a></td>
+									<td>${art.count}</td>
+									<td> </td>
+									<td> </td>
+									<td> </td>
+									<td>-</td>
 									<td></td>
 									<td></td>
 								</tr>
@@ -63,7 +63,7 @@
 					</div>
 					<div class="col-md-6 col-sm-12">
 						<div class="dataTables_paginate paging_bootstrap_full_number"
-							id="sample_1_paginate">
+							id="sample_1_paginate"> 
 							<ul class="pagination" style="visibility: visible;">
 								<c:choose>
 									<c:when test="${msg.pageSplit.currentPage==1 }">

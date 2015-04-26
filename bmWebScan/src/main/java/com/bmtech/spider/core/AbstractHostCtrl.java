@@ -26,9 +26,9 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 	protected AtomicInteger hasFinished = new AtomicInteger(0);
 	protected BmtLogHelper log = new BmtLogHelper("hostCtrl");
 
-	public AbstractHostCtrl(int port, String enc, String sysName)
-			throws InstantiationException, IllegalAccessException, IOException {
-		super(port, enc, sysName);
+	public AbstractHostCtrl() throws InstantiationException,
+			IllegalAccessException, IOException {
+		super();
 
 		hostRunnor = new ThreadPoolExecutor(conf.hostPoolSize,
 				conf.hostPoolSize, 100, TimeUnit.SECONDS, hostQueue) {

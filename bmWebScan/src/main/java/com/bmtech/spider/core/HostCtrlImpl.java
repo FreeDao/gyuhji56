@@ -10,7 +10,7 @@ import com.bmtech.utils.rds.RDS;
 public class HostCtrlImpl extends AbstractHostCtrl {
 
 	public HostCtrlImpl() throws Exception {
-		super(ScanConfig.instance.watchinPort, "HostCtrlImpl", "HostCtrlImpl");
+		super();
 		Misc.del(ScanConfig.instance.tmpCrawlDir.listFiles());
 	}
 

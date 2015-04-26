@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bmtech.spider.core.scan.HostScanSiteOutIdv;
+import com.bmtech.spider.core.scan.HostScanSiteOutItf;
 import com.bmtech.utils.Misc;
 import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.log.BmtLogHelper;
@@ -23,10 +25,11 @@ public class ScanConfig {
 	public final String iUrl = "URLDIR";
 	public final File tmpCrawlDir;
 
-	public Class<HostFilter> hostFilterCls;
-	public final Class<ForeignUrlChecker> foreignUrlCheckClass;
+	public Class<?> hostFilterCls;
+	public final Class<?> foreignUrlCheckClass;
+	private final Class<?> hostScanSiteOutClass;
+	public final Class<?> scorerCls;
 
-	public final Class<HtmlScore> scorerCls;
 	private final File crawlDir;
 	private final File saveDir;
 	public final long urlCrawlItvSecond;
@@ -61,42 +64,28 @@ public class ScanConfig {
 
 	public final int watchinPort;
 
-	@SuppressWarnings("unchecked")
 	private ScanConfig() {
 		ConfigReader cr = null;
 		cr = new ConfigReader("config/ws/sc.conf", "hostScan");
 		watchinPort = cr.getInt("watchinPort", 20020);
 
-		urlCrawlItvSecond = cr.getInt("urlCrawlItvSecond", 5) * 1000;
-		try {
-			String scoreClass = cr.getValue("scorerCls");
-			scorerCls = (Class<HtmlScore>) Class.forName(scoreClass);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		urlCrawlItvSecond = cr.getInt("urlCrawlItvSecond", 5);
 
-		try {
-			String hostFltCls = cr.getValue("hostFilterCls");
-			if (hostFltCls == null || hostFltCls.length() == 0) {
-				hostFltCls = "com.bmtech.spider.core.HostFilterAllAccept";
-				log.warn("hostFltCls  not set! use default %s", hostFltCls);
-			}
-			hostFilterCls = (Class<HostFilter>) Class.forName(hostFltCls);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		try {
-			String foreignUrlCheckCls = cr.getValue("foreignUrlCheckClass");
-			if (foreignUrlCheckCls == null) {
-				foreignUrlCheckCls = "com.bmtech.spider.core.ForeignUrlAutoDrop";
-				log.warn("foreinUrlCheckClass  not set! use default %s",
-						foreignUrlCheckCls);
-			}
-			foreignUrlCheckClass = (Class<ForeignUrlChecker>) Class
-					.forName(foreignUrlCheckCls);
+		String hostFltCls = cr.getValue("hostFilterCls");
+		hostFilterCls = getClass(hostFltCls, HostFilterAllAccept.class);
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+		String foreignUrlCheckCls = cr.getValue("foreignUrlCheckClass");
+		foreignUrlCheckClass = getClass(foreignUrlCheckCls,
+				ForeignUrlAutoDrop.class);
+
+		String hostScanSiteOutClassStr = cr.getValue("hostScanSiteOutClass");
+		hostScanSiteOutClass = getClass(hostScanSiteOutClassStr,
+				HostScanSiteOutIdv.class);
+
+		String scoreClass = cr.getValue("scorerCls");
+		scorerCls = this.getClass(scoreClass, null);
+		if (scorerCls == null) {
+			throw new RuntimeException("scorerCls not Set!");
 		}
 
 		crawlDir = new File(cr.getValue("crawlDir"));
@@ -162,6 +151,19 @@ public class ScanConfig {
 		sortFactor = cr.getInt("sortFactor", 64 * 1024);
 		mergeFactor = cr.getInt("mergeFactor", 64 * 1024);
 
+	}
+
+	private Class<?> getClass(String className, Class<?> dft) {
+		try {
+			if (className == null) {
+				log.warn("use default %s", dft);
+				return dft;
+			} else {
+				return Class.forName(className);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public int hostHash(String host) {
@@ -253,5 +255,16 @@ public class ScanConfig {
 			return false;
 		}
 		return this.maxPagePerHost < hi.getTotalCrawled();
+	}
+
+	public HostScanSiteOutItf newSiteOut(HostInfo hostInfo) {
+		try {
+			HostScanSiteOutItf itf = (HostScanSiteOutItf) hostScanSiteOutClass
+					.getConstructor(hostInfo.getClass()).newInstance(hostInfo);
+			return itf;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 }

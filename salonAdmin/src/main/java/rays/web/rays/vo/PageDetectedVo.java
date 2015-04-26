@@ -3,6 +3,10 @@ package rays.web.rays.vo;
 import java.util.Date;
 
 public class PageDetectedVo {
+	public static int STATUS_ALL = -1;
+	public static int STATUS_UNAUDIT = 0;
+	public static int STATUS_NOT = 3;
+	public static int STATUS_OK = 9;
 	private int id;
 	private String host;
 	private int score;

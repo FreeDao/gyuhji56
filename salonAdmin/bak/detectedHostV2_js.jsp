@@ -73,6 +73,7 @@
 			updateHostStatus(hostName, statusCode);
 		});
 	});
+
 	updateHostStatus = function(hostName, statusCode) {
 
 		$.ajax({
@@ -84,20 +85,92 @@
 			},
 			dataType : "json",
 			success : function(retJson) {
-				
-				if(retJson.retCode == 200){
-					
-					if(confirm("命令成功执行！！是否执行下一条？")){
-						window.location.href="auditNextHost.html";
-					}else{
+
+				if (retJson.retCode == 200) {
+
+					if (confirm("命令成功执行！！是否执行下一条？")) {
+						window.location.href = "auditNextHost.html";
+					} else {
 						alert("OK");
 						window.location.reload();
 					}
-					
-				}else{
+
+				} else {
 					alert(JSON.stringify(retJson));
 				}
 			}
 		});
 	}
+
+	Date.prototype.format = function(format) {
+		/*
+		 * format="yyyy-MM-dd hh:mm:ss";
+		 */
+		var o = {
+			"Y+" : this.getFullYear(),
+			"M+" : this.getMonth() + 1,
+			"d+" : this.getDate(),
+			"h+" : this.getHours(),
+			"m+" : this.getMinutes(),
+			"s+" : this.getSeconds(),
+			"S" : this.getMilliseconds()
+		}
+		if (/(y+)/.test(format)) {
+			format = format.replace(RegExp.$1, (this.getFullYear() + "")
+					.substr(4 - RegExp.$1.length));
+		}
+
+		for ( var k in o) {
+			if (new RegExp("(" + k + ")").test(format)) {
+				format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
+						: ("00" + o[k]).substr(("" + o[k]).length));
+			}
+		}
+		return format;
+	}
+	auditPage = function(pageId) {
+
+		$.ajax({
+			type : "GET",
+			url : "getDetectedPageV2.html",
+			data : {
+				pageId : pageId
+			},
+			dataType : "json",
+			success : function(retJson) {
+
+				if (retJson.retCode == 200) {
+
+					//detectedPageTitle
+					//detectedPageContent
+					//detectedPageTime
+					//detectedPageScore
+					//detectedPageOrgUrl
+					var timeFormat = "yyyy/MM/dd hh:mm:ss";
+					var vo = retJson.PageDetectedVo;
+					var updateDate = new Date(vo.update_time);
+					console.log(updateDate);
+					var updateDateStr = updateDate.format(timeFormat);
+					$("#detectedPageTitle").html(vo.title);
+					$("#detectedPageContent").html("vo.content");
+					$("#detectedPageTime").html(updateDateStr);
+					$("#detectedPageScore").html(vo.score);
+					$("#detectedPageOrgUrl").attr("href", vo.url);
+				} else {
+					alert(JSON.stringify(retJson));
+				}
+			}
+		});
+	};
+	$(function() {
+		var kk = $("#pages tr");
+		if (kk && kk.length) {
+			var idStr = kk[0].id;
+			//alert(idStr.split("-"));
+			var pageId = idStr.split("-")[1];
+			console.log("loading pageId " + pageId);
+			auditPage(pageId);
+		}
+
+	});
 </script>

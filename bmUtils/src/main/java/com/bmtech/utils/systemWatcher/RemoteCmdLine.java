@@ -5,8 +5,7 @@ import java.io.IOException;
 
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.io.ConfigReader;
-import com.bmtech.utils.log.BmtLogger;
-import com.bmtech.utils.log.LogLevel;
+import com.bmtech.utils.systemWatcher.SystemWatcher.WatcherVo;
 
 public class RemoteCmdLine {
 	/**
@@ -20,35 +19,41 @@ public class RemoteCmdLine {
 	 */
 	public static void main(String[] args) {
 		try {
-			CMD(args);
+			File conf;
+			String section;
+			if (args.length == 1) {
+				section = args[0];
+				conf = SystemWatcher.sysWatcherConfigFile;
+			} else if (args.length == 2) {
+				section = args[0];
+				conf = new File(args[1]);
+			} else {
+				throw new IOException(
+						"param fail! expect [configFile] [section]");
+			}
+
+			if (!conf.exists()) {
+				throw new IOException("not found config %s" + conf);
+			}
+
+			CMD(conf, section);
 		} catch (Exception e) {
 			System.out.println("ERROR:" + e);
 		}
 	}
 
-	static void CMD(String[] args) throws IOException {
+	static void CMD(File conf, String section) throws IOException {
 		String addr = null;
-		int port = 0;
 		String cmd = null;
-		String enc = null;
-		File conf;
-		if (args.length > 0) {
-			conf = new File(args[0]);
-		} else {
-			conf = new File("config/watcher/remoteInfo.cfg");
-		}
-		ConfigReader cr = null;
 
 		if (!conf.exists()) {
-			BmtLogger.instance().log(LogLevel.Warning, "not found config %s",
-					conf);
-		} else {
-			cr = new ConfigReader(conf, "main");
+			throw new IOException("not found config %s" + conf);
 		}
+		WatcherVo vo = SystemWatcher.getWatcherConfig(conf);
 
-		if (cr != null) {
-			addr = cr.getValue("addr");
-		}
+		ConfigReader cr = new ConfigReader(conf, section);
+
+		addr = cr.getValue("addr");
 
 		if (addr == null) {
 			addr = Consoler.readString("remote host(no input as 127.0.0.1):");
@@ -56,27 +61,8 @@ public class RemoteCmdLine {
 				addr = "127.0.0.1";
 			}
 		}
-		if (cr != null) {
-			port = cr.getInt("port");
-		}
-		while (true) {
-			if (port != 0) {
-				break;
-			}
-			port = Consoler.readInt("port : ", 0);
-		}
 
-		if (args.length > 1) {
-			cmd = args[1];
-			cmd = cmd.trim();
-			if (cmd.length() == 0) {
-				cmd = null;
-			}
-		}
-
-		if (cmd == null && cr != null) {
-			cmd = cr.getValue("cmd");
-		}
+		cmd = cr.getValue("cmd");
 		if (cmd == null) {
 			cmd = Consoler.readString("cmd(^ as CR):");
 		}
@@ -86,14 +72,8 @@ public class RemoteCmdLine {
 			return;
 		}
 		cmd = cmd.replace("^", "\n");
-		if (cr != null) {
-			enc = cr.getValue("enc");
-		}
-		if (enc == null) {
-			enc = Consoler.readString("enc:");
-		}
-		System.out.println("connecting " + addr + ":" + port);
-		RemoteWatchClient clt = new RemoteWatchClient(addr, port, enc);
+		System.out.println("connecting " + addr + ":" + vo.port);
+		RemoteWatchClient clt = new RemoteWatchClient(addr, vo.port, vo.encKey);
 		System.out.println("connected!");
 		String ret = clt.writeCommand(cmd);
 		System.out.println("\n------got reply-----------\n'" + ret + "'");

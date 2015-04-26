@@ -19,4 +19,12 @@ public abstract class AbstractController {
 		msg.put("retMsg", retMsg);
 	}
 
+	public int parseInt(String value, int dft) {
+		try {
+			return Integer.parseInt(value);
+		} catch (Exception e) {
+			return dft;
+		}
+	}
+
 }

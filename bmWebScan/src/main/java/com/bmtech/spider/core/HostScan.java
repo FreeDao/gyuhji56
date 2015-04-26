@@ -13,7 +13,7 @@ import com.bmtech.htmls.parser.util.NodeList;
 import com.bmtech.spider.core.scan.HostScanContext;
 import com.bmtech.spider.core.scan.HostScanCrawlOut;
 import com.bmtech.spider.core.scan.HostScanOutputStream;
-import com.bmtech.spider.core.scan.HostScanSiteOut;
+import com.bmtech.spider.core.scan.HostScanSiteOutItf;
 import com.bmtech.spider.core.scan.HostScanUrlIn;
 import com.bmtech.spider.core.scan.HostScanUrlOut;
 import com.bmtech.utils.Charsets;
@@ -38,7 +38,7 @@ public class HostScan implements Runnable {
 
 	private HostScanUrlIn urlIn;
 	private HostScanUrlOut urlOut;
-	private HostScanSiteOut siteOut;
+	private HostScanSiteOutItf siteOut;
 	private boolean isInit = false;
 
 	int roundCrawl = 0, roundCrawOKlNum = 0;
@@ -64,7 +64,7 @@ public class HostScan implements Runnable {
 			}
 			urlIn = new HostScanUrlIn(hostInfo);
 
-			siteOut = new HostScanSiteOut(hostInfo);
+			siteOut = ScanConfig.instance.newSiteOut(hostInfo);
 			if (ScanConfig.instance.isHostTotalPageReached(hostInfo)) {
 				throw new Exception("host max page reached");
 			}
@@ -202,13 +202,14 @@ public class HostScan implements Runnable {
 			NodeList htmlNodeList = p.parse(null);
 			ArrayList<LinkClass> links = CoreUtil.lnkExtract(htmlNodeList);
 
-			HtmlScore scorer = conf.scorerCls.newInstance();
+			HtmlScore scorer = (HtmlScore) conf.scorerCls.newInstance();
 
 			ArrayList<ScoredUrlRecord> surlNews = new ArrayList<ScoredUrlRecord>();
 			HashMap<String, ScoredUrlRecord> urlMap = new HashMap<String, ScoredUrlRecord>();
 			ForeignUrlChecker fhc = null;
 			try {
-				fhc = conf.foreignUrlCheckClass.newInstance();
+				fhc = (ForeignUrlChecker) conf.foreignUrlCheckClass
+						.newInstance();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

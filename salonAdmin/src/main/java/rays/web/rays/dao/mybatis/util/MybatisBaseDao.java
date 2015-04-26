@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -20,7 +19,8 @@ public class MybatisBaseDao {
 	}
 
 	public SqlSession newSession() {
-		return getSessionFactory().openSession(ExecutorType.SIMPLE);
+		SqlSession session = getSessionFactory().openSession();
+		return session;
 	}
 
 	public String escapeSql(String strOrg) {
@@ -37,6 +37,5 @@ public class MybatisBaseDao {
 			retList.add(x, str);
 		}
 		return retList;
-
 	}
 }
