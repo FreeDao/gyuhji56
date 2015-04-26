@@ -40,8 +40,6 @@ public class ScanConfig {
 	public final int hostPoolSize;
 	public final int hostPoolNeedFillMargin;
 	public final boolean allowDownload;
-	public final boolean allowSaveOKFile;
-	public final boolean allowSaveTmpFile;
 	public final int hostInitThreads;
 	public final int scoreInjected;
 	public final int scoreAllwaysAllow;
@@ -137,8 +135,6 @@ public class ScanConfig {
 		hostPoolNeedFillMargin = cr.getInt("hostPoolNeedFillMargin", 5);
 		parseThread = cr.getInt("parseThread", 8);
 		parseQueueMaxSize = cr.getInt("parseQueueMaxSize", 10);
-		allowSaveOKFile = cr.getInt("allowSaveOKFile", 1) == 1;
-		allowSaveTmpFile = cr.getInt("allowSaveTmpFile", 0) == 1;
 		injectHomePagePerHost = cr.getInt("injectHomePagePerHost", 1) == 1;
 		crawlConnectTimeout = cr.getInt("crawlConnectTimeout", 10 * 1000);
 		crawlReadTimeout = cr.getInt("crawlReadTimeout", 30 * 1000);

@@ -124,7 +124,7 @@ public class HostScan implements Runnable {
 				lastRun = now;
 				hostContext.setCurrentUrl(urlIn.nextUrl());
 				if (hostContext.getCurrentUrl() == null) {
-					log.warn("ERROR: no more URL");
+					log.warn("end reach: no more URL");
 					hostContext.setEnd();
 					return;
 				}
