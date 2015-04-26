@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.io.ConfigReader;
-import com.bmtech.utils.systemWatcher.SystemWatcher.WatcherVo;
 
 public class RemoteCmdLine {
 	/**
@@ -72,8 +71,9 @@ public class RemoteCmdLine {
 			return;
 		}
 		cmd = cmd.replace("^", "\n");
-		System.out.println("connecting " + addr + ":" + vo.port);
-		RemoteWatchClient clt = new RemoteWatchClient(addr, vo.port, vo.encKey);
+		System.out.println("connecting " + addr + ":" + vo.getPort());
+		RemoteWatchClient clt = new RemoteWatchClient(addr, vo.getPort(),
+				vo.getEncKey());
 		System.out.println("connected!");
 		String ret = clt.writeCommand(cmd);
 		System.out.println("\n------got reply-----------\n'" + ret + "'");

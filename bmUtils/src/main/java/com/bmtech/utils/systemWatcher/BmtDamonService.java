@@ -1,9 +1,7 @@
 package com.bmtech.utils.systemWatcher;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
-import com.bmtech.utils.io.TchFileTool;
 import com.bmtech.utils.log.LogHelper;
 
 /**
@@ -14,19 +12,14 @@ import com.bmtech.utils.log.LogHelper;
  */
 public abstract class BmtDamonService {
 	public final SystemWatcher watcher;
-	final String envName;
 	public final LogHelper logd;
 
 	public BmtDamonService() throws IOException {
 		watcher = SystemWatcher.regWatcher();
-		logd = new LogHelper("daemon." + watcher.conf.sysName);
+		logd = new LogHelper("daemon." + watcher.conf.getSysName());
 
-		String envNameStr = TchFileTool.get("config", "envName");
-		this.envName = envNameStr == null ? "unknowEnv_"
-				+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System
-						.currentTimeMillis()) : envNameStr;
-		logd.info("envName is %s", this.envName);
-		System.setProperty("BmtDamonService_env", envName);
+		logd.info("sysName is %s", watcher.conf.getSysName());
+		System.setProperty("BmtDamonService_sysName", watcher.conf.getSysName());
 	}
 
 	public static String getEnv() {

@@ -36,18 +36,6 @@ public class SystemWatcher {
 	public static final String VERSION = "bmWatcher 1.1";
 	public static final String WatherLogName = "sysWatcher";
 
-	static class WatcherVo {
-		final String encKey;
-		final int port;
-		final String sysName;
-
-		public WatcherVo(String enc, int port, String sysName) {
-			this.encKey = enc;
-			this.port = port;
-			this.sysName = sysName;
-		}
-	}
-
 	public static final File sysWatcherConfigFile = new File(
 			"./config/sysWatcher.conf");
 
@@ -87,7 +75,7 @@ public class SystemWatcher {
 
 	private SystemWatcher(WatcherVo vo) throws IOException {
 		this.conf = vo;
-		BmtLogger.log.warn("start watcher using port %s", vo.port);
+		BmtLogger.log.warn("start watcher using port %s", vo.getPort());
 		pool = new ThreadPoolExecutor(10, 100, 100, TimeUnit.SECONDS, queue) {
 			@Override
 			protected void afterExecute(Runnable r, Throwable t) {
@@ -104,7 +92,7 @@ public class SystemWatcher {
 			}
 		};
 		if (isCheckVer) {
-			File pFile = new File("config/profile/" + vo.port + ".pf");
+			File pFile = new File("config/profile/" + vo.getPort() + ".pf");
 			if (!pFile.exists()) {
 				throw new IOException(pFile + " not exist!");
 			}
@@ -112,7 +100,7 @@ public class SystemWatcher {
 			byte[] pf;
 			String tmp = FileGet.getStr(pFile);
 			pf = Misc.strToBytes(tmp);
-			pf = BmAes.decrypt(vo.encKey.getBytes(), pf);
+			pf = BmAes.decrypt(vo.getEncKey().getBytes(), pf);
 			String str = new String(pf);
 			int starPos = str.indexOf("*");
 			if (starPos == -1) {
@@ -139,19 +127,19 @@ public class SystemWatcher {
 		} else {
 			expireTime = Long.MAX_VALUE;
 		}
-		server = new TCPServer(vo.port) {
+		server = new TCPServer(vo.getPort()) {
 			@Override
 			public void doYourJob(final Socket clientSocket) {
 				ActionDealor ad = new ActionDealor(clientSocket);
 				pool.execute(ad);
 			}
 		};
-		this.regAction(new ShutDownAction(vo.encKey));
-		this.regAction(new SysInfoAction(vo.encKey, vo.sysName));
-		this.regAction(new GCAction(vo.encKey));
-		this.regAction(new EchoAction(vo.encKey));
-		this.regAction(new SysPropAction(vo.encKey));
-		this.regAction(new WatcherAction(WatcherAction.HELP, vo.encKey) {
+		this.regAction(new ShutDownAction(vo.getEncKey()));
+		this.regAction(new SysInfoAction(vo.getEncKey(), vo.getSysName()));
+		this.regAction(new GCAction(vo.getEncKey()));
+		this.regAction(new EchoAction(vo.getEncKey()));
+		this.regAction(new SysPropAction(vo.getEncKey()));
+		this.regAction(new WatcherAction(WatcherAction.HELP, vo.getEncKey()) {
 			@Override
 			public void run(String[] paras, Socket clientSocket)
 					throws Exception {
@@ -160,7 +148,7 @@ public class SystemWatcher {
 			}
 		});
 
-		this.regAction(new WatcherAction("axp", vo.encKey) {
+		this.regAction(new WatcherAction("axp", vo.getEncKey()) {
 			@Override
 			public void run(String[] paras, Socket clientSocket)
 					throws Exception {
@@ -180,7 +168,7 @@ public class SystemWatcher {
 	}
 
 	public void regAction(final Watchable watcher) {
-		regAction(new WatcherAction(watcher.getCmd(), conf.encKey) {
+		regAction(new WatcherAction(watcher.getCmd(), conf.getEncKey()) {
 
 			@Override
 			public void run(String[] paras, Socket clientSocket)
@@ -287,7 +275,7 @@ public class SystemWatcher {
 					BmtLogger.log.warn("read bytes %d", read);
 					return;
 				}
-				String cmd = BmAes.decrypt(conf.encKey, bs, 0, read);
+				String cmd = BmAes.decrypt(conf.getEncKey(), bs, 0, read);
 				final String cmds[] = cmd.split("\n");
 				final WatcherAction act = actions.get(cmds[0].toLowerCase());
 				if ("true".equals(System.getProperty("logcmd"))) {
@@ -304,7 +292,7 @@ public class SystemWatcher {
 							cmd, address.getAddress().getHostAddress(),
 							address.getPort());
 					WatcherAction wa = new WatcherAction(WatcherAction.Echo,
-							conf.encKey) {
+							conf.getEncKey()) {
 
 						@Override
 						public void run(String[] paras, Socket clientSocket)
