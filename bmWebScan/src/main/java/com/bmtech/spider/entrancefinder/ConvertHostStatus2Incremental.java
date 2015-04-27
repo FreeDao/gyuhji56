@@ -12,6 +12,7 @@ import com.bmtech.spider.core.HostInfo;
 import com.bmtech.spider.core.HostInitorTool;
 import com.bmtech.spider.core.HostInjectTool;
 import com.bmtech.spider.core.ScanConfig;
+import com.bmtech.utils.Misc;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.rds.RDS;
 
@@ -61,7 +62,7 @@ public class ConvertHostStatus2Incremental {
 		lstHost = getHostInfos();
 		HostInjectTool tool = new HostInjectTool();
 		for (HostInfo info : lstHost) {
-			File dir = ScanConfig.instance.getSaveDir(info);
+			final File dir = ScanConfig.instance.getSaveDir(info);
 			System.out.println("checking " + dir);
 			if (!dir.exists()) {
 				System.out.println("skip empty " + dir);
@@ -88,6 +89,11 @@ public class ConvertHostStatus2Incremental {
 					Connectioner.instance().setHostStatus(info.getHostName(),
 							HostFilter.Status_Incr_watch);
 					setted.add(info);
+				}
+
+				if ("delOrg".equalsIgnoreCase(System.getProperty("isDelOrg"))) {
+					System.out.println("deleteing ................... " + dir);
+					Misc.del(dir);
 				}
 
 				HostInitorTool initor = new HostInitorTool(info.getHostName(),
