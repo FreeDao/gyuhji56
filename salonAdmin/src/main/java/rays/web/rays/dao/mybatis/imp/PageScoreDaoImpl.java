@@ -68,4 +68,27 @@ public class PageScoreDaoImpl extends MybatisBaseDao implements PageScoreDao {
 		}
 	}
 
+	@Override
+	public List<PageDetectedVo> selectDetectedPages(int status, int offset,
+			int len) {
+		SqlSession session = this.newSession();
+		try {
+			PageScoreDao dao = session.getMapper(PageScoreDao.class);
+			return dao.selectDetectedPages(status, offset, len);
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public int selectPageDetectedNum(int status) {
+		SqlSession session = this.newSession();
+		try {
+			PageScoreDao dao = session.getMapper(PageScoreDao.class);
+			return dao.selectPageDetectedNum(status);
+		} finally {
+			session.close();
+		}
+	}
+
 }

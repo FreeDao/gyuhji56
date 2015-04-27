@@ -16,7 +16,13 @@ public interface PageScoreDao {
 	public List<PageDetectedVo> selectHostDetectedPages(
 			@Param("host") String host, @Param("status") int status);
 
+	public List<PageDetectedVo> selectDetectedPages(
+			@Param("status") int status, @Param("offset") int offset,
+			@Param("len") int len);
+
 	public int selectHostDetectedHost(@Param("status") int status);
+
+	public int selectPageDetectedNum(@Param("status") int status);
 
 	public PageDetectedVo selectDetectedPage(@Param("pageId") int pageId);
 

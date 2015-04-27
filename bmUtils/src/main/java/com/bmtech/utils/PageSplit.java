@@ -8,35 +8,45 @@ public class PageSplit {
 	private int itemStartIndex = 0, itemEndIndex = 0;
 	private int startPageNum = 1;
 	private int endPageNum = 1;
-	private int currentPage = 0;
+	private final int currentPage;
 	private int totalPageNum = 0;
 	private final int totalItem;
 
-	public PageSplit(int totalItem, int pageNum) {
-		this(totalItem, 10, pageNum);
+	public PageSplit(int totalItem, int itemPerPage, int pageIndex) {
+		this(totalItem, itemPerPage, pageIndex, 10);
 	}
 
-	public PageSplit(int totalItem, int itemPerPage, int pageNum) {
+	public PageSplit(int totalItem, int itemPerPage, int pageIndex,
+			int showNumber) {
 		this.totalItem = totalItem;
 		this.itemNumberPerPage = itemPerPage;
-		currentPage = pageNum;
-		if (pageNum < 1)
-			pageNum = 1;
-		this.itemStartIndex = (pageNum - 1) * this.itemNumberPerPage;
+		if (pageIndex < 1)
+			pageIndex = 1;
+		currentPage = pageIndex;
+
+		this.itemStartIndex = (pageIndex - 1) * this.itemNumberPerPage;
 		if (itemStartIndex > totalItem) {
 			itemStartIndex = totalItem;
 			itemEndIndex = totalItem;
 		} else {
 			itemEndIndex = itemStartIndex + this.itemNumberPerPage;
-			if (totalItem < pageNum * this.itemNumberPerPage)
+			if (totalItem < pageIndex * this.itemNumberPerPage)
 				this.itemEndIndex = totalItem;
 
 			totalPageNum = totalItem / itemPerPage;
 			if (totalItem % itemPerPage != 0)
 				totalPageNum++;
 
-			startPageNum = pageNum - 4;
-			endPageNum = pageNum + 5;
+			int leftMargin = showNumber / 2;
+			int rightMargin = leftMargin;
+			if (leftMargin + rightMargin + 1 > showNumber) {
+				if (leftMargin > 0) {
+					leftMargin--;
+				}
+			}
+
+			startPageNum = pageIndex - leftMargin;
+			endPageNum = pageIndex + rightMargin;
 			if (startPageNum <= 0) {
 				endPageNum = 1 + endPageNum - startPageNum;
 				startPageNum = 1;
@@ -110,10 +120,6 @@ public class PageSplit {
 
 	public int getCurrentPage() {
 		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
 	}
 
 	public int getEndPageNum() {

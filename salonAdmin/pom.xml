@@ -5,9 +5,9 @@
 	<groupId>salon.web</groupId>
 	<artifactId>salon</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
-	<name>salon</name>
+	<name>salonAdmin</name>
 	<url>http://maven.apache.org</url>
 
 
@@ -17,7 +17,25 @@
 		<org.apache.tiles.version>3.0.5</org.apache.tiles.version>
 	</properties>
 
-
+<build>
+<resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+			<resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+</build>
 	<dependencies>
 
 

@@ -20,10 +20,8 @@
 			</div>
 
 			<div class="portlet-body ">
-				<div class="clearfix">
-					<c:if test="${msg.audited }">
-						<a href="auditNextHost.html">审核下一条</a>
-					</c:if>
+				<div class="clearfix hide">
+						<a href="...">审核下一条</a>
 				</div>
 				<div class="dd" id="nestable_list_1">
 					<ol class="dd-list">
@@ -46,11 +44,11 @@
 								</thead> -->
 								<tbody id="pages">
 									<c:forEach var="detectedPage" items="${msg.vos }">
-										<tr id='pageId-${detectedPage.id }' 
-											class="leftAudit-${detectedPage.audit_status }">
+										<tr id='pageId-${detectedPage.id }' pageId='${detectedPage.id }'
+											class=" pageTr leftAudit-${detectedPage.audit_status }">
 											<td><c:out value="${detectedPage.score }" /></td>
-											<td><a class="pageTr" pageId='${detectedPage.id }'
-												title='${detectedPage.title }'> ${detectedPage.title } </a></td>
+											<td><span  
+												title='${detectedPage.title }'> ${detectedPage.title } </span></td>
 										</tr>
 									</c:forEach>
 
@@ -94,8 +92,8 @@
 							<div class="col-md-4">
 								获取时间: <span id="detectedPageTime"></span>
 							</div>
-							<div class="col-md-2">
-								原网址: <a id="detectedPageOrgUrl" target="_blank">打开</a>
+							<div class="col-md-4">
+								原址: <a id="detectedPageOrgUrl" target="_blank">打开</a>
 							</div>
 						</li>
 

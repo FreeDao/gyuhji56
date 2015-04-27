@@ -6,7 +6,28 @@ public class PageDetectedVo {
 	public static int STATUS_ALL = -1;
 	public static int STATUS_UNAUDIT = 0;
 	public static int STATUS_NOT = 3;
+	public static int STATUS_DISCARD = 6;
 	public static int STATUS_OK = 9;
+	public static int STATUS_MIDIFIED = 9999;
+
+	public static Object satusName(int status) {
+		if (status < 0) {
+			return "全部";
+		} else if (status == 0) {
+			return "待处理";
+		} else if (status == 9999) {
+			return "已处理";
+		} else if (status == 3) {
+			return "已忽略";
+		} else if (status == 9) {
+			return "已接受";
+		} else if (status == 6) {
+			return "被放弃";
+		} else {
+			return "未知:" + status;
+		}
+	}
+
 	private int id;
 	private String host;
 	private int score;

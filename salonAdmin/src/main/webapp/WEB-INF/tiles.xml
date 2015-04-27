@@ -69,4 +69,12 @@
 		<put-attribute name="metronCss"
 			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_css.jsp" />
 	</definition>
+	<definition name="metronics.detectedPageList" extends="metronics.base">
+		<put-attribute name="metronMainContent"
+			value="/WEB-INF/jsp/metronics/admin/detectedPageList.jsp" />
+		<put-attribute name="metronJScript"
+			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_js.js" />
+		<put-attribute name="metronCss"
+			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_css.jsp" />
+	</definition>
 </tiles-definitions>

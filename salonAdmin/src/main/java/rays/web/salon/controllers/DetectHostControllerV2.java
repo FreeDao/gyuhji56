@@ -26,7 +26,7 @@ import com.bmtech.utils.bmfs.MFile;
 
 @Controller
 public class DetectHostControllerV2 extends AbstractController {
-	final int pageSize = 5;
+	final int pageSize = 10;
 	final int statusValue[] = new int[] { SourceDetectVo.isIgnored,
 			SourceDetectVo.isWatching, SourceDetectVo.isAuditing };
 
@@ -115,6 +115,33 @@ public class DetectHostControllerV2 extends AbstractController {
 		return new ModelAndView("metronics.detectedHostV2", "msg", msg);
 	}
 
+	@RequestMapping("/admin/control/detectedPageList")
+	public ModelAndView detectedPageList(
+			@RequestParam(required = false) String status_p,
+			@RequestParam(required = false) String pageIndex_p)
+			throws Exception {
+		int status = this.parseInt(status_p, PageDetectedVo.STATUS_ALL);
+		int pageIndex = this.parseInt(pageIndex_p, 1);
+
+		PageScoreDao impl = new PageScoreDaoImpl();
+
+		int totalItems = impl.selectPageDetectedNum(status);
+		PageSplit pageSplit = new PageSplit(totalItems, pageSize, pageIndex, 5);
+
+		List<PageDetectedVo> vos = impl.selectDetectedPages(status,
+				pageSplit.getItemStartIndex(), pageSize);
+
+		HashMap<String, Object> msg = new HashMap<String, Object>();
+		msg.put("total", totalItems);
+		msg.put("pageSplit", pageSplit);
+		msg.put("vos", vos);
+		msg.put("statusName", PageDetectedVo.satusName(status));
+		msg.put("status", status);
+		System.out.println(vos);
+
+		return new ModelAndView("metronics.detectedPageList", "msg", msg);
+	}
+
 	private DecodeSynCombin getPageData(String mdirPath) throws Exception {
 		System.out.println(mdirPath);
 		String fileName[] = MFile.parseUri(mdirPath);
@@ -168,6 +195,7 @@ public class DetectHostControllerV2 extends AbstractController {
 		msg.put("list", result);
 		msg.put("total", totalUnAudit);
 		msg.put("pageSplit", pageSplit);
+
 		return new ModelAndView("metronics.detectedListV2", "msg", msg);
 	}
 }

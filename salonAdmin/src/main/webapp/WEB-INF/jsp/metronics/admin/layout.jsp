@@ -108,7 +108,9 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- #######################script#####################-->
+<script>
 <tiles:insertAttribute name="metronJScript" ignore="true" />
+</script>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

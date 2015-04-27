@@ -7,7 +7,7 @@
 	<!-- /////////////////////////////// -->
 	<select id="selectHostDetectedHost" resultType="int">
 		select
-		count(distinct(host)) 
+		count(distinct(host))
 		from
 		webscan_page_score
 		<if test="status >= 0">
@@ -15,11 +15,13 @@
 		</if>
 
 	</select>
+
 	<select id="selectHostDetectedList" resultType="HostDetectedVo">
 		select i.host as
 		'host', count(*) as count
-		from webscan_page_score i, webscan_page_detail b 
-		where i.id = b.id 
+		from webscan_page_score i,
+		webscan_page_detail b
+		where i.id = b.id
 		<if test="status >= 0">
 			and audit_status = ${status}
 		</if>
@@ -37,13 +39,48 @@
 		,b.url as url ,b.path as path
 		from webscan_page_score
 		a ,webscan_page_detail b where a.id = b.id and
-		a.`host`=#{host} 
+		a.`host`=#{host}
 		<if test="status >= 0">
 			and a.audit_status = ${status}
 		</if>
 		order by a.audit_status , a.score desc limit 30
 	</select>
+	<select id="selectDetectedPages" resultType="PageDetectedVo">
+		select a.id as
+		id ,a.host as host ,a.score as score ,a.audit_status as
+		audit_status
+		,a.checkBy as checkBy ,a.update_time as update_time
+		,b.title as title
+		,b.url as url ,b.path as path
+		from webscan_page_score
+		a ,webscan_page_detail b where a.id = b.id
+		<choose>
+			<when test="status ==9999">
+				and a.audit_status > 0
+			</when>
+			<when test="status >=0">
+				and a.audit_status = ${status}
+			</when>
+		</choose>
 
+		order by a.audit_status , a.score desc limit ${offset},${len}
+	</select>
+	<select id="selectPageDetectedNum" resultType="int">
+		select
+		count(*)
+		from 
+		webscan_page_score a ,webscan_page_detail b where
+		a.id = b.id
+		<choose>
+			<when test="status ==9999">
+				and a.audit_status > 0
+			</when>
+			<when test="status >=0">
+				and a.audit_status = ${status}
+			</when>
+		</choose>
+
+	</select>
 	<select id="selectDetectedPage" resultType="PageDetectedVo">
 		select a.id as id
 		,a.host as host ,a.score as score ,a.audit_status as audit_status
