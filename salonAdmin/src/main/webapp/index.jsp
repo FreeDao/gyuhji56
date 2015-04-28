@@ -12,5 +12,6 @@
 	<a href="admin/metronics.html">metronics</a>
 	<a href="admin/control/detectedList.html">list</a>
 	<a href="/salonAdmin//admin/control/auditNextHostV2.html">auditNextHostV2</a>
+	<a href="/salonAdmin/admin/control/detectedPageList.html?status_p=0">detectedPageList</a>
 </body>
 </html>

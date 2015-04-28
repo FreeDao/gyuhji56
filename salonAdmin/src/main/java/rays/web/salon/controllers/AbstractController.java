@@ -21,7 +21,8 @@ public abstract class AbstractController {
 
 	public int parseInt(String value, int dft) {
 		try {
-			return Integer.parseInt(value);
+
+			return Integer.parseInt(value.trim());
 		} catch (Exception e) {
 			return dft;
 		}

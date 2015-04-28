@@ -77,4 +77,7 @@
 		<put-attribute name="metronCss"
 			value="/WEB-INF/jsp/metronics/admin/detectedHostV2_css.jsp" />
 	</definition>
+	
+	<definition name="metronics.loginHtml" template="/WEB-INF/jsp/metronics/admin/login.htm">
+	</definition>
 </tiles-definitions>

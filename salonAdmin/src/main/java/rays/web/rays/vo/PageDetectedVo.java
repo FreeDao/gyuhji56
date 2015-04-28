@@ -1,6 +1,15 @@
 package rays.web.rays.vo;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Date;
+
+import rays.web.salon.conf.ScoredDataDir;
+
+import com.bmtech.spider.core.util.SiteMDirReader;
+import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
+import com.bmtech.utils.bmfs.MDir;
+import com.bmtech.utils.bmfs.MFile;
 
 public class PageDetectedVo {
 	public static int STATUS_ALL = -1;
@@ -37,6 +46,7 @@ public class PageDetectedVo {
 	private String title;
 	private String url;
 	private String path;
+	private DecodeSynCombin syn;
 
 	public int getId() {
 		return id;
@@ -108,6 +118,45 @@ public class PageDetectedVo {
 
 	public void setCheckBy(String checkBy) {
 		this.checkBy = checkBy;
+	}
+
+	public void loadSynDataFromMDir() throws Exception {
+		System.out.println("getPageData path:" + this.path);
+		String fileName[] = MFile.parseUri(this.path);
+		File mdirFile = ScoredDataDir.getScoredFile(fileName[0]);
+		if (mdirFile != null) {
+			MDir mdir = MDir.open(mdirFile);
+			try {
+				SiteMDirReader reader = new SiteMDirReader(mdir);
+				syn = reader.getFile(fileName[1]);
+			} finally {
+				mdir.close();
+			}
+		}
+
+	}
+
+	public String getSynHtml() {
+		if (syn != null) {
+			return syn.html;
+		}
+		return null;
+	}
+
+	public URL getSynUrl() {
+		if (syn != null) {
+			return syn.url;
+		}
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "PageDetectedVo [id=" + id + ", host=" + host + ", score="
+				+ score + ", audit_status=" + audit_status + ", checkBy="
+				+ checkBy + ", update_time=" + update_time + ", title=" + title
+				+ ", url=" + url + ", path=" + path + ", syn.isload="
+				+ (syn != null) + "]";
 	}
 
 }
