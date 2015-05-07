@@ -2,6 +2,7 @@ package com.bmtech.utils.io.diskMerge;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +10,39 @@ import java.util.Comparator;
 import com.bmtech.utils.Misc;
 
 public class MRTool {
+	public static File getTmpBaseDir() throws IOException {
+		String str = System.getProperty("mr-tmpDir");
+		File tmpBase;
+		if (str == null) {
+			tmpBase = new File("./mr-tmp/"
+					+ new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(System
+							.currentTimeMillis()));
+		} else {
+			tmpBase = new File(str);
+		}
+		if (!tmpBase.exists()) {
+			if (!tmpBase.mkdirs()) {
+				throw new IOException("can not create file " + tmpBase);
+			}
+		}
+		return tmpBase;
+	}
+
+	private static File getTmpFile(String v) throws IOException {
+		File tmpBase = getTmpBaseDir();
+		while (true) {
+			int vi = Misc.randInt(0, 100000000);
+			File ret = new File(tmpBase, "mrtmp" + vi + v);
+			if (ret.exists()) {
+				continue;
+			} else {
+				if (!ret.createNewFile()) {
+					throw new IOException("can not create file " + tmpBase);
+				}
+				return ret;
+			}
+		}
+	}
 
 	/**
 	 * 
@@ -272,34 +306,6 @@ public class MRTool {
 		}
 	}
 
-	private static File getTmpFile(String v) throws IOException {
-		String str = System.getProperty("mr-tmpDir");
-		File tmpBase;
-		if (str == null) {
-			tmpBase = new File("mr-tmp");
-		} else {
-			tmpBase = new File(str);
-		}
-		if (!tmpBase.exists()) {
-			if (!tmpBase.mkdirs()) {
-				throw new IOException("can not create file " + tmpBase);
-			}
-		}
-		while (true) {
-			int vi = Misc.randInt(0, 100000000);
-			File ret = new File(tmpBase, "mrtmp" + vi + v);
-			if (ret.exists()) {
-				continue;
-			} else {
-				if (!ret.createNewFile()) {
-					throw new IOException("can not create file " + tmpBase);
-				}
-				return ret;
-			}
-		}
-
-	}
-
 	private static void writeLstToFile(ArrayList<MRecord> lst, File file)
 			throws IOException {
 		MOut mo = new MOut(file);
@@ -368,5 +374,13 @@ public class MRTool {
 				throw new IOException("can not create file " + toFile);
 			}
 		}
+	}
+
+	public static void initTmpBaseDir() throws IOException {
+		File files[] = MRTool.getTmpBaseDir().listFiles();
+		if (files.length > 0) {
+			Misc.del(files);
+		}
+
 	}
 }

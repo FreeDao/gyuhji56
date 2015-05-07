@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.bmtech.utils.io.diskMerge.MRTool;
 import com.bmtech.utils.log.BmtLogHelper;
 import com.bmtech.utils.systemWatcher.BmtDamonService;
 
@@ -29,6 +30,7 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 	public AbstractHostCtrl() throws InstantiationException,
 			IllegalAccessException, IOException {
 		super();
+		MRTool.initTmpBaseDir();
 
 		hostRunnor = new ThreadPoolExecutor(conf.hostPoolSize,
 				conf.hostPoolSize, 100, TimeUnit.SECONDS, hostQueue) {
