@@ -61,7 +61,8 @@ public abstract class AbstractHostCtrl extends BmtDamonService {
 							hasFinished.addAndGet(1);
 
 							log.fatal(
-									"finish crawl host %s! has put hosts %s(putback %s, requeue %s), finished %s(task %s), running %s, waiting %s",
+									"finish crawl host %s! roundCrawl %s, roundCrawOKlNum %s.  has put hosts %s(putback %s, requeue %s), finished %s(task %s), running %s, waiting %s",
+									sc.roundCrawl, sc.roundCrawOKlNum,
 									sc.getHostInfo(), putHost.get(),
 									putBack.get(), requeue.get(),
 									hasFinished.get(), hasRunned.get(),
