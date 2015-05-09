@@ -87,15 +87,15 @@ public class ConvertHostStatus2Incremental {
 							e.printStackTrace();
 						}
 					}
-					Connectioner.instance().setHostStatus(info.getHostName(),
-							HostFilter.Status_Incr_watch);
+
 					setted.add(info);
 				}
 
 				HostInitorTool initor = new HostInitorTool(info.getHostName(),
 						1024 * 32);
 				initor.markAllUrlToCrawled();
-
+				Connectioner.instance().setHostStatus(info.getHostName(),
+						HostFilter.Status_Incr_watch);
 				if ("delOrg".equalsIgnoreCase(System.getProperty("isDelOrg"))) {
 					System.out.println("deleteing ................... " + dir);
 					Misc.del(dir);
