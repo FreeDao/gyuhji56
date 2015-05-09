@@ -27,7 +27,9 @@ public class SiteMDirReader {
 	public DecodeSynCombin getFile(String fileName) throws Exception {
 		MFile mfile = mdir.getMFileByName(fileName);
 		log.info("get file %s from mdir %s, mfile is %s", fileName, this, mfile);
-
+		if (mfile == null) {
+			throw new Exception("can not find " + fileName + " in mdir " + mdir);
+		}
 		MFileReader reader = mfile.openReader();
 		try {
 			return getFile(reader);

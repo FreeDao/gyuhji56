@@ -52,7 +52,7 @@ public class ScoredDataDir {
 			log.info("try find %s in dir %s", fileName, f);
 			File tmp = new File(f, fileName);
 			if (tmp.exists()) {
-				return f;
+				return tmp;
 			}
 		}
 		return null;
