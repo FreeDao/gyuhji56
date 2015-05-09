@@ -28,7 +28,6 @@ public class MyBatisHelper {
 		try {
 			readReader = Resources.getResourceAsReader(resource);
 			// Class c = Class.forName("rays.web.rays.vo.VarRuleVO");
-			// System.out.println(c);
 			sessionFactory = new SqlSessionFactoryBuilder().build(readReader,
 					"dataSource");
 		} catch (Exception e) {

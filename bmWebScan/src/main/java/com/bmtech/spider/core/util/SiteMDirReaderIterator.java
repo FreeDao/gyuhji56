@@ -27,6 +27,11 @@ public class SiteMDirReaderIterator {
 		loadNextRecord();
 	}
 
+	@Override
+	public void finalize() {
+		this.close();
+	}
+
 	public void close() {
 		iterator.close();
 		MDir.closeMDir(mdir);

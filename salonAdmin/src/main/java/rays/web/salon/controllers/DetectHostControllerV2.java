@@ -46,7 +46,6 @@ public class DetectHostControllerV2 extends AbstractController {
 		PageScoreDao imp = new PageScoreDaoImpl();
 		List<HostDetectedVo> result = imp.selectHostDetectedList(0, 10,
 				PageDetectedVo.STATUS_UNAUDIT);
-		System.out.println(result);
 		if (result.size() > 0) {
 			HostDetectedVo vo = result.get(0);
 			return new RedirectView("detectedHostV2.html?host=" + vo.getHost());
@@ -83,7 +82,6 @@ public class DetectHostControllerV2 extends AbstractController {
 		WebScanDaoImpl impl = new WebScanDaoImpl();
 		impl.setHostStatus(host, sCode);
 		setRetMsg(msg, 200, "OK");
-		System.out.println("msg:" + msg);
 		return jsonView(msg);
 	}
 
@@ -99,12 +97,11 @@ public class DetectHostControllerV2 extends AbstractController {
 
 		int pageId = this.parseInt(pageId_p, 0);
 		int status = this.parseInt(status_p, 0);
-		System.out.println("status:" + status + ",pageId=" + pageId);
+		log.info("status:%s,pageId=", status, pageId);
 		PageScoreDao imp = new PageScoreDaoImpl();
 		imp.setPageStatus(pageId, status);
 
 		setRetMsg(msg, 200, "OK");
-		System.out.println("msg:" + msg);
 		return jsonView(msg);
 	}
 
@@ -119,12 +116,10 @@ public class DetectHostControllerV2 extends AbstractController {
 			return msg.get(this.loginRedirectKey);
 		}
 		int status = this.parseInt(status_p, PageDetectedVo.STATUS_ALL);
-		System.out.println("status nows " + status);
 		PageScoreDao impl = new PageScoreDaoImpl();
 		List<PageDetectedVo> vos = impl.selectHostDetectedPages(host, status);
 		msg.put("host", host);
 		msg.put("vos", vos);
-		System.out.println(vos);
 
 		return new ModelAndView("metronics.detectedHostV2", "msg", msg);
 	}
@@ -156,7 +151,6 @@ public class DetectHostControllerV2 extends AbstractController {
 		msg.put("vos", vos);
 		msg.put("statusName", PageDetectedVo.satusName(status));
 		msg.put("status", status);
-		System.out.println(vos);
 
 		return new ModelAndView("metronics.detectedPageList", "msg", msg);
 	}
@@ -200,7 +194,7 @@ public class DetectHostControllerV2 extends AbstractController {
 			@RequestParam(required = false, defaultValue = "") String userId_p,
 			@RequestParam(required = false, defaultValue = "") String password_p,
 			HttpServletResponse response) {
-		System.out.println("userId:" + userId_p + ", password:" + password_p);
+		log.warn("try login! using userId:%s, password:%s", userId_p, password_p);
 		UserLoginVo login = new UserLoginVo();
 		login.setPassword(password_p);
 		login.setUserId(userId_p);
@@ -208,13 +202,15 @@ public class DetectHostControllerV2 extends AbstractController {
 
 		AdminUserVo adminUser = login.toAdminUserVo();
 		if (isLogin(adminUser)) {
-			System.out.println("login " + userId_p);
-			Cookie cookie = new Cookie("u", adminUser.toCookieValue());
-			System.out.println("use cookie " + cookie.getValue());
+			String ckStr = adminUser.toCookieValue();
+			Cookie cookie = new Cookie("u", ckStr);
+			log.warn("ok login! using userId:%s, set cookie %s", userId_p, ckStr);
 			cookie.setMaxAge(31 * 24 * 60 * 60);
 			response.addCookie(cookie);
 			return new RedirectView("detectedPageList.html");
 		} else {
+			log.warn("fail login! using userId:%s, password:%s", userId_p,
+					password_p);
 			return new RedirectView("login.html");
 		}
 	}
@@ -264,12 +260,8 @@ public class DetectHostControllerV2 extends AbstractController {
 		PageScoreDao imp = new PageScoreDaoImpl();
 		List<HostDetectedVo> result = imp.selectHostDetectedList(offset,
 				pageSize, status);
-		System.out.println("status now " + status);
-
-		System.out.println(result);
 
 		int totalUnAudit = imp.selectHostDetectedHost(status);
-		System.out.println(result);
 		PageSplit pageSplit = new PageSplit(totalUnAudit, pageSize, pageIndex);
 		msg.put("list", result);
 		msg.put("total", totalUnAudit);

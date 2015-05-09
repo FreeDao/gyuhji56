@@ -10,8 +10,10 @@ import com.bmtech.spider.core.util.SiteMDirReader;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
+import com.bmtech.utils.log.LogHelper;
 
 public class PageDetectedVo {
+	LogHelper log = new LogHelper("pageDetectedVo");
 	public static int STATUS_ALL = -1;
 	public static int STATUS_UNAUDIT = 0;
 	public static int STATUS_NOT = 3;
@@ -121,10 +123,10 @@ public class PageDetectedVo {
 	}
 
 	public void loadSynDataFromMDir() throws Exception {
-		System.out.println("getPageData path:" + this.path);
+		log.info("getPageData path:%", this.path);
 		String fileName[] = MFile.parseUri(this.path);
 		File mdirFile = ScoredDataDir.getScoredFile(fileName[0]);
-		System.out.println("try open MDir " + mdirFile);
+		log.info("try open MDir %s", mdirFile);
 		if (mdirFile != null) {
 			MDir mdir = MDir.open(mdirFile);
 			try {

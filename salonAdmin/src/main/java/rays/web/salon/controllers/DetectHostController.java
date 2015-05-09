@@ -60,7 +60,6 @@ public class DetectHostController extends AbstractController {
 		WebScanDaoImpl impl = new WebScanDaoImpl();
 		impl.setHostStatus(host, sCode);
 		setRetMsg(msg, 200, "OK");
-		System.out.println("msg:" + msg);
 		return jsonView(msg);
 	}
 
