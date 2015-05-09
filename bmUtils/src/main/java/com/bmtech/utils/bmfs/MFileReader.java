@@ -47,6 +47,11 @@ public class MFileReader {
 		}
 	}
 
+	@Override
+	public void finalize() {
+		this.close();
+	}
+
 	public void close() {
 		if (openByMe) {
 			try {
