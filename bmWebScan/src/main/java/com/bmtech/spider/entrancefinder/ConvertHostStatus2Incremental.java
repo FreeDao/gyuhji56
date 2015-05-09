@@ -52,6 +52,7 @@ public class ConvertHostStatus2Incremental {
 					info);
 			finder.caculate();
 			List<PageInfo> top = finder.top(topNum);
+			MDir.closeMDir(mdir);
 			return top;
 		} finally {
 			MDir.closeMDir(mdir);
@@ -94,7 +95,7 @@ public class ConvertHostStatus2Incremental {
 				HostInitorTool initor = new HostInitorTool(info.getHostName(),
 						1024 * 32);
 				initor.markAllUrlToCrawled();
-				// FIXME
+
 				if ("delOrg".equalsIgnoreCase(System.getProperty("isDelOrg"))) {
 					System.out.println("deleteing ................... " + dir);
 					Misc.del(dir);
