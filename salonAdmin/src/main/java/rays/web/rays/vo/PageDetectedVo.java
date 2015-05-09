@@ -5,6 +5,8 @@ import java.util.Date;
 
 import rays.web.salon.conf.ScoredDataDir;
 
+import com.bmtech.htmls.parser.Parser;
+import com.bmtech.htmls.parser.util.NodeList;
 import com.bmtech.spider.core.util.SiteMDirReader;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
 import com.bmtech.utils.bmfs.MDir;
@@ -132,7 +134,15 @@ public class PageDetectedVo {
 				SiteMDirReader reader = new SiteMDirReader(mdir);
 				DecodeSynCombin syn = reader.getFile(fileName[1]);
 				this.content = syn.getHtml();
-				// syn.getUrl()
+				if (this.content != null) {
+					Parser p = new Parser(this.content);
+					NodeList nl = p.parse(null);
+					this.content = nl.asString().replace("\r", "")
+							.replaceAll("[\t ]{1,}", " ")
+							.replaceAll("\n\n", "\n").replaceAll("\n \n", "\n")
+							.replace("\n", "<br>");
+					;
+				}
 			} finally {
 				mdir.close();
 			}
