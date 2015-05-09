@@ -48,11 +48,11 @@ public class ScoredDataDir {
 		List<File> files = listScoredDir();
 		for (File f : files) {
 			System.out.println("try find " + fileName + " in dir " + f);
-			if (f.getName().equals(fileName)) {
+			File tmp = new File(f, fileName);
+			if (tmp.exists()) {
 				return f;
 			}
 		}
 		return null;
 	}
-
 }
