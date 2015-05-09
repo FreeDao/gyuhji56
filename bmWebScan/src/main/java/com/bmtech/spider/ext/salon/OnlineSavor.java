@@ -45,9 +45,6 @@ public class OnlineSavor {
 			e.printStackTrace();
 			dao.close();
 			dao = null;
-
 		}
-
 	}
-
 }

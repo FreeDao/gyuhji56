@@ -5,8 +5,6 @@ import java.util.Date;
 
 import rays.web.salon.conf.ScoredDataDir;
 
-import com.bmtech.htmls.parser.Parser;
-import com.bmtech.htmls.parser.util.NodeList;
 import com.bmtech.spider.core.util.SiteMDirReader;
 import com.bmtech.spider.core.util.SynCombin.DecodeSynCombin;
 import com.bmtech.utils.bmfs.MDir;
@@ -124,7 +122,7 @@ public class PageDetectedVo {
 	}
 
 	public void loadSynDataFromMDir() throws Exception {
-		log.info("getPageData path:%", this.path);
+		log.info("getPageData path:%s", this.path);
 		String fileName[] = MFile.parseUri(this.path);
 		File mdirFile = ScoredDataDir.getScoredFile(fileName[0]);
 		log.info("try open MDir %s", mdirFile);
@@ -135,13 +133,18 @@ public class PageDetectedVo {
 				DecodeSynCombin syn = reader.getFile(fileName[1]);
 				this.content = syn.getHtml();
 				if (this.content != null) {
-					Parser p = new Parser(this.content);
-					NodeList nl = p.parse(null);
-					this.content = nl.asString().replace("\r", "")
+					// Parser p = new Parser(this.content);
+					// NodeList nl = p.parse(null);
+					// this.content = nl.asString();
+					// System.out.println(this.content);
+					// this.content =
+					// HtmlRemover.htmlToLineFormat(this.content).lines;
+					// System.out.println(this.content);
+
+					this.content = this.content.replace("\r", "")
 							.replaceAll("[\t ]{1,}", " ")
 							.replaceAll("\n\n", "\n").replaceAll("\n \n", "\n")
-							.replace("\n", "<br>");
-					;
+							.replaceAll("\n{2,}", "\n").replace("\n", "<br>");
 				}
 			} finally {
 				mdir.close();

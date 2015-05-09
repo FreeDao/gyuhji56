@@ -1,5 +1,6 @@
 package rays.web.salon.controllers;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +24,24 @@ import rays.web.rays.vo.SourceDetectVo;
 import rays.web.rays.vo.UserLoginVo;
 
 import com.bmtech.utils.PageSplit;
+import com.bmtech.utils.io.TchFileTool;
 import com.bmtech.utils.log.LogHelper;
 
 @Controller
 public class DetectHostControllerV2 extends AbstractController {
-	LogHelper log = new LogHelper("DetectHostControllerV2");
+	static final LogHelper log = new LogHelper("DetectHostControllerV2");
+	static final String mockMdirPath;
+	static {
+		String mockMdirPathx = TchFileTool.get("./config", "mockMdirPath");
+		System.out.println(new File("./config").getAbsolutePath());
+		log.warn("mockMdirPath %s", mockMdirPathx);
+		if (mockMdirPathx != null && mockMdirPathx.length() == 0) {
+			mockMdirPath = null;
+		} else {
+			mockMdirPath = mockMdirPathx;
+		}
+	}
+
 	private final String loginKey = "userLogin";
 	private final String loginRedirectKey = "loginRedirect";
 
@@ -174,6 +188,10 @@ public class DetectHostControllerV2 extends AbstractController {
 		} else {
 			setRetMsg(msg, 200, "OK");
 			try {
+				if (mockMdirPath != null) {
+					log.warn("mock path %s", mockMdirPath);
+					vo.setPath(mockMdirPath);
+				}
 				vo.loadSynDataFromMDir();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -194,7 +212,8 @@ public class DetectHostControllerV2 extends AbstractController {
 			@RequestParam(required = false, defaultValue = "") String userId_p,
 			@RequestParam(required = false, defaultValue = "") String password_p,
 			HttpServletResponse response) {
-		log.warn("try login! using userId:%s, password:%s", userId_p, password_p);
+		log.warn("try login! using userId:%s, password:%s", userId_p,
+				password_p);
 		UserLoginVo login = new UserLoginVo();
 		login.setPassword(password_p);
 		login.setUserId(userId_p);
@@ -204,7 +223,8 @@ public class DetectHostControllerV2 extends AbstractController {
 		if (isLogin(adminUser)) {
 			String ckStr = adminUser.toCookieValue();
 			Cookie cookie = new Cookie("u", ckStr);
-			log.warn("ok login! using userId:%s, set cookie %s", userId_p, ckStr);
+			log.warn("ok login! using userId:%s, set cookie %s", userId_p,
+					ckStr);
 			cookie.setMaxAge(31 * 24 * 60 * 60);
 			response.addCookie(cookie);
 			return new RedirectView("detectedPageList.html");

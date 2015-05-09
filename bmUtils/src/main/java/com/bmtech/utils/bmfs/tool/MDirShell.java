@@ -1,9 +1,9 @@
 package com.bmtech.utils.bmfs.tool;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.nio.charset.Charset;
 
+import com.bmtech.utils.Charsets;
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFileReader;
@@ -19,18 +19,22 @@ public class MDirShell {
 		while (reader.hasNext()) {
 			MFileReader r = reader.next();
 			System.out.println(r.getMfile());
-			InputStream ips = r.getInputStreamUnGZiped();// r.getInputStream();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			while (true) {
-				int x = ips.read();
-				if (x == -1) {
-					break;
-				}
-				baos.write(x);
-			}
-			byte[] bs = baos.toByteArray();
-			String str = new String(bs);
-			System.out.println(str);
+			// InputStream ips = r.getInputStreamUnGZiped();//
+			// r.getInputStream();
+			// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			// while (true) {
+			// int x = ips.read();
+			// if (x == -1) {
+			// break;
+			// }
+			// baos.write(x);
+			// }
+			// byte[] bs = baos.toByteArray();
+			byte[] bs = r.getBytesUnGZiped();
+			Charset xx = Charsets.getCharset(bs, true);
+			System.out.println(xx);
+			String str = new String(bs, xx);
+			System.out.println(str.trim());
 			Consoler.readString("enter~>");
 		}
 		System.out.println("size:" + mdir.size());

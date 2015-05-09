@@ -136,13 +136,12 @@
 							</div>
 						</li>
 
-						<li class="dd-item" data-id="15">
-							<div class="dd-handle">
-								<span id="detectedPageContent"></span>
-							</div>
-						</li>
+						
 
 					</ol>
+							<div style="background-color:333333">
+								<span id="detectedPageContent"></span>
+							</div>
 				</div>
 			</div>
 		</div>
