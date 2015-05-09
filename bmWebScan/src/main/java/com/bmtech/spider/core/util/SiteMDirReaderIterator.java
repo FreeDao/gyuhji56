@@ -47,30 +47,34 @@ public class SiteMDirReaderIterator {
 	private DecodeSynCombin loadNextRecord() throws Exception {
 		while (iterator.hasNext()) {
 			MFileReader reader = iterator.next();
-			MFile mf = reader.getMfile();
+			try {
+				MFile mf = reader.getMfile();
 
-			byte[] bs;
-			if (sc.useMFileGzip) {
-				if (mf.getLength() > maxGizpSize) {
-					log.warn("skip tooooo big ZIPED %.2fKB named %s",
-							mf.getLength() / 1024.0, mf);
-					iterator.skip();
-					continue;
+				byte[] bs;
+				if (sc.useMFileGzip) {
+					if (mf.getLength() > maxGizpSize) {
+						log.warn("skip tooooo big ZIPED %.2fKB named %s",
+								mf.getLength() / 1024.0, mf);
+						iterator.skip();
+						continue;
+					}
+					bs = reader.getBytesUnGZiped();
+				} else {
+					if (mf.getLength() > maxUnzipSize) {
+						log.warn("skip tooooo big  %.2fKB named %s",
+								mf.getLength() / 1024.0, mf);
+						iterator.skip();
+						continue;
+					}
+					bs = reader.getBytes();
 				}
-				bs = reader.getBytesUnGZiped();
-			} else {
-				if (mf.getLength() > maxUnzipSize) {
-					log.warn("skip tooooo big  %.2fKB named %s",
-							mf.getLength() / 1024.0, mf);
-					iterator.skip();
-					continue;
-				}
-				bs = reader.getBytes();
+				Charset cs = Charsets.getCharset(bs, true);
+				String htmlEnc = new String(bs, cs);
+				crt = SynCombin.parse(htmlEnc);
+				return crt;
+			} finally {
+				reader.close();
 			}
-			Charset cs = Charsets.getCharset(bs, true);
-			String htmlEnc = new String(bs, cs);
-			crt = SynCombin.parse(htmlEnc);
-			return crt;
 		}
 		return null;
 	}
