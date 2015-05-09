@@ -22,23 +22,41 @@ public class SynCombin {
 	}
 
 	public static class DecodeSynCombin {
-		public final String html;
-		public final URL url;
+		private String html;
+		private URL url;
 
 		private DecodeSynCombin(String str) throws Exception {
 
 			if (!str.startsWith(SynCombin.headV0)) {
-				throw new Exception("not a combin file:" + str);
-			}
-			String str2 = str.substring(headV0.length());
-			String urlLen = str2.substring(0, XXLen);
-			int len = Integer.parseInt(urlLen);
-			str2 = str2.substring(XXLen);
+				this.setUrl(null);
+				this.setHtml(str.trim());
+			} else {
+				String str2 = str.substring(headV0.length());
+				String urlLen = str2.substring(0, XXLen);
+				int len = Integer.parseInt(urlLen);
+				str2 = str2.substring(XXLen);
 
-			String url = URLDecoder.decode(str2.substring(0, len),
-					Charsets.UTF8_STR);
-			this.url = new URL(url);
-			this.html = str2.substring(len);
+				String url = URLDecoder.decode(str2.substring(0, len),
+						Charsets.UTF8_STR);
+				this.setUrl(new URL(url));
+				this.setHtml(str2.substring(len).trim());
+			}
+		}
+
+		public String getHtml() {
+			return html;
+		}
+
+		public void setHtml(String html) {
+			this.html = html;
+		}
+
+		public URL getUrl() {
+			return url;
+		}
+
+		public void setUrl(URL url) {
+			this.url = url;
 		}
 	}
 

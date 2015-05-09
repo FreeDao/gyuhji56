@@ -1,7 +1,6 @@
 package rays.web.rays.vo;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Date;
 
 import rays.web.salon.conf.ScoredDataDir;
@@ -48,7 +47,7 @@ public class PageDetectedVo {
 	private String title;
 	private String url;
 	private String path;
-	private DecodeSynCombin syn;
+	private String content;
 
 	public int getId() {
 		return id;
@@ -131,7 +130,9 @@ public class PageDetectedVo {
 			MDir mdir = MDir.open(mdirFile);
 			try {
 				SiteMDirReader reader = new SiteMDirReader(mdir);
-				syn = reader.getFile(fileName[1]);
+				DecodeSynCombin syn = reader.getFile(fileName[1]);
+				this.content = syn.getHtml();
+				// syn.getUrl()
 			} finally {
 				mdir.close();
 			}
@@ -139,27 +140,22 @@ public class PageDetectedVo {
 
 	}
 
-	public String getSynHtml() {
-		if (syn != null) {
-			return syn.html;
-		}
-		return null;
-	}
-
-	public URL getSynUrl() {
-		if (syn != null) {
-			return syn.url;
-		}
-		return null;
-	}
-
 	@Override
 	public String toString() {
 		return "PageDetectedVo [id=" + id + ", host=" + host + ", score="
 				+ score + ", audit_status=" + audit_status + ", checkBy="
 				+ checkBy + ", update_time=" + update_time + ", title=" + title
-				+ ", url=" + url + ", path=" + path + ", syn.isload="
-				+ (syn != null) + "]";
+				+ ", url=" + url + ", path=" + path + ", content="
+				+ (content == null ? "null" : ".length" + content.length())
+				+ "]";
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

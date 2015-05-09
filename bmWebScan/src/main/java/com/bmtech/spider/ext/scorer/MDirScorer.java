@@ -71,7 +71,7 @@ public class MDirScorer {
 			String htmlEnc = new String(bs, cs);
 			DecodeSynCombin cmb = SynCombin.parse(htmlEnc);
 
-			Parser p = new Parser(cmb.html);
+			Parser p = new Parser(cmb.getHtml());
 			NodeList nl = p.parse(null);
 			String lines = nl.asString();
 
@@ -94,7 +94,7 @@ public class MDirScorer {
 			// System.out.println(title);
 			//
 			// Consoler.readString("~:");
-			savor.save(title, lines, cmb.url, score);
+			savor.save(title, lines, cmb.getUrl(), score);
 
 		}
 	}

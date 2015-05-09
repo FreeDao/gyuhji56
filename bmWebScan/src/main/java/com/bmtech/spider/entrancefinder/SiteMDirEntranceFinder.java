@@ -44,7 +44,7 @@ public class SiteMDirEntranceFinder {
 			while (reader.hasNext()) {
 				try {
 					DecodeSynCombin entry = reader.next();
-					Parser p = new Parser(entry.html);
+					Parser p = new Parser(entry.getHtml());
 					NodeList nl = p.parse(null);
 					NodeList links = nl.extractAllNodesThatMatch(
 							new NodeClassFilter(LinkTag.class), true);
@@ -53,12 +53,12 @@ public class SiteMDirEntranceFinder {
 						String sU = lt.getLink();
 						URL url;
 						try {
-							url = new URL(entry.url, sU);
+							url = new URL(entry.getUrl(), sU);
 						} catch (Exception e) {
 							continue;
 						}
 						if (hi.isMyUrl(url)) {
-							countLinkOut(entry.url, url, lt.getLink());
+							countLinkOut(entry.getUrl(), url, lt.getLink());
 						}
 					}
 				} catch (Exception e) {
