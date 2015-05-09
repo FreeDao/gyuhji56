@@ -5,10 +5,12 @@ import java.io.ByteArrayInputStream;
 import rays.web.rays.dao.mybatis.imp.AdminUserDaoImpl;
 
 import com.bmtech.utils.bmfs.util.ReadProtocol;
+import com.bmtech.utils.log.LogHelper;
 import com.bmtech.utils.security.BmAes;
 import com.bmtech.utils.security.Byte2Hex;
 
 public class UserLoginVo {
+	LogHelper log = new LogHelper(UserLoginVo.class.getName());
 	public static final byte[] encKey = "tgy%^*9&oij".getBytes();
 	private int idInt;
 	private String userId;
@@ -52,7 +54,7 @@ public class UserLoginVo {
 		AdminUserDaoImpl impl = new AdminUserDaoImpl();
 		AdminUserVo ret = impl.selectAdminUser(this.getUserId());
 		if (!isLogin(ret, this)) {
-			System.out.println("login fail! " + ret + " != " + this);
+			log.warn("login fail! %s != %s", ret, this);
 			return null;
 		}
 		return ret;
@@ -65,7 +67,6 @@ public class UserLoginVo {
 		}
 		if (adminUser.getUserId().equals(vo.getUserId())) {
 			if (adminUser.getPassword().equals(vo.getPassword())) {
-				System.out.println("match, " + vo.getIdInt());
 				if (vo.getIdInt() == 0 || adminUser.getIdInt() == vo.getIdInt()) {
 					return true;
 				}

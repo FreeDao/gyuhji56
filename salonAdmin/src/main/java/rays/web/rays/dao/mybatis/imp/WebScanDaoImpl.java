@@ -101,7 +101,7 @@ public class WebScanDaoImpl extends MybatisBaseDao implements WebScanDao {
 		for (SourceDetectVo vo : lst) {
 			try {
 				File toCheck = vo.toFile();
-				System.out.println(toCheck);
+				log.info("checking %s", toCheck);
 				if (toCheck.exists()) {
 					File[] fs = toCheck.listFiles();
 					for (File file : fs) {
@@ -127,15 +127,14 @@ public class WebScanDaoImpl extends MybatisBaseDao implements WebScanDao {
 
 	@Override
 	public void setHostStatus(String host, int statusCode) {
-		System.out.println(String.format("set '%s' to %s", host, statusCode));
+		log.info("set '%s' to %s", host, statusCode);
 		host = escapeSql(host);
-		System.out.println(String.format("set '%s' to %s", host, statusCode));
+		log.info("set '%s' to %s", host, statusCode);
 		SqlSession session = this.newSession();
 		try {
 			WebScanDao dao = session.getMapper(WebScanDao.class);
 			dao.setHostStatus(host, statusCode);
-			System.out.println(String.format("after set '%s' to %s", host,
-					statusCode));
+			log.info("after set '%s' to %s", host, statusCode);
 		} finally {
 			session.close();
 		}

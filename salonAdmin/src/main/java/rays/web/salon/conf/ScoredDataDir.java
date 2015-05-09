@@ -12,15 +12,17 @@ import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.log.LogHelper;
 
 public class ScoredDataDir {
+	static final LogHelper log = new LogHelper("ScoredDataDir");
+
 	public static List<File> listScoredDir() throws IOException {
 		List<File> ret = new LinkedList<File>();
 		File cfgFile = Resources.getResourceAsFile("scoredDataDir.conf");
-		System.out.println("scoredDataDir config is " + cfgFile);
+		log.info("scoredDataDir config is %s", cfgFile);
 		ConfigReader cr = new ConfigReader(cfgFile, "main");
 
 		List<KeyValuePair<String, String>> cfg = cr.getAllConfig();
 		for (KeyValuePair<String, String> pair : cfg) {
-			System.out.println("got scoredDataDir:" + pair);
+			log.info("got scoredDataDir: %s", pair);
 			if (pair.key.startsWith("scored_")) {
 				if (pair.value != null) {
 					File f = new File(pair.value);
@@ -47,7 +49,7 @@ public class ScoredDataDir {
 	public static File getScoredFile(String fileName) throws IOException {
 		List<File> files = listScoredDir();
 		for (File f : files) {
-			System.out.println("try find " + fileName + " in dir " + f);
+			log.info("try find %s in dir %s", fileName, f);
 			File tmp = new File(f, fileName);
 			if (tmp.exists()) {
 				return f;
