@@ -124,6 +124,7 @@ public class PageDetectedVo {
 		System.out.println("getPageData path:" + this.path);
 		String fileName[] = MFile.parseUri(this.path);
 		File mdirFile = ScoredDataDir.getScoredFile(fileName[0]);
+		System.out.println("try open MDir " + mdirFile);
 		if (mdirFile != null) {
 			MDir mdir = MDir.open(mdirFile);
 			try {

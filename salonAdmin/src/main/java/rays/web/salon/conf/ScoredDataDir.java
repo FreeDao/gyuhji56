@@ -15,7 +15,7 @@ public class ScoredDataDir {
 	public static List<File> listScoredDir() throws IOException {
 		List<File> ret = new LinkedList<File>();
 		File cfgFile = Resources.getResourceAsFile("scoredDataDir.conf");
-		System.out.println("scoredDataDir is " + cfgFile.exists());
+		System.out.println("scoredDataDir config is " + cfgFile);
 		ConfigReader cr = new ConfigReader(cfgFile, "main");
 
 		List<KeyValuePair<String, String>> cfg = cr.getAllConfig();
@@ -47,6 +47,7 @@ public class ScoredDataDir {
 	public static File getScoredFile(String fileName) throws IOException {
 		List<File> files = listScoredDir();
 		for (File f : files) {
+			System.out.println("try find " + fileName + " in dir " + f);
 			if (f.getName().equals(fileName)) {
 				return f;
 			}

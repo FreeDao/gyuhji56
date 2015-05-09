@@ -3,7 +3,11 @@ package rays.web.salon.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import rays.web.rays.dao.mybatis.PageScoreDao;
 import rays.web.rays.dao.mybatis.imp.PageScoreDaoImpl;
 import rays.web.rays.dao.mybatis.imp.WebScanDaoImpl;
+import rays.web.rays.vo.AdminUserVo;
 import rays.web.rays.vo.HostDetectedVo;
 import rays.web.rays.vo.PageDetectedVo;
 import rays.web.rays.vo.SourceDetectVo;
@@ -30,13 +35,10 @@ public class DetectHostControllerV2 extends AbstractController {
 	final int statusValue[] = new int[] { SourceDetectVo.isIgnored,
 			SourceDetectVo.isWatching, SourceDetectVo.isAuditing };
 
-	private boolean isLogin(Map<String, Object> msg) {
-		return ((UserLoginVo) msg.get(this.loginKey)).isLogin();
-	}
-
 	@RequestMapping("/admin/control/auditNextHostV2")
-	public Object auditNextHost() {
-		Map<String, Object> msg = checkLogin();
+	public Object auditNextHost(
+			@CookieValue(value = "u", defaultValue = "") String cookieId) {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -57,8 +59,9 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/setHostAuditStatusV2")
 	public Object detectedHostModify(
 			@RequestParam(required = true, defaultValue = "") String host,
-			@RequestParam(required = true, defaultValue = "") String status) {
-		Map<String, Object> msg = checkLogin();
+			@RequestParam(required = true, defaultValue = "") String status,
+			@CookieValue(value = "u", defaultValue = "") String cookieId) {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -87,8 +90,9 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/setPageAuditStatusV2")
 	public Object detectedPageStatusModify(
 			@RequestParam(required = true) String pageId_p,
-			@RequestParam(required = true) String status_p) {
-		Map<String, Object> msg = checkLogin();
+			@RequestParam(required = true) String status_p,
+			@CookieValue(value = "u", defaultValue = "") String cookieId) {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -107,8 +111,10 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/detectedHostV2")
 	public Object detectedHost(
 			@RequestParam(required = true, defaultValue = "") String host,
-			@RequestParam(required = false) String status_p) throws Exception {
-		Map<String, Object> msg = checkLogin();
+			@RequestParam(required = false) String status_p,
+			@CookieValue(value = "u", defaultValue = "") String cookieId)
+			throws Exception {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -126,9 +132,10 @@ public class DetectHostControllerV2 extends AbstractController {
 	@RequestMapping("/admin/control/detectedPageList")
 	public Object detectedPageList(
 			@RequestParam(required = false) String status_p,
-			@RequestParam(required = false) String pageIndex_p)
+			@RequestParam(required = false) String pageIndex_p,
+			@CookieValue(value = "u", defaultValue = "") String cookieId)
 			throws Exception {
-		Map<String, Object> msg = checkLogin();
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -156,8 +163,9 @@ public class DetectHostControllerV2 extends AbstractController {
 
 	@RequestMapping("/admin/control/getDetectedPageV2")
 	public Object getDetectedPageV2(
-			@RequestParam(required = false, defaultValue = "0") int pageId) {
-		Map<String, Object> msg = checkLogin();
+			@RequestParam(required = false, defaultValue = "0") int pageId,
+			@CookieValue(value = "u", defaultValue = "") String cookieId) {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}
@@ -183,17 +191,56 @@ public class DetectHostControllerV2 extends AbstractController {
 	}
 
 	@RequestMapping("/admin/control/login")
-	public Object loginFrom() {
+	public Object loginForm() {
 		return new ModelAndView("metronics.loginHtml", "msg", this.newMsgMap());
 	}
 
-	private Map<String, Object> checkLogin() {
-		Map<String, Object> msg = this.newMsgMap();
-		UserLoginVo vo = new UserLoginVo();
-		msg.put(loginKey, vo);
-		msg.put(loginRedirectKey, new RedirectView("login.html"));
+	@RequestMapping("/admin/control/loginPost")
+	public Object loginPost(
+			@RequestParam(required = false, defaultValue = "") String userId_p,
+			@RequestParam(required = false, defaultValue = "") String password_p,
+			HttpServletResponse response) {
+		System.out.println("userId:" + userId_p + ", password:" + password_p);
+		UserLoginVo login = new UserLoginVo();
+		login.setPassword(password_p);
+		login.setUserId(userId_p);
+		login.setIdInt(0);
 
-		// FIXME check login
+		AdminUserVo adminUser = login.toAdminUserVo();
+		if (isLogin(adminUser)) {
+			System.out.println("login " + userId_p);
+			Cookie cookie = new Cookie("u", adminUser.toCookieValue());
+			System.out.println("use cookie " + cookie.getValue());
+			cookie.setMaxAge(31 * 24 * 60 * 60);
+			response.addCookie(cookie);
+			return new RedirectView("detectedPageList.html");
+		} else {
+			return new RedirectView("login.html");
+		}
+	}
+
+	private boolean isLogin(AdminUserVo adminUser) {
+		if (adminUser != null) {
+			if (adminUser.getStatus() >= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isLogin(Map<String, Object> msg) {
+		AdminUserVo adminUser = (AdminUserVo) msg.get(this.loginKey);
+
+		return isLogin(adminUser);
+	}
+
+	private Map<String, Object> checkLogin(String cookieId) {
+		Map<String, Object> msg = this.newMsgMap();
+		UserLoginVo vo = UserLoginVo.parseCookie(cookieId);
+		AdminUserVo adminUser = vo.toAdminUserVo();
+
+		msg.put(loginKey, adminUser);
+		msg.put(loginRedirectKey, new RedirectView("login.html"));
 		return msg;
 	}
 
@@ -201,8 +248,9 @@ public class DetectHostControllerV2 extends AbstractController {
 	public Object detectedHostsList(
 			@RequestParam(required = false, defaultValue = "1") int pageIndex,
 			@RequestParam(defaultValue = "1") int sortBy,
-			@RequestParam(required = false) String statusPara) {
-		Map<String, Object> msg = checkLogin();
+			@RequestParam(required = false) String statusPara,
+			@CookieValue(value = "u", defaultValue = "") String cookieId) {
+		Map<String, Object> msg = checkLogin(cookieId);
 		if (!isLogin(msg)) {
 			return msg.get(this.loginRedirectKey);
 		}

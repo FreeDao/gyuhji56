@@ -96,7 +96,7 @@ var auditPage = function(pageId) {
 				console.log(updateDate);
 				var updateDateStr = updateDate.format(timeFormat);
 				$("#detectedPageTitle").html(vo.title);
-				$("#detectedPageContent").html("vo.content");
+				$("#detectedPageContent").html(vo.content);
 				$("#detectedPageTime").html(updateDateStr);
 				$("#detectedPageScore").html(vo.score);
 				$("#detectedPageOrgUrl").attr("href", vo.url);
