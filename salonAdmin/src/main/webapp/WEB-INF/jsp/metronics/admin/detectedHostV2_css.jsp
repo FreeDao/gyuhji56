@@ -30,7 +30,9 @@
 <link href="../../assets/admin/layout/css/custom.css" rel="stylesheet"
 	type="text/css" />
 <style>
-
+.scr_vl{
+	color:red
+}
 .leftAudit-3 {
 	color: red
 }

@@ -95,8 +95,12 @@ var auditPage = function(pageId) {
 				var updateDate = new Date(vo.update_time);
 				console.log(updateDate);
 				var updateDateStr = updateDate.format(timeFormat);
+				var voContent = vo.content;
+				for(var vidx = 0; vidx < scoreStr.length; vidx++){
+					voContent = voContent.replace(scoreStr[vidx], "<span class='scr_vl'>"+ scoreStr[vidx] + "</span>")
+				}
 				$("#detectedPageTitle").html(vo.title);
-				$("#detectedPageContent").html(vo.content);
+				$("#detectedPageContent").html(voContent);
 				$("#detectedPageTime").html(updateDateStr);
 				$("#detectedPageScore").html(vo.score);
 				$("#detectedPageOrgUrl").attr("href", vo.url);
