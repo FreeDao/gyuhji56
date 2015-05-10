@@ -9,6 +9,7 @@ import java.util.List;
 import com.bmtech.spider.core.Connectioner;
 import com.bmtech.spider.core.HostFilter;
 import com.bmtech.spider.core.HostInfo;
+import com.bmtech.spider.core.HostInitorTool;
 import com.bmtech.spider.core.HostInjectTool;
 import com.bmtech.spider.core.ScanConfig;
 import com.bmtech.utils.Misc;

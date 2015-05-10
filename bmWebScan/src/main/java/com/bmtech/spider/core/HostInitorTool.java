@@ -28,7 +28,7 @@ public class HostInitorTool {
 	final File hostBase;
 	final File allUrlFile, newURLDir, hasCrawled, notCrawled, crawledUrlDBTmp;
 	final String randomFilePrefix = "radmonFile.";
-	final long maxFileLen = 1024 * 1024 * 100;;
+	final long maxFileLen = 1024 * 1024 * 50;;
 	final FileBasedLock locker;
 
 	public HostInitorTool(String host, int sortFactor) throws Exception {
