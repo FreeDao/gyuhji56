@@ -140,11 +140,18 @@ public class PageDetectedVo {
 					// this.content =
 					// HtmlRemover.htmlToLineFormat(this.content).lines;
 					// System.out.println(this.content);
-
-					this.content = this.content.replace("\r", "")
-							.replaceAll("[\t ]{1,}", " ")
-							.replaceAll("\n\n", "\n").replaceAll("\n \n", "\n")
-							.replaceAll("\n{2,}", "\n").replace("\n", "<br>");
+					String[] lines = this.content.split("\n");
+					StringBuilder sb = new StringBuilder();
+					for (String line : lines) {
+						line = line.trim();
+						if (line.length() == 0) {
+							continue;
+						} else {
+							sb.append(line);
+							sb.append("<br>");
+						}
+					}
+					this.content = sb.toString();
 				}
 			} finally {
 				mdir.close();
@@ -171,4 +178,19 @@ public class PageDetectedVo {
 		this.content = content;
 	}
 
+	public static void main(String[] args) {
+		String xx = "a\n b\n \n \n\n \n \n\n \n";
+		String[] lines = xx.split("\n");
+		StringBuilder sb = new StringBuilder();
+		for (String x : lines) {
+			x = x.trim();
+			if (x.length() == 0) {
+				continue;
+			} else {
+				sb.append(x);
+				sb.append("<br>");
+			}
+		}
+		System.out.println(sb);
+	}
 }
