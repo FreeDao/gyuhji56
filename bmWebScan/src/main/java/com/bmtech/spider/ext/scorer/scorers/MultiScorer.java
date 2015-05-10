@@ -3,6 +3,7 @@ package com.bmtech.spider.ext.scorer.scorers;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,15 @@ public class MultiScorer {
 			score += ss.score(a.getValue().intValue());
 		}
 		return score;
+	}
+
+	public List<String> getStringScore() {
+		List<String> ret = new ArrayList<String>();
+		Collection<StringScorer> cll = this.strScorerMap.values();
+		for (StringScorer ss : cll) {
+			ret.add(ss.exp);
+		}
+		return ret;
 	}
 
 	public static void main(String[] args) throws IOException {

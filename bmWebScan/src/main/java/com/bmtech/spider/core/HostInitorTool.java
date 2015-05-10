@@ -12,6 +12,7 @@ import java.util.List;
 import com.bmtech.spider.core.Connectioner.URLToInject;
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.Misc;
+import com.bmtech.utils.io.FileBasedLock;
 import com.bmtech.utils.io.diskMerge.MOut;
 import com.bmtech.utils.io.diskMerge.MRTool;
 import com.bmtech.utils.io.diskMerge.RecordReader;
@@ -27,6 +28,8 @@ public class HostInitorTool {
 	final File hostBase;
 	final File allUrlFile, newURLDir, hasCrawled, notCrawled, crawledUrlDBTmp;
 	final String randomFilePrefix = "radmonFile.";
+	final long maxFileLen = 1024 * 1024 * 100;;
+	final FileBasedLock locker;
 
 	public HostInitorTool(String host, int sortFactor) throws Exception {
 		this.host = host.toLowerCase().trim();
@@ -38,10 +41,25 @@ public class HostInitorTool {
 		}
 		if (hostFilter.checkAndForbidden(host)) {
 			throw new Exception("forbidden host " + host + ", by " + hostFilter);
-
 		}
 		hostBase = conf.getHostBase(new HostInfo(host));
 		besureDirExists(hostBase);
+		File crtFile[] = hostBase.listFiles();
+		boolean isError = false;
+		for (File xxx : crtFile) {
+			if (!xxx.isDirectory() && xxx.length() > maxFileLen) {
+				log.fatal("too maxLen for file %s, len is %s", xxx,
+						xxx.length());
+				xxx.delete();
+				isError = true;
+			}
+		}
+		if (isError) {
+			throw new Exception("too big file match! ignore");
+		}
+
+		locker = new FileBasedLock(new File(hostBase, "initlock"));
+		locker.tryLock();
 
 		allUrlFile = new File(hostBase, conf.urlDataBase);
 		this.besureFileExists(allUrlFile);
@@ -61,6 +79,7 @@ public class HostInitorTool {
 				}
 			}
 		}
+
 	}
 
 	public void markAllUrlToCrawled() throws Exception {
@@ -114,6 +133,20 @@ public class HostInitorTool {
 		generateNotCrawled();
 
 		return new HostScan(new HostInfo(host, okCrawledNum));
+	}
+
+	public void close() {
+		try {
+			locker.releaseLock();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void finalize() {
+		close();
 	}
 
 	private void generateNotCrawled() throws Exception {

@@ -7,7 +7,7 @@
 			<!--h3 class="page-title">
 			Dashboard <small>reports & statistics</small>
 			</h3 -->
-			<div class="page-bar" style="margin-top:-10px; margin-bottom:10px">
+			<!-- <div class="page-bar" style="margin-top:-10px; margin-bottom:10px">
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
@@ -21,5 +21,5 @@
 				<div class="page-toolbar">
 					
 				</div>
-			</div>
+			</div> -->
 			<!-- END PAGE HEADER-->

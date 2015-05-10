@@ -13,20 +13,19 @@
 		<div class="portlet box grey">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-comments"></i> 
-					 <b>${msg.statusName} : ${msg.pageSplit.totalItem}</b> 个
+					<i class="fa fa-comments"></i> <b>${msg.statusName} :
+						${msg.pageSplit.totalItem}</b> 个
 				</div>
 
 			</div>
 
 			<div class="portlet-body ">
-				
+
 				<div class="dd" id="nestable_list_1">
-					
+
 					<div class="portlet-body">
 						<div class="table-responsive">
-							<table
-								class="table table-hover table-bordered table-striped">
+							<table class="table table-hover table-bordered table-striped">
 								<!-- <thead>
 									<tr>
 										<th>分值</th>
@@ -35,64 +34,66 @@
 								</thead> -->
 								<tbody id="pages">
 									<c:forEach var="detectedPage" items="${msg.vos }">
-										<tr id='pageId-${detectedPage.id }'  pageId='${detectedPage.id }'
+										<tr id='pageId-${detectedPage.id }'
+											pageId='${detectedPage.id }'
 											class="pageTr leftAudit-${detectedPage.audit_status }">
 											<td><c:out value="${detectedPage.score }" /></td>
-											<td><span title='${detectedPage.title }'> ${detectedPage.title } 
-												</span></td>
+											<td><span title='${detectedPage.title }'>
+													${detectedPage.title } </span></td>
 										</tr>
 									</c:forEach>
 
 								</tbody>
 							</table>
 							<div class="dataTables_paginate paging_bootstrap_full_number"
-							id="sample_1_paginate">
-							<ul class="pagination" style="visibility: visible;">
-							<c:set var="urlPrx" value="?status_p=${msg.status}&pageIndex_p=" />
-								<c:choose>
-									<c:when test="${msg.pageSplit.currentPage==1 }">
-										<li class="prev disabled"><a><i
-												class="fa fa-angle-double-left"></i></a></li>
-										<li class="prev disabled"><a title="Prev"><i
-												class="fa fa-angle-left"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="prev "><a href="${urlPrx}1" title="First"><i
-												class="fa fa-angle-double-left"></i></a></li>
-										<li class="prev "><a href="${urlPrx}${pi-1 }"
-											title="Prev"><i class="fa fa-angle-left"></i></a></li>
-									</c:otherwise>
-								</c:choose>
+								id="sample_1_paginate">
+								<ul class="pagination" style="visibility: visible;">
+									<c:set var="urlPrx"
+										value="?status_p=${msg.status}&pageIndex_p=" />
+									<c:choose>
+										<c:when test="${msg.pageSplit.currentPage==1 }">
+											<li class="prev disabled"><a><i
+													class="fa fa-angle-double-left"></i></a></li>
+											<li class="prev disabled"><a title="Prev"><i
+													class="fa fa-angle-left"></i></a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="prev "><a href="${urlPrx}1" title="First"><i
+													class="fa fa-angle-double-left"></i></a></li>
+											<li class="prev "><a href="${urlPrx}${pi-1 }"
+												title="Prev"><i class="fa fa-angle-left"></i></a></li>
+										</c:otherwise>
+									</c:choose>
 
-								<c:forEach items="${msg.pageSplit.pageIndexes}" var="pi">
+									<c:forEach items="${msg.pageSplit.pageIndexes}" var="pi">
 
-									<li
-										<c:if test="${msg.pageSplit.currentPage==pi }"> class="active"</c:if>><a
-										href="${urlPrx}${pi }">${pi }</a></li>
-
-
-								</c:forEach>
-								<c:choose>
-									<c:when
-										test="${msg.pageSplit.currentPage>=msg.pageSplit.totalPageNum }">
-										<li class="next disabled"><a title="Next"><i
-												class="fa fa-angle-right"></i></a></li>
-										<li class="next disabled"><a title="Last"><i
-												class="fa fa-angle-double-right"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="next"><a
-											href="${urlPrx}${msg.pageSplit.currentPage+1 }"
-											title="Next"><i class="fa fa-angle-right"></i></a></li>
-										<li class="next"><a
-											href="${urlPrx}${msg.pageSplit.totalPageNum }" title="Last"><i
-												class="fa fa-angle-double-right"></i></a></li>
-									</c:otherwise>
-								</c:choose>
+										<li
+											<c:if test="${msg.pageSplit.currentPage==pi }"> class="active"</c:if>><a
+											href="${urlPrx}${pi }">${pi }</a></li>
 
 
-							</ul>
-						</div>
+									</c:forEach>
+									<c:choose>
+										<c:when
+											test="${msg.pageSplit.currentPage>=msg.pageSplit.totalPageNum }">
+											<li class="next disabled"><a title="Next"><i
+													class="fa fa-angle-right"></i></a></li>
+											<li class="next disabled"><a title="Last"><i
+													class="fa fa-angle-double-right"></i></a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="next"><a
+												href="${urlPrx}${msg.pageSplit.currentPage+1 }" title="Next"><i
+													class="fa fa-angle-right"></i></a></li>
+											<li class="next"><a
+												href="${urlPrx}${msg.pageSplit.totalPageNum }" title="Last"><i
+													class="fa fa-angle-double-right"></i></a></li>
+										</c:otherwise>
+									</c:choose>
+
+
+								</ul>
+							</div>
 						</div>
 
 
@@ -102,6 +103,7 @@
 		</div>
 	</div>
 	<div class="col-md-8">
+
 		<div class="portlet box blue" id="audit-head">
 			<div class="portlet-title">
 				<div class="caption">
@@ -136,19 +138,28 @@
 							</div>
 						</li>
 
-						
+
 
 					</ol>
-							<div style="background-color:333333">
+					<div class="portlet light" style="margin-bottom:0px">
+
+						<div class="portlet-body">
+							<div class="scroller" style="height: 400px" data-rail-visible="1"
+								data-rail-color="yellow" data-handle-color="#a1b2bd">
+
 								<span id="detectedPageContent"></span>
 							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <script>
-updatePageStatusAfterUrl="${urlPrx}${msg.pageSplit.currentPage }";
+	updatePageStatusAfterUrl = "${urlPrx}${msg.pageSplit.currentPage }";
+	var scoreStr = ${msg.scoreStr};
+	//alert(scoreStr[0]);
 </script>
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->

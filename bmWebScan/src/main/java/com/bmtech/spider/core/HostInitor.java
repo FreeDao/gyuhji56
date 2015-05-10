@@ -32,10 +32,14 @@ public class HostInitor {
 			runNum++;
 			try {
 				HostInitorTool tool = new HostInitorTool(host, sortFactor);
-				HostScan hs = tool.initHost();
-				log.fatal("init ok %s with hostbase %s", host,
-						ScanConfig.instance.getHostBase(hs.getHostInfo()));
-				afterRunnor.afterInitor(hs);
+				try {
+					HostScan hs = tool.initHost();
+					log.fatal("init ok %s with hostbase %s", host,
+							ScanConfig.instance.getHostBase(hs.getHostInfo()));
+					afterRunnor.afterInitor(hs);
+				} finally {
+					tool.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.fatal(e, "when init host %s", host);

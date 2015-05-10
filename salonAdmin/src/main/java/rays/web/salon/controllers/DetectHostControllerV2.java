@@ -1,5 +1,6 @@
 package rays.web.salon.controllers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +24,12 @@ import rays.web.rays.vo.PageDetectedVo;
 import rays.web.rays.vo.SourceDetectVo;
 import rays.web.rays.vo.UserLoginVo;
 
+import com.bmtech.spider.ext.scorer.scorers.MultiScorer;
 import com.bmtech.utils.PageSplit;
 import com.bmtech.utils.io.TchFileTool;
 import com.bmtech.utils.log.LogHelper;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class DetectHostControllerV2 extends AbstractController {
@@ -254,7 +258,18 @@ public class DetectHostControllerV2 extends AbstractController {
 		Map<String, Object> msg = this.newMsgMap();
 		UserLoginVo vo = UserLoginVo.parseCookie(cookieId);
 		AdminUserVo adminUser = vo.toAdminUserVo();
+		String scoreStr = "";
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectMapper mapper = new ObjectMapper();
+			JsonGenerator gen = mapper.getFactory().createGenerator(bos);
 
+			gen.writeObject(MultiScorer.getInstance().getStringScore());
+			scoreStr = new String(bos.toByteArray());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		msg.put("scoreStr", scoreStr);
 		msg.put(loginKey, adminUser);
 		msg.put(loginRedirectKey, new RedirectView("login.html"));
 		return msg;
