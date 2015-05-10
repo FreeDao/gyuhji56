@@ -225,7 +225,10 @@ public class Misc {
 	static String fbdFileName_rewriteTo[] = { "CON_", "PRN_", "AUX_", "NUL_",
 			"COM1_", "COM2_", "COM3_", "COM4_", "COM5_", "COM6_", "COM7_",
 			"COM8_", "COM9_", "LPT1_", "LPT2_", "LPT3_", "LPT4_", "LPT5_",
-			"LPT6_", "LPT7_", "LPT8_", "LPT9_", };
+			"LPT6_", "LPT7_", "LPT8_", "LPT9_", "con_", "prn_", "aux_", "nul_",
+			"com1_", "com2_", "com3_", "com4_", "com5_", "com6_", "com7_",
+			"com8_", "com9_", "lpt1_", "lpt2_", "lpt3_", "lpt4_", "lpt5_",
+			"lpt6_", "lpt7_", "lpt8_", "lpt9_", };
 	static String fbdFileName[] = { "CON", "PRN", "AUX", "NUL", "COM1", "COM2",
 			"COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1",
 			"LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
