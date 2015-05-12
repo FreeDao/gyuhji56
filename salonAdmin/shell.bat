@@ -1,4 +1,4 @@
 @call %bmTestDriver%
 @call cd  %bmTestPath%
-cd %CD%
+cd salonAdmin
 @cmd
