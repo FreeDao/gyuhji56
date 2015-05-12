@@ -142,11 +142,17 @@ public class PageDetectedVo {
 					// System.out.println(this.content);
 					String[] lines = this.content.split("\n");
 					StringBuilder sb = new StringBuilder();
+					int cnt = 0;
 					for (String line : lines) {
 						line = line.trim();
 						if (line.length() == 0) {
+							cnt++;
 							continue;
 						} else {
+							if (cnt >= 3) {
+								sb.append("<br>");
+							}
+							cnt = 0;
 							sb.append(line);
 							sb.append("<br>");
 						}
