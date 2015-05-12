@@ -38,7 +38,7 @@
 											pageId='${detectedPage.id }'
 											class="pageTr leftAudit-${detectedPage.audit_status }">
 											<td><c:out value="${detectedPage.score }" /></td>
-											<td><span title='${detectedPage.title }'>
+											<td nowrap><span title='${detectedPage.title }'>
 													${detectedPage.title } </span></td>
 										</tr>
 									</c:forEach>

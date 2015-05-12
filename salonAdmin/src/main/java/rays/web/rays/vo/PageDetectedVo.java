@@ -140,24 +140,8 @@ public class PageDetectedVo {
 					// this.content =
 					// HtmlRemover.htmlToLineFormat(this.content).lines;
 					// System.out.println(this.content);
-					String[] lines = this.content.split("\n");
-					StringBuilder sb = new StringBuilder();
-					int cnt = 0;
-					for (String line : lines) {
-						line = line.trim();
-						if (line.length() == 0) {
-							cnt++;
-							continue;
-						} else {
-							if (cnt >= 3) {
-								sb.append("<br>");
-							}
-							cnt = 0;
-							sb.append(line);
-							sb.append("<br>");
-						}
-					}
-					this.content = sb.toString();
+
+					this.content = mergeContent(this.content);
 				}
 			} finally {
 				mdir.close();
@@ -184,19 +168,50 @@ public class PageDetectedVo {
 		this.content = content;
 	}
 
-	public static void main(String[] args) {
-		String xx = "a\n b\n \n \n\n \n \n\n \n";
-		String[] lines = xx.split("\n");
+	private static String mergeContent(String str) {
+		String[] lines = str.split("\n");
 		StringBuilder sb = new StringBuilder();
-		for (String x : lines) {
-			x = x.trim();
-			if (x.length() == 0) {
+		int cntWhite = 0;
+		int tooShortNum = 0;
+		for (String line : lines) {
+			line = line.trim();
+			if (line.length() == 0) {
+				cntWhite++;
 				continue;
 			} else {
-				sb.append(x);
-				sb.append("<br>");
+
+				if (cntWhite >= 3) {
+					sb.append("<br>");
+				}
+				cntWhite = 0;
+
+				if (line.length() <= 6) {
+					if (tooShortNum > 0) {
+						sb.append("　·　");
+					}
+					sb.append(line);
+					tooShortNum++;
+					if (tooShortNum > 10) {
+						tooShortNum = 0;
+						sb.append("<br>");
+					}
+				} else {
+					if (tooShortNum > 0) {
+						sb.append("<br>");
+					}
+					tooShortNum = 0;
+					sb.append(line);
+					sb.append("<br>");
+				}
+
 			}
 		}
-		System.out.println(sb);
+		return sb.toString();
+	}
+
+	public static void main(String[] args) {
+		String xx = "1\n22\n333\n4444\n\n55555\n666666\n77777777\n9999\n00\n1\n222\n333\n44444\n555\n66666666\n7777\na\nfsf\nafa\n";
+		xx = mergeContent(xx);
+		System.out.println(xx);
 	}
 }
