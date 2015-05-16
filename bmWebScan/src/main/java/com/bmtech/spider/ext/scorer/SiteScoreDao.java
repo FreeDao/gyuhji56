@@ -70,6 +70,7 @@ public class SiteScoreDao implements ScoreSaver {
 		}
 		this.addPageParsedRecord.setString(1, host);
 		this.addPageParsedRecord.setInt(2, score);
+		this.addPageParsedRecord.setInt(3, urlHash);
 		this.addPageParsedRecord.execute();
 
 		int genId = this.addPageParsedRecord.getGeneratedKey();
