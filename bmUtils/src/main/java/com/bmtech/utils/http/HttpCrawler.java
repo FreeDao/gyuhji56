@@ -31,9 +31,9 @@ public class HttpCrawler implements Runnable {
 	protected InputStream ips;
 	public final HttpHandler handler;
 	private OutputStream ops;
-	private int totalWritten = -1;
-	private int totalReaded = -1;
-	private int contentLength = -1;
+	private long totalWritten = -1;
+	private long totalReaded = -1;
+	private long contentLength = -1;
 	private int httpCode = 0;
 	protected boolean connected = false;
 	private boolean follow = true;
@@ -88,7 +88,7 @@ public class HttpCrawler implements Runnable {
 
 		if (handler.getProxy() != null) {
 			conn = (HttpURLConnection) url.openConnection(handler.getProxy());
-		} else{
+		} else {
 			conn = (HttpURLConnection) url.openConnection();
 		}
 		if (!follow) {
@@ -167,7 +167,7 @@ public class HttpCrawler implements Runnable {
 	 * @return
 	 * @throws IOException
 	 */
-	public int dumpTo(String path) throws IOException {
+	public long dumpTo(String path) throws IOException {
 		if (path == null)
 			return -1;
 		File f = new File(path);
@@ -182,7 +182,7 @@ public class HttpCrawler implements Runnable {
 	 *         occur
 	 * @throws IOException
 	 */
-	public int dumpTo(File file) throws IOException {
+	public long dumpTo(File file) throws IOException {
 		if (ips == null)
 			return -1;
 		FileOutputStream fos = new FileOutputStream(file);
@@ -259,10 +259,10 @@ public class HttpCrawler implements Runnable {
 		return 0;
 	}
 
-	public int rawDataDumpTo(OutputStream ops) throws IOException {
+	public long rawDataDumpTo(OutputStream ops) throws IOException {
 		byte[] buf = new byte[4096];
-		int totalReaded = 0;
-		int readZero = 0;
+		long totalReaded = 0;
+		long readZero = 0;
 		int readMayEnd = 0;
 		while (true) {
 			int readed = ips.read(buf);
@@ -447,7 +447,7 @@ public class HttpCrawler implements Runnable {
 	 * 
 	 * @return the totalWritten. -1 means not start or http error
 	 */
-	public int getTotalWritten() {
+	public long getTotalWritten() {
 		return totalWritten;
 	}
 
@@ -521,7 +521,7 @@ public class HttpCrawler implements Runnable {
 		return parseHttpHead();
 	}
 
-	public int getTotalReaded() {
+	public long getTotalReaded() {
 		return totalReaded;
 	}
 

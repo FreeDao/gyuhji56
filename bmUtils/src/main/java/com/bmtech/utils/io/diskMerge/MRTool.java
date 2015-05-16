@@ -32,7 +32,7 @@ public class MRTool {
 		File tmpBase = getTmpBaseDir();
 		while (true) {
 			int vi = Misc.randInt(0, 100000000);
-			File ret = new File(tmpBase, "mrtmp" + vi + v);
+			File ret = new File(tmpBase, "mrtmp-" + vi + v);
 			if (ret.exists()) {
 				continue;
 			} else {
@@ -110,21 +110,28 @@ public class MRTool {
 		}
 		if (grp > 1) {
 			File tmpFiles[] = new File[grp];
-			for (int x = 0; x < grp; x++) {
-				File tmpFile = getTmpFile(".mrg");
-				int start = x * mergeFactor;
-				int end = start + mergeFactor;
-				if (end > mlst.length) {
-					end = mlst.length;
+			try {
+				for (int x = 0; x < grp; x++) {
+					File tmpFile = getTmpFile(".mrg");
+					tmpFiles[x] = tmpFile;
+
+					int start = x * mergeFactor;
+					int end = start + mergeFactor;
+					if (end > mlst.length) {
+						end = mlst.length;
+					}
+					File tmplst[] = new File[end - start];
+					System.arraycopy(mlst, start, tmplst, 0, end - start);
+					mergeToInner(tmpFile, recordClass, cmp, tmplst);
+
 				}
-				File tmplst[] = new File[end - start];
-				System.arraycopy(mlst, start, tmplst, 0, end - start);
-				mergeToInner(tmpFile, recordClass, cmp, tmplst);
-				tmpFiles[x] = tmpFile;
-			}
-			mergeTo(toFile, recordClass, mergeFactor, cmp, tmpFiles);
-			for (File x : tmpFiles) {
-				x.delete();
+				mergeTo(toFile, recordClass, mergeFactor, cmp, tmpFiles);
+			} finally {
+				for (File x : tmpFiles) {
+					if (x != null) {
+						x.delete();
+					}
+				}
 			}
 
 		} else {
@@ -277,32 +284,37 @@ public class MRTool {
 		MRecord crt = null;
 		ArrayList<MRecord> lst = new ArrayList<MRecord>();
 		ArrayList<File> fls = new ArrayList<File>();
-		while (true) {
-			crt = q.take();
-			if (crt == null) {
-				if (lst.size() > 0) {
+		try {
+			while (true) {
+				crt = q.take();
+				if (crt == null) {
+					if (lst.size() > 0) {
+						Collections.sort(lst, c);
+						File tmpFile = getTmpFile(".srt");
+						fls.add(tmpFile);
+						writeLstToFile(lst, tmpFile);
+
+					}
+					break;
+				}
+				lst.add(crt);
+				if (lst.size() >= bufferSize) {
 					Collections.sort(lst, c);
 					File tmpFile = getTmpFile(".srt");
-					writeLstToFile(lst, tmpFile);
 					fls.add(tmpFile);
-				}
-				break;
-			}
-			lst.add(crt);
-			if (lst.size() >= bufferSize) {
-				Collections.sort(lst, c);
-				File tmpFile = getTmpFile(".srt");
-				writeLstToFile(lst, tmpFile);
-				fls.add(tmpFile);
-				lst.clear();
-			}
-		}
+					writeLstToFile(lst, tmpFile);
 
-		File[] fs = new File[fls.size()];
-		fls.toArray(fs);
-		MRTool.mergeTo(toFile, recordClass, c, bufferSize, fs);
-		for (File f : fls) {
-			f.delete();
+					lst.clear();
+				}
+			}
+
+			File[] fs = new File[fls.size()];
+			fls.toArray(fs);
+			MRTool.mergeTo(toFile, recordClass, c, bufferSize, fs);
+		} finally {
+			for (File f : fls) {
+				f.delete();
+			}
 		}
 	}
 

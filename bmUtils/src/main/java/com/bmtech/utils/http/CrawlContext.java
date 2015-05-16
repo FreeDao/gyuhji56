@@ -41,7 +41,7 @@ public class CrawlContext implements Runnable {
 	private final URL url;
 	private CrawlOut output;
 	final HttpHandler hdl;
-	private int totRead = -1;
+	private long totRead = -1;
 	private int httpCode = -1;
 	private boolean okRun = false;
 	private boolean isDownload = false;
@@ -118,7 +118,7 @@ public class CrawlContext implements Runnable {
 		}
 	}
 
-	public int getTotRead() {
+	public long getTotRead() {
 		return totRead;
 	}
 

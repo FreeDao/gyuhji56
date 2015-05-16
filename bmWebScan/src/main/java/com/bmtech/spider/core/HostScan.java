@@ -218,6 +218,9 @@ public class HostScan implements Runnable {
 					URL newURL = new URL(hostContext.getCurrentUrl().getUrl(),
 							link.getLink());
 					String iurl = RURL.rewrite(newURL.toString(), cs);
+					if (iurl.length() > 1024) {
+						iurl = iurl.substring(0, 1024);
+					}
 					newURL = new URL(iurl);
 					if (hostInfo.isMyUrl(newURL)) {
 						int score = scorer.urlScore(link.text, link.title,
