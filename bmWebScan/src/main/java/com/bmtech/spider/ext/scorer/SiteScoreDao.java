@@ -3,17 +3,20 @@ package com.bmtech.spider.ext.scorer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.bmtech.utils.bmfs.MDir;
 import com.bmtech.utils.bmfs.MFile;
+import com.bmtech.utils.log.LogHelper;
 import com.bmtech.utils.rds.RDS;
 
 public class SiteScoreDao implements ScoreSaver {
 	RDS addHostInfo;
-	RDS addPageParsedRecord;
+	RDS addPageParsedRecord, checkAlreadyHasScored;
 	RDS addPageParsedRecordAttach;
 	MDir saveDir;
+	LogHelper log = new LogHelper("SiteScoreDao");
 
 	public SiteScoreDao(MDir saveDir) throws SQLException {
 		init();
@@ -21,7 +24,7 @@ public class SiteScoreDao implements ScoreSaver {
 	}
 
 	public void init() throws SQLException {
-
+		checkAlreadyHasScored = RDS.getRDSByKey("checkAlreadyHasScored");
 		addHostInfo = RDS.getRDSByKey("addHostParsedRecord");
 		addPageParsedRecord = RDS.getRDSByKey("addPageParsedRecord");
 		addPageParsedRecordAttach = RDS
@@ -56,7 +59,15 @@ public class SiteScoreDao implements ScoreSaver {
 	public synchronized void save(String title, String lines, URL url, int score)
 			throws SQLException, IOException {
 		String host = url.getHost();
-
+		int urlHash = urlHash(url);
+		this.checkAlreadyHasScored.setString(1, host);
+		this.checkAlreadyHasScored.setInt(2, urlHash);
+		ResultSet rs = checkAlreadyHasScored.executeQuery();
+		if (rs.next()) {
+			log.warn("already has put %s:%s for url %s with score %s", host,
+					urlHash, url, score);
+			return;
+		}
 		this.addPageParsedRecord.setString(1, host);
 		this.addPageParsedRecord.setInt(2, score);
 		this.addPageParsedRecord.execute();
@@ -70,6 +81,10 @@ public class SiteScoreDao implements ScoreSaver {
 		this.addPageParsedRecordAttach.setString(4,
 				saveAndGetPath(genId, host, lines));
 		this.addPageParsedRecordAttach.execute();
+	}
+
+	private int urlHash(URL url) {
+		return Math.abs(url.getPath().hashCode());
 	}
 
 	private String stringLen(String str, int len) {

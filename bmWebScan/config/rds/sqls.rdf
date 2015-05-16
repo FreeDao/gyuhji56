@@ -14,7 +14,7 @@ addHostParsedRecord = webscan::insert into webscan_source_detect( host, level_1_
 addPageParsedRecord = webscan::insert into webscan_page_score(host, score, checkby)values(?,?, 'testor')
 
 addPageParsedRecordAttach = webscan::insert into webscan_page_detail(id,title,url,path)values(?,?,?,?)
-
+checkAlreadyHasScored = webscan::select * from webscan_page_score where host = ? and urlhash=?
 
 checkAllway = webscan::select * from webscan_host_url_allows where url = ?
 insertAlways = webscan::insert into webscan_host_url_allows(host, url,type)values(?, ?,?)
