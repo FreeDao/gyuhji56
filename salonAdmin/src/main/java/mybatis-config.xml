@@ -35,7 +35,9 @@
 		<typeAlias alias="HostDetectedVo" type="rays.web.rays.vo.HostDetectedVo" />
 		<typeAlias alias="PageDetectedVo" type="rays.web.rays.vo.PageDetectedVo" />
 		<typeAlias alias="PageScoreDao" type="rays.web.rays.dao.mybatis.PageScoreDao" />
-		<typeAlias alias="AdminUserVo" type="rays.web.rays.vo.AdminUserVo" />
+		<typeAlias alias="ArtTagVo" type="rays.web.salon.vo.ArtTagVo" />
+		<typeAlias alias="TagGroupVo" type="rays.web.salon.vo.TagGroupVo" />
+		<typeAlias alias="TagNameVo" type="rays.web.salon.vo.TagNameVo" />
 	</typeAliases>
 
 
@@ -58,5 +60,6 @@
 		<mapper resource="rays/web/rays/dao/mybatis/baseVoMapper.xml" />
 		<mapper resource="rays/web/rays/dao/mybatis/BaseScoreMapper.xml" />
 		<mapper resource="rays/web/rays/dao/mybatis/adminUserMapper.xml" />
+		<mapper resource="rays/web/rays/dao/mybatis/SalonMapper.xml" />
 	</mappers>
 </configuration> 

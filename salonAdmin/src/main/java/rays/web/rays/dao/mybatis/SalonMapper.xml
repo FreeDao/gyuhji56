@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rays.web.rays.dao.mybatis.Salon">
+	<select id="getTagNameById" resultType="TagNameVo">
+
+		select
+		t.`tag_id` as tagId,
+		t.`group_id` as groupId,
+		t.`tag_name` as tagName,
+		g.`group_name` as groupName,
+		t.`update_time` as updateTime
+		from salon_tag_name t,
+		salon_tag_group g
+		where
+		t.group_id = g.group_id
+		and
+		tag_id = #{tagNameId}
+	</select>
+
+	<select id="getTagGroupById" resultType="TagGroupVo">
+
+		select
+		`group_id` as groupId,
+		`group_name` as groupName,
+		`update_time` as updateTime
+		from
+		salon_tag_group
+		where group_id = #{groupId}
+
+	</select>
+
+	<select id="getArtTagById" resultType="ArtTagVo">
+
+		select
+		r.`relation_id` as relationId,
+		r.`art_id` as artId,
+		t.`tag_id` as tagId,
+		t.`tag_name` as tagName,
+		g.`group_name` as groupName
+		t.`update_time` as updateTime
+
+		from
+		salon_tag_name t,
+		salon_tag_group g ,
+		salon_rel_art_tag r
+		where
+		t.group_id = g.group_id
+		and
+		r.tag_id = t.tag_id
+		and r.art_id =
+		#{artId}
+
+
+	</select>
+</mapper> 
