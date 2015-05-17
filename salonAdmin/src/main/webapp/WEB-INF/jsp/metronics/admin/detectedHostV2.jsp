@@ -90,7 +90,7 @@
 								分值：<b><span id="detectedPageScore"></span></b>
 							</div>
 							<div class="col-md-4">
-								获取时间: <span id="detectedPageTime"></span>
+								获取时间: <span id="detectedPageTime" style="display:none"></span>
 							</div>
 							<div class="col-md-4">
 								原址: <a id="detectedPageOrgUrl" target="_blank">打开</a>

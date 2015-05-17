@@ -131,7 +131,7 @@
 								分值：<b><span id="detectedPageScore"></span></b>
 							</div>
 							<div class="col-md-4">
-								获取时间: <span id="detectedPageTime"></span>
+								获取时间: <span id="detectedPageTime" style="display:none"></span>
 							</div>
 							<div class="col-md-4">
 								原址: <a id="detectedPageOrgUrl" target="_blank">打开</a>
@@ -144,7 +144,7 @@
 					<div class="portlet light" style="margin-bottom:0px">
 
 						<div class="portlet-body">
-							<div class="scroller" style="height: 400px" data-rail-visible="1"
+							<div class="scroller" style="height: 350px" data-rail-visible="1"
 								data-rail-color="yellow" data-handle-color="#a1b2bd">
 
 								<span id="detectedPageContent"></span>
