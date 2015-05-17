@@ -1,5 +1,9 @@
 package rays.web.salon.vo;
 
+import java.util.Date;
+
+import com.bmtech.utils.Misc;
+
 public class ArtTagVo {
 
 	private int relationId;
@@ -37,8 +41,8 @@ public class ArtTagVo {
 		return updateTime;
 	}
 
-	public void setUpdateTime(long updateTime) {
-		this.updateTime = updateTime;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime.getTime();
 	}
 
 	public int getGroupId() {
@@ -55,6 +59,14 @@ public class ArtTagVo {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+
+	@Override
+	public String toString() {
+		return "ArtTagVo [relationId=" + relationId + ", tagId=" + tagId
+				+ ", groupId=" + groupId + ", tagName=" + tagName
+				+ ", groupName=" + groupName + ", updateTime="
+				+ Misc.timeStr(updateTime) + "]";
 	}
 
 }

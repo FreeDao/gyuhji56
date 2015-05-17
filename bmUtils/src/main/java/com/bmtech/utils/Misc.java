@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -308,6 +309,10 @@ public class Misc {
 		}
 
 		return readed;
+	}
+
+	public static String timeStr(long time) {
+		return new SimpleDateFormat("yyyy-MM-dd.HH.mm.ss.SSS").format(time);
 	}
 
 	public static void del(File file) {

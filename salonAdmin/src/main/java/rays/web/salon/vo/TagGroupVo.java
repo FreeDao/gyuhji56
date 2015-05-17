@@ -1,5 +1,9 @@
 package rays.web.salon.vo;
 
+import java.util.Date;
+
+import com.bmtech.utils.Misc;
+
 public class TagGroupVo {
 
 	private int groupId;
@@ -26,8 +30,14 @@ public class TagGroupVo {
 		return updateTime;
 	}
 
-	public void setUpdateTime(long updateTime) {
-		this.updateTime = updateTime;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime.getTime();
+	}
+
+	@Override
+	public String toString() {
+		return "TagGroupVo [groupId=" + groupId + ", groupName=" + groupName
+				+ ", updateTime=" + Misc.timeStr(updateTime) + "]";
 	}
 
 }

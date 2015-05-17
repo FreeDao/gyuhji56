@@ -38,8 +38,10 @@
 		r.`art_id` as artId,
 		t.`tag_id` as tagId,
 		t.`tag_name` as tagName,
-		g.`group_name` as groupName
-		t.`update_time` as updateTime
+		g.`group_id` as groupId,
+		
+		g.`group_name` as groupName,
+		r.`update_time` as updateTime
 
 		from
 		salon_tag_name t,

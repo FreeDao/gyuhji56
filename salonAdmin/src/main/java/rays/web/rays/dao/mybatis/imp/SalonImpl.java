@@ -45,4 +45,11 @@ public class SalonImpl extends MybatisBaseDao implements Salon {
 		}
 	}
 
+	public static void main(String[] args) throws Exception {
+		SalonImpl impl = new SalonImpl();
+		System.out.println(impl.getArtTagById(1));
+		System.out.println(impl.getTagGroupById(1));
+		System.out.println(impl.getTagNameById(1));
+	}
+
 }
