@@ -403,6 +403,20 @@ public class Misc {
 		} finally {
 			fis.close();
 		}
+	}
 
+	public static File besureDirExists(String dirStr) throws IOException {
+		return besureDirExists(new File(dirStr));
+	}
+
+	private static File besureDirExists(File dir) throws IOException {
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		if (!dir.exists() || dir.isFile()) {
+			throw new IOException("can not create sessaWorkDir:"
+					+ dir.getAbsolutePath());
+		}
+		return dir;
 	}
 }
