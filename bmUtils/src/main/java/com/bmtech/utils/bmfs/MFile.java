@@ -107,6 +107,15 @@ public final class MFile {
 		return false;
 	}
 
+	public byte[] getBytes() throws IOException {
+		MFileReader reader = openReader();
+		try {
+			return reader.getBytes();
+		} finally {
+			reader.close();
+		}
+	}
+
 	public String getName() {
 		return name;
 	}

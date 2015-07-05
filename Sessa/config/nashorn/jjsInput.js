@@ -24,6 +24,7 @@ jjsInput.denoteCmdArray=[
                                cmdName:"s",
                                cmdFunc:"stringSetting"  
                            }
+                           
                            ];
 
 jjsInput.input = function (line) {

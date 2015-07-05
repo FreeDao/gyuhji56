@@ -79,8 +79,20 @@ jpr = function(){
 
     return "";
 };
+var error = function(exc){
+    jpr("error: %s", exc)
+}
+var warn = function(exc){
+    jpr("warn: %s", exc)
+}
 
-jpr("jjsEnv.js loaded");
+var info = function(exc){
+    jpr("info: %s", exc)
+}
+var debug = function(exc){
+    jpr("debug: %s", exc)
+}
+
 
 //var bi=function(){
 //print("/** in blockInput  **/");
@@ -180,11 +192,31 @@ var loadEnv = function(){
     loadx(jjsEnv);
 }
 
-var crawl= function(url){
+var crawl = function(url){
     var url = new URL(url);
     var crl = HttpCrawler.makeCrawler(url);
     return crl.getString();
 }
+var crawlWithMdir = function(urlStr, mdir){
+    if(!mdir){
+	throw "mdir not set";
+    }
+    var mfile = mdir.getMFileByName(urlStr);
+    var ret;
+    if(mfile){
+	debug("hit in mdir for url " + urlStr)
+	var bytes = mfile.getBytes();
+	return new java.lang.String(bytes, "utf-8");
+    }else{
+	var url = new URL(urlStr);
+	var crl = HttpCrawler.makeCrawler(url);
+	ret = crl.getString();
+	var ips = new ByteArrayInputStream(ret.getBytes("utf-8"));
+	mdir.addFile(urlStr, ips, false);
+    }
+    return ret;
+}
+
 var tail = function(str, num){
     if(!top){
 	num = 32;
@@ -208,7 +240,17 @@ var head = function(str, top){
 
 
 var test = function(){
-   return loadx('testEdit');
+    return loadx('testEdit');
 }
 
+var printJson=function(arg){
+    print(JSON.stringify(arg))
+}
+
+jpr("jjsEnv.js loaded");
 loadx('history');
+loadx('jsoup');
+loadx('mdir');
+
+
+
