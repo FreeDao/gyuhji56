@@ -1,0 +1,29 @@
+load('config/nashorn/jjsEnv.js')
+load("config/nashorn/jjsEnv.js");
+
+
+
+loadVar("allStock")
+JSON.parse(loadVar("allStock"))
+allStock =JSON.parse(loadVar("allStock"))
+allstock[0].name
+allstock
+allStock[0]
+allStock[0].name
+loadVar("allStock")
+load("config/nashorn/jjsEnv.js");
+allStock =loadVar("allStock")
+
+
+v="adfasdfas"
+JSON.stringify(v)
+JSON.parse(JSON.stringify(v))
+jkl;
+
+s = java.net.URLDecoder.decode("k", 'utf-8')
+s=k
+s
+
+
+
+

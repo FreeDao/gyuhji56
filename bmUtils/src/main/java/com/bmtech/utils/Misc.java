@@ -419,4 +419,13 @@ public class Misc {
 		}
 		return dir;
 	}
+
+	public static void save(File toSave, String txt) throws IOException {
+		FileOutputStream fos = new FileOutputStream(toSave);
+		try {
+			fos.write(txt.getBytes());
+		} finally {
+			fos.close();
+		}
+	}
 }

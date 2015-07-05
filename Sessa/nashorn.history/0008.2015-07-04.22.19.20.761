@@ -1,0 +1,6 @@
+load('config/nashorn/jjsEnv.js')
+var ___internalFunc = java.net.URLDecoder.decode('23refadfaf', 'utf-8')
+var ___internalFunc2 = eval(___internalFunc);
+var ___internalFunc = java.net.URLDecoder.decode('k+%3D+java.net.URLDecoder.decode%28%22739whfoifjk20-3eokdfasdfjasdf%25E6%25BF%2580%25E5%258F%2591%25E8%2582%258C%25E8%2582%25A4%22%2C+%27utf-8%27%29', 'utf-8')
+var ___internalFunc2 = eval(___internalFunc);
+

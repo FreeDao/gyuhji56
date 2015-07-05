@@ -1,0 +1,133 @@
+loadVar('10jqka.tagGroup')
+tagGroup = loadVar('10jqka.tagGroup')
+for(var index in tagGroup.group){
+	var group = tagGroup.groups[index]
+	for(var index 2 in group.tags){
+		tag = group.tags[0]
+
+
+JSON.stringify(tag)
+var tagHtml = crawl(tag.subUrl)
+tagHtml
+JSON.stringify(tag)
+members(this)
+doc = Jsoup.parse(tagHtml)
+loadx(jsoup)
+loadx('jsoup')
+doc = Jsoup.parse(tagHtml)
+doc.select('c_wrap #c_content');
+doc.select('c_wrap .c_content');
+doc.select('.c_content');
+doc.select('.c_wrap .c_content');
+doc.select('.c_wrap .c_content a');
+var links = doc.select('.c_wrap .c_content a');
+var gu = links[0]
+gu
+var gu = links[0].attr('href')
+gu
+var code = Misc.substr()
+var code = Misc.subStr()
+var code = gu.replace("/", "")
+code
+var code = gu.replace("/", "")
+code
+var code = gu.replaceAll("/", "")
+code
+var code = gu.replaceAll("/", "").trim()
+var allStock = loadVar('allStock')
+history
+history()
+hisCmd()
+loadx(jjsEnv)
+loadx(jjsEnv)
+loadx(jjsEnv)
+hisCmd()
+hisCmd('nashorn.history/0018.2015-07-05.18.50.12.862')
+test()
+hisCmd()
+hisCmd('nashorn.history/0018.2015-07-05.18.50.12.862')
+loadEnv()
+loadEnv()
+loadEnv()
+loadx(jjsEnv)
+
+
+
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+
+\\
+
+
+
+
+
+
+
+\\
+loadx(jjsEnv)
+
+
+
+
+
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+
+
+
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+allStock
+allStock.getByCode('0026282');
+allStock.findByCode('0026282');
+loadVarExt('allStock')
+allStock.findByCode('0026282');
+allStock.findByCode('002628');
+allStock.codeMap
+allStock.findByCode('002628');
+loadVarExt('allStock')
+loadVarExt('allStock')
+allStock.data
+allStock.findByCode('0026282');
+
+
+
+
+
+allStock.findByCode('0026282');
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+allStock.findByCode('0026282');
+allStock.findByCode('002628');
+allStock.codeMap
+loadVarExt('allStock')
+allStock
+allStock.data
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+loadVarExt('allStock')
+
+
+
+allStock.codeMap
+allStock.findByCode('002628');
+loadVarExt('allStock')
+allStock.getByName('海南高速')
+JSON.stringify(allStock.getByName('海南高速'))

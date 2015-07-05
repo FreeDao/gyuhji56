@@ -1,0 +1,62 @@
+#this is the resource file
+[var]
+#define key_values
+#define mysql and oracle's connection url and driver name
+my_url = jdbc:mysql://$host$:$port$/$database$?autoReconnect=true&charset=gbk&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+my_driver = com.mysql.jdbc.Driver
+
+#ms_driver=net.sourceforge.jtds.jdbc.Driver
+#ms_url=jdbc:jtds:sqlserver://$host$:$port$;DatabaseName=$database$
+#ora_url = jdbc:oracle:thin:@$host$:$port$:$database$
+#ora_driver = oracle.jdbc.driver.OracleDriver
+
+[def]
+#DEF block, DEF defines the vars who should been defined in other config
+#define oracle vars
+#DEF = ora_host
+#DEF = ora_port
+#DEF = ora_user
+#DEF = ora_password
+#DEF = ora_database
+
+#define mysql vars
+#DEF = my_host
+#DEF = my_port
+#DEF = my_user
+#DEF = my_password
+#DEF = my_database
+
+[src]
+#source define block, it should be defined at the end of main block
+
+SRC = webscan, seCrawl,epg_qa
+
+[webscan]
+host = 192.168.135.11
+port = 3306
+#how it is? use another user?
+user = root
+password = 123456
+database = rl2ee
+driver = $my_driver$
+url = $my_url$
+
+[seCrawl]
+host = 192.168.135.11
+port = 3306
+#how it is? use another user?
+user = root
+password = 123456
+database = rl2ee
+driver = $my_driver$
+url = $my_url$
+
+[epg_qa]
+host = 10.50.121.15
+port = 3306
+#how it is? use another user?
+user = epg_qa
+password = epg_qa
+database = epg_qa
+driver = $my_driver$
+url = $my_url$

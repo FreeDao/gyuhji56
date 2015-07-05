@@ -1,0 +1,21 @@
+load('config/nashorn/jjsEnv.js')
+a=5
+print(a+3)
+//
+c=9
+a+c
+___internalFunc = java.net.URLDecoder.decode('', 'utf-8')
+eval(___internalFunc1)
+___internalFunc = java.net.URLDecoder.decode('a%3D5%0D%0Aprint%28a%2B3%29%0D%0A%2F%2F%0D%0Ac%3D9%0D%0Aa%2Bc', 'utf-8')
+eval(___internalFunc1)
+___internalFunc = java.net.URLDecoder.decode('a%3D5%0D%0Aprint%28a%2B3%29%0D%0A%2F%2F%0D%0Ac%3D9%0D%0Aa%2Bc', 'utf-8')
+___internalFunc = java.net.URLDecoder.decode('a%3D5%0D%0Aprint%28a%2B3%29%0D%0A%2F%2F%0D%0Ac%3D9%0D%0Aa%2Bc', 'utf-8')
+eval(___internalFunc)
+
+
+eval(___internalFunc)
+___internalFunc = java.net.URLDecoder.decode('kk+%3D+java.net.URLDecoder.decode%28%22sfdasdfasdfa%25E2%2580%2598%25E2%2580%2599%25E4%25BD%25A0%25E5%25A5%25BD%22%2C+%27utf-8%27%29', 'utf-8')
+eval(___internalFunc1)
+eval(___internalFunc)
+kk
+
