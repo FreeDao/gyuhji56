@@ -1,0 +1,88 @@
+﻿设计一套体系，能够让计算机无疑义地理解，是问题的关键
+opp in-out = $入 $出
+opp full-empty = $full $emptoy
+wu container = {$wu， $in-out, $wu}, {$full-empty}, 
+wu 天空
+wu 鸟 ={$飞}
+pos {$方位，$位置}
+#鸟在天空飞翔
+	wu 鸟{飞翔}
+	container{$鸟, $天空}
+	ops{在，天空}
+	
+ 
+
+
+(1) 
+	a.
+		CONTAINER,  
+			出 
+			入
+			内
+			外
+			大
+			小
+			
+		PATH
+			起 -->止
+			
+		SOURCE-PATH-GOAL,
+		  source 起-->止 goal
+		LINK  
+		a-->b
+		PARTWHOLE,
+			partof()
+		 	whole()
+		CENTER-PERIPHERY,
+			in-block
+			a-b-a
+		BALANCE
+			measure(x) == measure(y)
+			
+	b. the  FORCE  schemas:  
+		ENABLEMENT,
+			set there object x
+			x is disable
+			enable(x) = x is enabled
+		BLOCKAGE,  
+			a-(b-b')-c
+			b-b' missing
+		COUNTERFORCE, 
+		ATTRACTION, 
+		COMPULSION, 
+		RESTRAINT, 
+		REMOVAL, 
+		DIVERSION
+(2)
+	 a. 
+	 		CONTACT,  
+	 		SCALE,  
+	 		NEAR-FAR,  
+	 		SURFACE,  
+	 		FULL-EMPTY,  
+	 		PROCESS,  
+	 		CYCLE, 
+	 		ITERATION,  
+	 		MERGING,  
+	 		MATCHING,  
+	 		SPLITTING,  
+	 		OBJECT,  
+	 		COLLECTION, 
+	 		[MASS-COUNT], 
+	 		[SUPERIMPOSITION]
+	b. 
+		UP-DOWN, 
+		FRONT-BACK
+		
+(3) a. 
+		INANIMATE  MOTION,  
+		ANIMATE  MOTION,  
+		SELF  MOTION,  
+		CAUSED  MOTION   
+		LOCOMOTION 
+		
+		b.
+		EXPANSION
+		STRAIGHT,  
+		RESISTANCE 
+		LEFT-RIGHT

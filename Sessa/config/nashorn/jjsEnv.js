@@ -247,10 +247,38 @@ var printJson=function(arg){
     print(JSON.stringify(arg))
 }
 
-jpr("jjsEnv.js loaded");
+
 loadx('history');
 loadx('jsoup');
 loadx('mdir');
+var globalVar = [];
+var localVars=function(){
+    print("/***local****/");
+    for(var e in this){
+	if(globalVar.indexOf(e)!=-1){
+	    continue;
+	}else{
+	    var type = (typeof eval("this." +e));
+	    print(" " + type  + "\t" +  e);
+	}
+    }
+}
+var globalVars = function(){
+    print("/* global variables */");
+    globalVar.forEach(function(e){
+	var type=(typeof eval("this." +e))
+	print(" " + type  + "\t" +  e);
+    })
+}
+var vars = function(){
+    globalVars();
+    localVars();    
+}
+
+for(var i in this){
+    globalVar.push(i)
+}
+jpr("jjsEnv.js loaded");
 
 
 
