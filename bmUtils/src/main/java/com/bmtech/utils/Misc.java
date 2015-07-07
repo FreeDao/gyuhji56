@@ -311,6 +311,10 @@ public class Misc {
 		return readed;
 	}
 
+	public static String timeStr() {
+		return timeStr(System.currentTimeMillis());
+	}
+
 	public static String timeStr(long time) {
 		return new SimpleDateFormat("yyyy-MM-dd.HH.mm.ss.SSS").format(time);
 	}

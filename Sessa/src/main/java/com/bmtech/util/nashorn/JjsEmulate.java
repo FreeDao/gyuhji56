@@ -91,17 +91,18 @@ public class JjsEmulate {
 
 				String input;
 				if (lineNo == 1) {
-					input = "load('config/nashorn/jjsEnv.js');";
+					input = "load('config/nashorn/jjsEnv.js');\n";
 					input = input
 							+ "var hisFile = "
 							+ this.jsString(this.historyWriter.file
 									.getAbsoluteFile().getCanonicalPath());
 				} else {
 					input = readString();
+					String[] cmd = rewrite(input);
+					history(cmd[1]);
+					input = cmd[0];
 				}
-				String[] cmd = rewrite(input);
-				history(cmd[1]);
-				out.write(cmd[0].getBytes());
+				out.write(input.getBytes());
 				out.write("\r\n".getBytes());
 				out.flush();
 

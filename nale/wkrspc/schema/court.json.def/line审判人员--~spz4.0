@@ -1,0 +1,9 @@
+// export @spz4
+// #spz1={startl}审{*.0-}判{*.0-}长{*.1-}
+// #spz2={startl}审{*.0-}判{*.0-}长{*.1-}
+// #beig1=
+// #beig1={startl
+// #spz3={startl}审{kb.0-}判{kb.0-}长{kb.1-}
+// #spz3={startl}审{kb.0-}判{kb.0-}长{*.0-}
+#spz4={startl}审{kb.0-}判{kb.0-}长{*.0-}
+

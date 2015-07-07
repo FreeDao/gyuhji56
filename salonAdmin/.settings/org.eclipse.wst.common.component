@@ -8,9 +8,6 @@
         <dependent-module archiveName="bmUtils-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bmUtils/bmUtils">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="bmWebScan-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/bmWebScan/bmWebScan">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="salonAdmin"/>
         <property name="java-output-path" value="/salonAdmin/target/classes"/>
     </wb-module>

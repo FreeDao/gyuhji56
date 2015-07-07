@@ -6,4 +6,4 @@ echo load env: load("%jjsEnv%");
 @java -Dfile.encoding=gbk -cp %_CP%  com.bmtech.util.nashorn.JjsEmulate "C:\Program Files\Java\jre1.8.0_45\bin\jjs.exe -Dfile.encoding=gbk -cp %_CP%"
 #@jjs -cp %_CP% 
 
-cmd
+@call jjs-shell.bat

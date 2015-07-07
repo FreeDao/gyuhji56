@@ -1,0 +1,148 @@
+
+///**	basic rules  **/
+
+//*	表达式第一个字符不能是 “英文标点符号”。如需要，则需要使用{}表达式运算
+
+//冒号:；
+	exp #： = :|：|：
+	
+	
+	exp #， = ,|，|，
+	exp #、=、|/|、
+	exp #？= ?|？｜？
+	exp #。 = .|。|。
+	exp #！ = ！| !|！
+	exp #； = ;|；|；
+	exp #《 = <|《|＜
+	exp #》 = >|》|＞
+	exp #（ = (|（|（
+	exp #） = ) | ）|）
+	exp #【 = [|【|［
+	exp #】 = ] | 】|］
+  
+  //left brace {
+	exp #l_brack = \{|｛|｛
+	exp #lbrc = {l_brack}
+	
+	//right brace
+	exp #r_brack = }| ｝|｝
+	exp #rbrc = {r_brack}
+	
+	//数字阿拉伯
+	exp #09B = @ textmatchers.pattern.def.reg.RSZ
+	//阿拉伯数字半角
+	exp #09Q = @ textmatchers.pattern.inner.ALBQuanjiaoShuzi
+	
+	//阿拉伯数字（全角/半角）
+	exp #09 = {09B|09Q}
+	
+	exp #09C = @ textmatchers.pattern.inner.HanziShuzi
+	  
+	exp #xuhao_x1=⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇
+	exp #xuhao_x2=⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛
+	exp #xuhao_x3=①②③④⑤⑥⑦⑧⑨⑩
+	exp #xuhao_x4=㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩
+	
+	xuhaoStr = cat(xuhao_x1, xuhao_x2,xuhao_x3,xuhao_x4)
+
+//序号字符，包括⑴  ⒈ ① ㈠四个系列
+	exp XHC = chars(xuhaoStr)
+	exp xhc = XHC
+	
+	#hzszl=一二三四五六七八九十零〇
+	exp 零九=chars(hzszl)
+	
+	exp #STR = @ textmatchers.pattern.def.reg.SString
+	exp str = STR
+	  
+	exp #AREA = @ textmatchers.pattern.def.reg.SArea
+  exp area = AREA
+    
+	exp #* = @ textmatchers.pattern.def.reg.RRY
+	
+	//任意标点符号  
+	exp #，。 = @ textmatchers.pattern.def.reg.RBD
+	  
+	//汉字
+	exp #HZ = @ textmatchers.pattern.def.reg.RHZ
+	exp hz = HZ
+	
+	//汉字标点
+	exp #HZBD = @ textmatchers.pattern.def.reg.RHZBD
+	exp hzbd = HZBD
+		
+	exp #HY = {HZ|HZBD}
+	exp hy = HY
+	
+	//空白
+	exp #KB = @ textmatchers.pattern.def.reg.RKB
+	exp kb = KB
+	
+	//任意一个字： 字母/汉字
+	exp #AZHZ = @ textmatchers.pattern.def.reg.RLetter
+	exp azhz = AZHZ
+	
+	//任意一个字或者数字
+	exp #AZHZ09 = @ textmatchers.pattern.def.reg.RLetterOrDigital
+	exp azhz09=AZHZ09
+	
+	//一行结束
+	exp #RN = @ textmatchers.pattern.def.reg.RLineEnd
+	exp rn = RN
+	  
+	//一行结束
+	exp #END = @ textmatchers.pattern.def.addon.QEnd
+	exp end = END
+
+	//一行结束，不管有没有换行符
+	exp #ENDL = {END}|{RN}
+	exp endl = ENDL
+
+	//sentence
+	exp #ENDS = {END}|{RN}|{。}
+	exp ends = ENDS
+
+	//comma
+	exp #ENDC = {END}|{RN}|{。|，|；|？|！}
+	exp endc = ENDC
+	
+	#a=a
+	#z=z
+	exp AZX = $env.range($a,$z)
+	exp azx=AZX
+	
+	#A=A
+	#Z = Z
+	exp AZD= $env.range($A,$Z)
+	//任意大小写字符
+	exp #AZ={AZX|AZD}
+	exp az = AZ
+	
+	//一句话内部
+	#inSent = @textmatchers.pattern.def.reg.RInSentence
+	
+	//一句话里面不包括。|？|：|！等
+	exp #…= {inSent.1-}
+	
+	
+	//一句话里包括标点符号
+	exp #……={…}{ENDS}
+	
+	
+	//一行开始的地方 Line Start
+	exp #STARTLINE=@textmatchers.pattern.def.reg.LineStart
+	exp startline = STARTLINE
+
+	exp #STARTS={RN|。|STARTLINE}
+	exp starts = STARTS
+	
+	exp #STARTC={RN|。|，|；|？|！|STARTLINE}
+	exp startc = STARTC
+	
+	exp #startd={startline}{kb.0-}
+	exp startl = startd
+	
+	
+	exp #nyr={09.4}年{09.1-2}月{09.1-2}日
+	
+	

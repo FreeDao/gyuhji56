@@ -193,6 +193,7 @@ var loadEnv = function(){
 }
 
 var crawl = function(url){
+    print("crawling " + url)
     var url = new URL(url);
     var crl = HttpCrawler.makeCrawler(url);
     return crl.getString();
@@ -215,6 +216,26 @@ var crawlWithMdir = function(urlStr, mdir){
 	mdir.addFile(urlStr, ips, false);
     }
     return ret;
+}
+var pause = function(){
+    Consoler.readString("")
+}
+var crawlCallBack = function(urls, mdir, callback){
+    try{
+	for(var index in urls){
+	    var __crawlTmp = null;
+	    try{
+		__crawlTmp = crawlWithMdir(urls[index], mdir)
+	    }catch( e){
+		print(e)
+	    }finally{
+		callBack(__crawlTmp);
+	    }
+	}
+	
+    }finally{
+	mdir.fsyn();
+    }
 }
 
 var tail = function(str, num){
@@ -278,6 +299,12 @@ var vars = function(){
 for(var i in this){
     globalVar.push(i)
 }
+
+
+var day = function(){
+    return new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+}
+
 jpr("jjsEnv.js loaded");
 
 

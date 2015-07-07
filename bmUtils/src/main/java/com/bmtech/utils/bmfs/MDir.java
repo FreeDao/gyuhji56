@@ -612,6 +612,10 @@ public class MDir {
 		}
 	}
 
+	public synchronized List<MFile> listFiles() {
+		return this.getMFiles();
+	}
+
 	public synchronized List<MFile> getMFiles() {
 
 		Collection<MFile> collection = this.nameMap.values();

@@ -34,5 +34,6 @@ for(index in sections){
 	tagGroupData.tags.push(tagInfo);
     }
 }
+
 saveVar('10jqka.tagGroup', tagGroups)
 

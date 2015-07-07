@@ -1,0 +1,49 @@
+
+//《银河守卫者》诞生于1969年，2008年又被重新复活。这部漫画讲述一群来自不同星球的超级英雄战士聚在一起保卫银河系不受各种外星入侵者的破坏，他们中很多都是自己种族中的最后一人，如冥王星人和木星人。漫威影业老总凯文·菲吉（Kevin Feige）曾称这部影片将是一部“太空史诗”。
+
+//提取故事梗概
+	#漫画=电影|电视剧|动漫|综艺
+	#讲述=讲述|叙述|讲
+
+	#故事梗概 = 这部{漫画}{讲述}{*.4}{endc}
+	
+	#forbidden = 奇怪
+	
+	故事梗概.not(forbidden)
+	
+	//after match
+	//$content = $故事梗概.g3
+	
+	#content = sfasd
+	#com = fa
+	#tv=fun.tv
+	content = $content.replace(com, tv)
+	
+	a = 1
+	
+	print(content)
+	
+	print(a)
+
+	print($tv)
+
+	print(。)
+	env.print(？)
+	
+	#x = 。；，。
+	x_m = $。.match(x)
+	
+	print(x_m)
+	
+	$x.v= 1000
+	print($x)
+	print($x.v)
+	print($x.v)
+	
+	#x = \x|\${？|！.7}
+	k = $x.pattern()
+	x.print()
+	print(k)
+	k.print()
+	
+//	output.x=0

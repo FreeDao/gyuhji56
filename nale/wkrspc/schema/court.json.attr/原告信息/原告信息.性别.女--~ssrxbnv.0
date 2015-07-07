@@ -1,0 +1,17 @@
+// export @ssrxbnv
+// #ygxbv
+// #ygxbv=原告{：.0-1}{hz.2-3}{，}女
+// #ygxbna=原告{：.0-1}{hz
+// #ygxbna=原告{：.0-1}{hz.2-3}{，}男
+// parsearrt 原告身份信息
+// parsearrt 原告信息
+// parsearrtline 原告身份信息
+// parsearrt line原告身份信息
+// parsearrt 原告信息
+// #ssrxb=上诉人（原审被告）{hz
+// #ssrxb=上诉人（原审被告）{hz.2-3}{,}女
+// #ssrxb=上诉人（原审被告）{hz.2-3}{，}女
+// #ssrxbn=上诉人（原审被告）{hz.2-3}{，}男
+// #ssrxbn=上诉人（原审被告）{：.0-1}{hz.2-3}{，}男
+#ssrxbnv=上诉人（原审被告）{：.0-1}{hz.2-3}{，}女
+

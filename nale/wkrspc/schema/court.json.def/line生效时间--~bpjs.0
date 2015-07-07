@@ -1,0 +1,45 @@
+// export @bpjs
+// #spz1={startl}审{*.0-}判{*.0-}长{*.1-}
+// #spz2={startl}审{*.0-}判{*.0-}长{*.1-}
+// #beig1=
+// #beig1={startl
+// #spz3={startl}审{kb.0-}判{kb.0-}长{kb.1-}
+// #spz3={startl}审{kb.0-}判{kb.0-}长{*.0-}
+// #spz4={startl}审{kb.0-}判{kb.0-}长{*.0-}
+// #bgwdb=被告{*.1-}答辩
+// #bgwdb={startl}被告{*.1-}答辩
+// #slrd=经审理认定
+// #slrd={startl}经审理认定
+// #lrd=另认定
+// #lrd={startl}另认定
+// #tscm=同时查明
+// #tscm={startl}同时查明
+// #tscm={startl}同时查明
+// #tscm=同时查明
+// #tscm=同时查明
+// #tscm={startl}同时查明
+// #bgpj={startl}被告{*.1-}判决生效
+// #bgpj1={startl}被告{*.1-}判决生效
+// #pjsx={startl}本判决生效
+// #pjsx={startl}{*.1-}判决生效
+// #pjsx={startl}本判决生效
+// #jhy=经合议庭
+// #jhy={startl}经合议庭
+// #rmfy={startl}{*.2-8}法院裁定{*.1-}
+// #rmfy
+// #rmfy={startl
+// #rmfy={startl}{*.1-}人民法院
+// #rmfy={starts}{*.1-}人民法院
+// #rmfy={startl}{*.1-10}人民法院
+// #rmfy={starts}{hz.1-}人民法院
+// #rmfy={startl}河北{*.1-}人民法院
+// #pjs={startl}{*.1-4}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs={startl}{*.1-2}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs={starts}{*.1-2}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs1={*.1-2}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs1={startl}{*.1-2}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs1={startl}{*.1-2}事{*.0-}判{*.0-}决{*.0-}书
+// #pjs1={startl}{*.1-2}事{kb.0-}判{kb.0-}决{kb.0-}书
+// #bpjs=本判决书
+#bpjs={startl}本判决书
+

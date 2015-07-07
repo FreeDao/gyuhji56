@@ -1,0 +1,7 @@
+// export @beigao
+// #beigao={startl}被告石甲某
+// #beigao={startl}被告石甲某
+// #beigao=被告{*.1-}未答辩{*.1-}
+// #beigao={startl被告{*.1-}未答辩{*.1-}
+#beigao={startl}被告{*.1-}未答辩{*.1-}
+

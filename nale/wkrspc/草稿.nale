@@ -1,0 +1,53 @@
+﻿#男女=男|女
+#工种=农民|工人|{cw.2-5}
+#原被告=原告|被告
+
+#birthday=XXXX年{*.1-2}月{*.1-2}日
+
+//{原被告}{：}{cw.2-4}，{男女}，XXXX年X月XX日出生，
+#当事人介绍={原被告}{：}{cw.2-4}，{男女}，{birthday}出生，{cw.1-2}族，{工种}，住{a_cw.3-30}
+print($当事人介绍)
+
+
+
+mr = 当事人介绍.match(input)
+debug
+#人=人 
+人.角色=mr.g1
+人.姓名=mr.g3
+人.性别=mr.g5
+人.民族=mr.g11
+人.居住=mr.g13
+
+mr.print()
+
+//debug
+
+mr.1.print()
+mr.2.print()
+
+
+
+x = $mr.1
+x.0
+
+if false
+
+fi
+
+if true
+	#tmp = true if here
+	tmp
+fi
+
+echo asfasd   
+
+x=true
+if x
+	echo in if block
+fi
+//debug
+x=1
+x
+
+debug

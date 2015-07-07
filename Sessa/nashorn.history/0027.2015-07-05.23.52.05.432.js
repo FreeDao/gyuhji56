@@ -1,0 +1,24 @@
+load('config/nashorn/jjsEnv.js');var hisFile = java.net.URLDecoder.decode('R%3A%5Cgithub%5Cgyuhji56%5CSessa%5Cnashorn.history%5C0027.2015-07-05.23.52.05.432.js', 'utf-8')
+vars()
+vars()
+load("config/nashorn/jjsEnv.js");
+vars()
+load("config/nashorn/jjsEnv.js");
+vars()
+localVars()
+dfasdf=434r
+dfasdf=434
+localVars()
+localVars()
+load("config/nashorn/jjsEnv.js");
+vars()
+localVars
+localVars()
+fasd=6789
+localVars()
+load("config/nashorn/jjsEnv.js");
+localVars()
+dfas='asdfas'
+localVars()
+vars()
+i
