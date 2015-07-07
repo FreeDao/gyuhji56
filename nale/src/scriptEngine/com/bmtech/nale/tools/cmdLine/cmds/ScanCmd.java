@@ -12,7 +12,7 @@ import com.bmtech.nale.script.engine.lang.obj.NaleObject;
 import com.bmtech.nale.script.engine.lang.obj.StringMatchedInfo;
 import com.bmtech.nale.tools.cmdLine.DebugException;
 import com.bmtech.nale.tools.cmdLine.ShellCmd;
-import com.bmtech.nale.tools.scriptShell.NaleShell;
+import com.bmtech.nale.tools.scriptshell.NaleShell;
 import com.bmtech.utils.Consoler;
 import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.io.LineWriter;

@@ -1,6 +1,6 @@
 package com.bmtech.nale.tools.cmds;
 
-import com.bmtech.nale.tools.scriptShell.NaleShell;
+import com.bmtech.nale.tools.scriptshell.NaleShell;
 
 public abstract class NaleShellCmd {
 

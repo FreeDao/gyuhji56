@@ -1,4 +1,4 @@
-package com.bmtech.nale.tools.scriptShell;
+package com.bmtech.nale.tools.scriptshell;
 
 import java.io.File;
 import java.io.FileNotFoundException;

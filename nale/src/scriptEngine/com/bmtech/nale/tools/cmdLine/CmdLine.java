@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bmtech.nale.script.engine.lang.NaleContext;
-import com.bmtech.nale.tools.scriptShell.NaleExecutorTool;
-import com.bmtech.nale.tools.scriptShell.NaleShell;
+import com.bmtech.nale.tools.scriptshell.NaleExecutorTool;
+import com.bmtech.nale.tools.scriptshell.NaleShell;
 import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.io.LineReader;
 import com.bmtech.utils.io.TchFileTool;

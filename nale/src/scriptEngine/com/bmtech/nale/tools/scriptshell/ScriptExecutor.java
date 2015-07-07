@@ -1,4 +1,4 @@
-package com.bmtech.nale.tools.scriptShell;
+package com.bmtech.nale.tools.scriptshell;
 
 import java.io.IOException;
 import java.util.Iterator;
