@@ -3,13 +3,19 @@
 	<groupId>bmTech</groupId>
 	<artifactId>nale</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	 <properties> 
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+    </properties> 
+    
 	<build>
+
 		<sourceDirectory>src/scriptEngine</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
+					
 					<source />
 					<target />
 				</configuration>

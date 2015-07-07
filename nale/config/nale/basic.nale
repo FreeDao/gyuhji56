@@ -56,7 +56,7 @@
 	exp str = STR
 	  
 	exp #AREA = @ textmatchers.pattern.def.reg.SArea
-  exp area = AREA
+    exp area = AREA
     
 	exp #* = @ textmatchers.pattern.def.reg.RRY
 	
