@@ -10,7 +10,6 @@ var allStock={
 	    return code;
 	},
 	stockFrom:function(code){
-
 	    if(code.length != 7){
 		print("!!!!!!!!!!!1errorCode " + code);
 		pause();
@@ -18,7 +17,8 @@ var allStock={
 	    return code.substring(6);
 	}
 	,
-	getByCode:function(code){
+	
+	getByFullCode:function(code){
 	    return this.codeMap.get(code);
 	},
 	getByName:function(name){
@@ -27,16 +27,46 @@ var allStock={
 	getByTrimedCode:function(code){
 	    code = this.trimCode(code);
 	    return this.codeTrimedMap.get(code);
+	},
+	getByShortCode : function(code){
+	    return this.getByTrimedCode(code);
+	},
+	getByCode:function(code){
+	    if(code.length == 6){
+		return this.getByShortCode(code);
+	    }else{
+		return this.getByFullCode(code);
+	    }
+	    
 	}
 
 }
 for(var x in allStock.data){
-    var code= allStock.data[x].code;
-    allStock.codeMap.put(code, allStock.data[x]);
+    var stock = allStock.data[x];
+    
+    stock.getCode =function(){
+	return this.code;
+    }
+    stock.getShortCode =function(){
+	return allStock.trimCode(this.code);
+    }
+    stock.getFrom =function(){
+	var ret = this.code.substring(6);
+	if(ret.length != 1){
+	    throw "code length error! code = " + this.code;
+	}
+	return ret;
+    }
+    
 
-    code = allStock.trimCode(code);
-    allStock.codeTrimedMap.put(code, allStock.data[x]);
+    allStock.codeMap.put(stock.getCode(), stock);
 
-    allStock.nameMap.put(allStock.data[x].name, allStock.data[x]);
+    allStock.codeTrimedMap.put(stock.getShortCode(), stock);
+
+    allStock.nameMap.put(stock.name, stock);
+    
+   
+   
+    
 }
 

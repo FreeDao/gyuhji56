@@ -31,7 +31,7 @@ var crawlYear= function(year,stock){
 
 /////codes
 loadVarExt('allStock')
-mdir = openMdir4Write("mdir/history.year/"+day());
+mdir = openMdir4Write("mdir/history.year/"+"2015-07-07")//+day());
 try{
 
     sy = loadVar('stock.year')

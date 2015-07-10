@@ -70,7 +70,9 @@ format=function(args){
 	return "";
     }
 };
-
+var exception = function(e){
+    new java.lang.Exception(e).printStackTrace();;
+}
 jpr = function(){
     var args = Array.prototype.slice.call(arguments); 
 
@@ -198,6 +200,7 @@ var crawl = function(url){
     var crl = HttpCrawler.makeCrawler(url);
     return crl.getString();
 }
+
 var crawlWithMdir = function(urlStr, mdir){
     if(!mdir){
 	throw "mdir not set";
@@ -221,18 +224,74 @@ var pause = function(){
     Consoler.readString("")
 }
 var crawlCallBack = function(urls, mdir, callback){
+
+    if(typeof(callback) == "undefined"){
+	callback = function(data){
+	    print(data)
+	    return Consoler.confirm("continue?");
+
+	}
+    }
+    //print(callback)
     try{
 	for(var index in urls){
-	    var __crawlTmp = null;
+
 	    try{
-		__crawlTmp = crawlWithMdir(urls[index], mdir)
+		url = urls[index];
+		__crawlTmp = crawlWithMdir(url, mdir);
 	    }catch( e){
-		print(e)
+		exception(e)
 	    }finally{
-		callBack(__crawlTmp);
+		if(!callback(__crawlTmp)){
+		    break;
+		}
 	    }
 	}
-	
+
+    }finally{
+	mdir.fsyn();
+    }
+}
+var crawlConfig = function(){
+    sleepWhenSuccess=0;
+    sleepWhenError=0;
+    stopWhenError=false;
+
+    callback :function(data){
+	print(data)
+	return Consoler.confirm("continue?");
+    }
+}
+var crawlIterator = function(urls, mdir, conf){
+    if(typeof(conf) == "undefined"){
+	throw "conf not set";
+    }
+    //print(callback)
+    try{
+	for(var index in urls){
+
+	    try{
+		url = urls[index];
+		__crawlTmp = crawlWithMdir(url, mdir);
+
+		if(conf.sleepWhenSuccess){
+		    Misc.sleep(conf.sleepWhenSuccess)
+		}
+	    }catch( e){
+		exception(e)
+		if(conf.stopWhenError){
+		    break;
+		}
+		if(conf.sleepWhenError){
+		    Misc.sleep(conf.sleepWhenError)
+		}
+	    }finally{
+		if(!conf.callback(__crawlTmp)){
+		    break;
+		}
+	    }
+	}
+
     }finally{
 	mdir.fsyn();
     }
@@ -304,6 +363,70 @@ for(var i in this){
 var day = function(){
     return new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
 }
+
+var fileNameWithNoSuffix = function(fileName){
+    var ret = [2];
+    var pos = fileName.lastIndexOf(".");
+
+    if(pos != -1){
+	ret[0]= fileName.substring(0, pos);
+	ret[1] = fileName.substring(pos +1);
+    }else{
+	ret = [fileName, ""];
+    }
+    return ret;
+}
+var seScript = function(){
+    return seJs();
+}
+var seJs = function(){
+     var files = new File('config/nashorn/script').listFiles();
+     files = Arrays.asList(files);
+     Collections.sort(files, new Comparator(){
+	 compare:function(o1,o2){
+	     return o1.getName().compareTo(o2.getName())
+	 }
+     });
+     files.forEach(function(f){
+	 name = f.getName()
+	 if(name.endsWith(".js")){
+	     print(" " + name.substring(0, name.length - 3))
+	 }else{
+	     print("?? " + f)
+	 }
+     })
+}
+var seVars = function(){
+    var files = new File('config/nashorn/vars').listFiles();
+    files = Arrays.asList(files);
+    Collections.sort(files, new Comparator(){
+	compare:function(o1,o2){
+	   s1 = fileNameWithNoSuffix(o1.getName());
+	   s2 = fileNameWithNoSuffix(o2.getName())
+	   
+	   ret =  s1[0].compareTo(s2[0]);
+	   if(ret == 0){
+	       return s2[1].compareTo(s1[1])
+	   }
+	   return ret;
+	}
+    });
+   
+    for(var fIndex in files){
+	var f = files[fIndex];
+	
+	var name = f.getName();
+	if(name.endsWith(".js")){
+	    print(" " + name.substring(0, name.length - 3) + " ------> loadVarExt()")
+	}else if(name.endsWith(".jvar")){
+	   print(" " + name.substring(0, name.length - 5));
+	}else{
+	    print("?? " + name)
+	}
+	
+    }
+}
+
 
 jpr("jjsEnv.js loaded");
 

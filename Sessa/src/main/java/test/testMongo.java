@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Locale;
 
 import org.bson.Document;
@@ -17,7 +18,19 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 
 public class testMongo {
+
 	static void insert(MongoDatabase db) throws ParseException {
+		// Runtime.getRuntime().exec(command)
+		new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+		};
+
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
 				Locale.ENGLISH);
 		db.getCollection("restaurants")
