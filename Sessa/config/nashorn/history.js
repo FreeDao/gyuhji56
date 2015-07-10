@@ -1,3 +1,4 @@
+
 var hisCmd=function(file){
 
     if(!file){
@@ -61,7 +62,12 @@ var hisCmd=function(file){
     });
 
 
-
     print("\n/**history command end**/\n");
+}
 
+var hiscmd=function(file){
+    return hisCmd();
+}
+var his=function(file){
+     return hisCmd();
 }

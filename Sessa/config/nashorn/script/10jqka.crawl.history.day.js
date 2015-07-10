@@ -1,4 +1,5 @@
-var crawlYear= function(year,stock){
+loadx("stock.day");
+var crawlYear= function(year,stock, list){
 
     stockFrom = allStock.stockFrom(stock.code);
     if(stockFrom == '1'){
@@ -6,16 +7,25 @@ var crawlYear= function(year,stock){
     }else{
 	prf = "sz_"
     }
-    var url='http://d.10jqka.com.cn/v2/line/'+prf+allStock.trimCode(stock.code)+'/01/'+year+'.js'
+    url='http://d.10jqka.com.cn/v2/line/'+prf+allStock.trimCode(stock.code)+'/01/'+year+'.js'
 
     try{
 
 	js = crawlWithMdir(url, mdir).trim()
-	print("got length " + js.length);
+//	print("got length " + js.length);
 	var pos = js.indexOf("(")
-	js = Misc.substring(js, "(", ")")//js.substring(pos +1,js.length -1)//js.replaceAll(".+_last", "eval")
+	var js = Misc.substring(js, "(", ")")//js.substring(pos +1,js.length -1)//js.replaceAll(".+_last", "eval")
 	data = JSON.parse(js);
-	//printJson(data);
+	days = data.data.split(";");
+	days.forEach(function(day){
+	    tokens = day.split(","); 
+//	    print(tokens)
+	    oneDay = new StockDay(tokens);
+	    oneDay.code = stock.code;
+	    list.push(oneDay);
+//	    printJson(oneDay)
+//	    printJson(oneDay.high)
+	});
 //	startYear = data.start.substring(0,4);
 //	print(data.name + " start at " + startYear);
 //	stockYear.push({
@@ -23,35 +33,62 @@ var crawlYear= function(year,stock){
 //	year:data.start
 //	});
 	//pause();
+
+//	sDays.forEach(function(e){
+//	arr.push(e);
+//	})
+
+	print("put " + sDays.length +" members into " + stock.code +", now has " + arr.length)
     }catch(exc){
 	print(exc);
-	
+
     }
 }
 
 /////codes
 loadVarExt('allStock')
 mdir = openMdir4Write("mdir/history.year/"+"2015-07-07")//+day());
-try{
+print("start crawl")
+{
+    try{
 
-    sy = loadVar('stock.year')
+	var sy = loadVar('stock.year')
+	for(var index in sy){
+	    list = {}
+	    for(var year = 2015; year > 1990; year --){
+		print("year " + year);
 
-    for(var year = 2015; year > 1990; year --){
-	print("year " + year);
-	for(var index in sy){	
-	    var code = sy[index].code
-	    var stock = allStock.getByCode(code);
-	    minYear = sy[index].year.substring(0,4);
-	    print("min year " + minYear + " for " + JSON.stringify(stock) )
-	    print("check " + JSON.stringify(stock) + "for year " + year)
-	    if(minYear <= year){
-		print("crawl " + JSON.stringify(stock) + " for year " + year)
-		crawlYear(year, stock) 
+		var code = sy[index].code
+		var stock = allStock.getByCode(code);
+		minYear = sy[index].year.substring(0,4);
+		print("min year " + minYear + " for " + JSON.stringify(stock) )
+		print("check " + JSON.stringify(stock) + "for year " + year)
+		if(minYear <= year){
+		    print("crawl " + JSON.stringify(stock) + " for year " + year)
+		    yearList = [];
+		    crawlYear(year, stock, yearList) 
+		    list[year] = yearList;
+		}else{
+		    break;
+		}
+
 	    }
+
+//	    Collections.sort(list, new Comparator(){
+//	    compare:function(v1, v2){
+//	    return v1.day - v2.day
+//	    }
+//	    })
+	    for(k in list){
+		print("save" + sy[index].code + " for year " + k)
+//		print(list[k]);
+		saveVar("days/" + sy[index].code + "/" + k, list[k])
+	    }
+
+
 	}
+
+    }finally{
+	mdir.close()
     }
-
-}finally{
-    mdir.close()
-}
-
+};

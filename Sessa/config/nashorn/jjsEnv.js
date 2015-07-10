@@ -176,6 +176,7 @@ var loadVarExt=function(fileName){
 
 var save = function(file, txt){
     var f = new File(file.toString());
+    f.getParentFile().mkdirs();
     var out = new FileOutputStream(f)
     out.write(txt.getBytes());
     out.close();
