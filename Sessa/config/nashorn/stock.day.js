@@ -9,5 +9,4 @@ var StockDay = function(vars){
     this.amount=vars[5];
     this.volumn=vars[6];
     this.turnover=vars[7]
-
 }

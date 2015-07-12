@@ -1,19 +1,21 @@
 loadVarExt('allStock')
 
-mdir = openMdir4Write('mdir/doctor/'+ "2015-07-07");
+mdir = openMdir4Write('mdir/doctor/'+ day());
 urls=[]
 try{
     for(var index in allStock.data){
 	stock = allStock.data[index];  
 	url = "http://doctor.300033.info/"+stock.getShortCode()+"/"   ;
-	urls.push(url) ;
+	urls.push({"url":url}) ;
     }
 
     var callBack = function(html){
 	print("size " + html.length + " for url " + url) ;
 	return true;
     }
-    crawlCallBack(urls, mdir, callBack);
+    conf=new CrawlConfig();
+    conf.callback = callBack
+    crawlIterator(urls, mdir, conf);
 }finally{
     mdir.close();
 }
