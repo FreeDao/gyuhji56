@@ -91,3 +91,32 @@ var pause = function(arg){
     }
     Consoler.readString(arg)
 }
+
+var ArrayMap = function(){
+    this.dict = {};
+    this.put = function(key, element){
+	dictArr = this.dict[key];
+	if(!dictArr){
+	    dictArr = [];
+	    this.dict[key] = dictArr;
+	}
+	dictArr.push(element);
+    }
+    this.toDict = function(){
+	return this.dict;
+    }
+    this.get = function(key){
+	return this.dict[key];
+    }
+    this.hasKey = function(key){
+	return !!this.dict[key]
+    }
+    this.visit = function(callback){
+	for(var key in this.dict){
+	    callback(key, this.dict[key])
+	}
+    };
+    this.forEach = function(callback){
+	visit(callback)
+    }
+}

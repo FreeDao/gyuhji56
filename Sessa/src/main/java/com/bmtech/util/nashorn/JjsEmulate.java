@@ -91,7 +91,7 @@ public class JjsEmulate {
 
 				String input;
 				if (lineNo == 1) {
-					input = "load('config/nashorn/jjsEnv.js');\n";
+					input = "load('" + sessaPath + "jjsEnv.js');";
 					input = input
 							+ "var hisFile = "
 							+ this.jsString(this.historyWriter.file
@@ -122,7 +122,7 @@ public class JjsEmulate {
 		if (input.trim().startsWith("//")) {
 			try {
 				ScriptEngine engine = NashornEngine.getEngine();
-				engine.eval("load('config/nashorn/jjsinput.js');");
+				engine.eval(String.format("load('%s/jjsinput.js');", sessaPath));
 
 				Object retFromJs = engine.eval("jjsInput.input("
 						+ jsString(input) + ")");
@@ -244,7 +244,16 @@ public class JjsEmulate {
 		}
 	}
 
+	static String sessaPath;
+
 	public static void main(String[] args) throws Exception {
+		sessaPath = System.getProperty("sessaPath");
+		if (!sessaPath.endsWith("/") && !sessaPath.endsWith("\\")) {
+			sessaPath = sessaPath + "/";
+		}
+		// if (null == sessaJsPath) {
+		// sessaJsPath = "src/main/nashorn/";
+		// }
 		JjsEmulate emu = new JjsEmulate(args[0]);
 		emu.emulate();
 		emu.waitFor();

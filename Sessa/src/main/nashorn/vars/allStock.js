@@ -69,7 +69,7 @@ var bindData=function(stock){
 
     stock.scanYearFile = function(){
 	stock.years = [];
-	stkDir = new File('config/nashorn/vars/days/' + stock.getCode());
+	stkDir = new File(sessaPath('vars/days/' + stock.getCode()));
 	stkFiles = Arrays.asList(stkDir.listFiles());
 	Collections.sort(stkFiles, new Comparator(){
 	    compare:function(f1, f2){

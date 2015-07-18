@@ -1,10 +1,10 @@
-var varBaseDir = "./config/nashorn/vars/";
-var baseVarDir = new File(varBaseDir);
-var __baseVarIsCreate = baseVarDir.mkdirs();
+ varBasePath = sessaPath("vars/");
+ baseVarDir = new File(varBasePath);
+ __baseVarIsCreate = baseVarDir.mkdirs();
 
 
-var scriptBaseDir = "./config/nashorn/script/";
-var baseScriptDir = new File(scriptBaseDir);
+var scriptBasePath = sessaPath("script/");
+var baseScriptDir = new File(scriptBasePath);
 var __baseScriptIsCreate = baseScriptDir.mkdirs();
 var loadScript = function(fileName){
     var file = new File(baseScriptDir, fileName + ".js");
@@ -102,7 +102,7 @@ var seScript = function(){
     return seJs();
 }
 var seJs = function(){
-    var files = new File('config/nashorn/script').listFiles();
+    var files = baseScriptDir.listFiles();
     files = Arrays.asList(files);
     Collections.sort(files, new Comparator(){
 	compare:function(o1,o2){
@@ -119,7 +119,7 @@ var seJs = function(){
     })
 }
 var seVars = function(){
-    var files = new File('config/nashorn/vars').listFiles();
+    var files = baseVarDir.listFiles();
     files = Arrays.asList(files);
     Collections.sort(files, new Comparator(){
 	compare:function(o1,o2){

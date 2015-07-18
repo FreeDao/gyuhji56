@@ -6,30 +6,34 @@ var readLine = function(){
     return new java.lang.String(bytes,0, len, sysCharset).trim()
 }
 var jjsInput = { }
+jjsInput.defaultCmd = {
+	cmdName:"j",
+	cmdFunc:"printJson"  
+}
 
 jjsInput.denoteCmdArray=[
                          {
-                           cmdName:"j",
-                           cmdFunc:"printJson"  
+                             cmdName:"j",
+                             cmdFunc:"printJson"  
                          },
-                           {
-                               cmdName:"b",
-                               cmdFunc:"blockExe"
-                           },
-                           {
-                               cmdName:"/",
-                               cmdFunc:"blockExe"
-                           },
-                           {
-                               cmdName:"//",
-                               cmdFunc:"blockExe"
-                           },
-                           {
-                               cmdName:"s",
-                               cmdFunc:"stringSetting"  
-                           }
-                           
-                           ];
+                         {
+                             cmdName:"b",
+                             cmdFunc:"blockExe"
+                         },
+                         {
+                             cmdName:"/",
+                             cmdFunc:"blockExe"
+                         },
+                         {
+                             cmdName:"//",
+                             cmdFunc:"blockExe"
+                         },
+                         {
+                             cmdName:"s",
+                             cmdFunc:"stringSetting"  
+                         }
+
+                         ];
 
 jjsInput.input = function (line) {
     var denote = line.trim().substring(2).trim();
@@ -51,14 +55,13 @@ jjsInput.cmdExecute=function(cmdName, paras){
 	    return jjsInput.denoteCmdExecute(denoteCmd, paras);
 	}
     }
-    return "";
+    paras.unshift(cmdName);
+//    print(paras)
+    return jjsInput.denoteCmdExecute(jjsInput.defaultCmd, paras);
 }
 
 jjsInput.printJson=function(arg){
-  //  print("arg:" + arg)
-//    fakeCode = "__fakevar=" +arg +";____fakevar2 = eval(__fakevar); printJson(____fakevar2)"
-//    return fakeCode
-    return "printJson("+arg+")"
+    return "printJson("+arg.join(" ")+")"
 }
 jjsInput.blockInput=function(){
     print("/** in blockInput  **/");
@@ -70,7 +73,7 @@ jjsInput.blockInput=function(){
 //	    print("#'" + input +"' " );
 //	    print(", " + input.length);
 	    var end = false;
-	    
+
 	    if(String(input.trim())==("//q")){
 		break;
 	    }

@@ -1,7 +1,17 @@
 print("loading jjsEnv...");
 load("nashorn:mozilla_compat.js")
 var sysCharset = "gbk";
-load('config/nashorn/loadFuncs.js');
+var sessaPathProperty=java.lang.System.getProperty('sessaPath')
+var sessaPath  = function(relPath){
+    var base = sessaPathProperty;
+    if(relPath){
+	return base + relPath
+    }else{
+	return base;
+    }
+    
+}
+load(sessaPath('loadFuncs.js'));
 
 loadx('javaTypes')
 loadx('logPrint')
@@ -28,7 +38,9 @@ for(var i in this){
 }
 
 //load allStock
-loadVarExt('allStock');
+if(typeof allStock == undefined){
+    loadVarExt('allStock');
+}
 
 
 jpr("jjsEnv.js loaded");
