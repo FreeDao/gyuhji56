@@ -47,6 +47,33 @@ var crawlYear= function(year,stock, list){
     }
 }
 
+var toHistoryUrl = function(stock, year){
+    stockFrom = allStock.stockFrom(stock.code);
+    if(stockFrom == '1'){
+	prf = "sh_"
+    }else{
+	prf = "sz_"
+    }
+    url='http://d.10jqka.com.cn/v2/line/'+prf+allStock.trimCode(stock.code)+'/01/'+year+'.js'
+    return url;
+}
+
+var parseHistoryData = function(html){
+    var pos = html.indexOf("(")
+    var txt = Misc.substring(html, "(", ")")//js.substring(pos +1,js.length -1)//js.replaceAll(".+_last", "eval")
+    data = JSON.parse(txt);
+    days = data.data.split(";");
+    var cnt  =0
+    list=[]
+    days.forEach(function(day){
+	cnt ++
+	tokens = day.split(","); 
+	oneDay = new StockDay(tokens);
+	oneDay.code = stock.code;
+	list.push(oneDay);
+    });
+    return list;
+}
 var downloadAllDays=function(){
     loadVarExt('allStock')
     mdir = openMdir4Write("mdir/history.year/"+day());
@@ -96,31 +123,31 @@ var downloadAllDays=function(){
     }
 }
 
+
 downloadThisYear=function(){
     loadVarExt('allStock')
-    mdir = openMdir4Write("mdir/history.this.year/"+day());
     print("start crawl")
+    print(year)
+    var yearNum = year();
+    urls= [];
+    allStock.data.forEach(function(stock){
 
-    try{
+	url = toHistoryUrl(stock, yearNum);
+	urls.push({'url':url})
+//	print("crawl " + JSON.stringify(stock) + " for year " + year)
+//	yearList = [];
+//	crawlYear(year, stock, yearList) 
+//	saveVar("days/" + code + "/" + year, yearList, true)
+    })
 
-	loadVarExt('allStock')
-	var year = day().substring(0, 4);
-	allStock.data.forEach(function(stock){
-
-	    print("year " + year);
-
-	    var code = stock.code
-
-	    print("crawl " + JSON.stringify(stock) + " for year " + year)
-	    yearList = [];
-	    crawlYear(year, stock, yearList) 
-
-	    print("save" + stock + " for year " + year)
-	    saveVar("days/" + code + "/" + year, yearList, true)
-	})
-
-    }finally{
-	mdir.close()
+    conf = new CrawlConfig();
+    conf.urls = urls;
+    conf.savePath = conf.path('history.this.year')
+    conf.callback=function(urlInfo){
+	yearList = parseHistoryData(urlInfo.html)
+	print(yearList);
+	return true;
     }
+    conf.crawl()
 }
 print("loaded");

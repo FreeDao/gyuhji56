@@ -18,6 +18,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 
 public class testMongo {
+	static void xx() {
+		"".getClass().getMethods()[0].getReturnType();
+	}
 
 	static void insert(MongoDatabase db) throws ParseException {
 		// Runtime.getRuntime().exec(command)

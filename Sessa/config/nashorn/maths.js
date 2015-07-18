@@ -1,7 +1,7 @@
-var averageWithCallback = function(arr,func){
-    sum = 0;
-    arr.forEach(function(stock){
-	sum += func(arr);
+ averageWithCallback = function(arr,func){
+    sum = 0.0;
+    arr.forEach(function(ele){
+        sum += Double.parseDouble(func(ele));
     });
     return sum/arr.length;
 }

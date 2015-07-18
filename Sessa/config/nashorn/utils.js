@@ -2,10 +2,27 @@ var day = function(){
     return new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
 }
 
+var year = function(){
+    return day().substring(0,4)
+}
+var month = function(){
+    return day.substring(5,7)
+}
 
 var members=function(obj){
-    for(i in obj){
-	print(i)
+    try{
+	var lst = Arrays.asList(obj.getClass().getMethods())
+	Collections.sort(lst, function(o1, o2){
+	    return o1.getName().compareTo(o2.getName())
+	})
+	print(lst.size())
+	lst.forEach(function(met){
+	    print(met.getName() + "\t" + met.getReturnType())
+	})
+    }catch(exc){
+	for(i in obj){
+	    print(i)
+	}
     }
 }
 
@@ -31,11 +48,11 @@ var head = function(str, top){
 }
 
 var sortWithCallback = function(arr, func){
-    
+
     Collections.sort(arr, function(o1, o2){
 	return Math.floor(func(o1) - func(o2) + 0.5);
     })
-    
+
 }
 
 var topWithCallback = function(arr, top, func){
@@ -58,4 +75,8 @@ var bottomWithCallback = function(arr, num, func){
 
 var printJson=function(arg){
     print(JSON.stringify(arg))
+}
+
+var now = function(){
+    return System.currentTimeMillis();
 }

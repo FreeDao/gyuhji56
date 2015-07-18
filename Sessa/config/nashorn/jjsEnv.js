@@ -26,6 +26,11 @@ var globalVar = [];
 for(var i in this){
     globalVar.push(i)
 }
+
+//load allStock
+loadVarExt('allStock');
+
+
 jpr("jjsEnv.js loaded");
 
 

@@ -11,7 +11,7 @@ var crawlHolders = function(){
     conf = new CrawlConfig();
     conf.urls = urls;
     
-    conf.callback = function(){
+    conf.callback = function(urlInfo){
 	return true;
     }
     

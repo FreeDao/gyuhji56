@@ -42,6 +42,10 @@ var CrawlConfig = function(){
 	print(data)
 	print("crawl url ok, in callback now")
 	return Consoler.confirm("continue?");
+    };
+    this.path = function(typeName){
+	return "mdir/CrawlerTmpHome/" + Misc.formatFileName(typeName)
+	    + "/" +day()
     }
     this.crawl=function(){
 	if(this.urls.length == 0 || !this.urls[0].url){
@@ -54,7 +58,7 @@ var CrawlConfig = function(){
 	    + "/" +day()
 	    var mdirDir = new File(this.savePath);
 	    if(mdirDir.exists()){
-		print("savePath not sets, and create tmp file fail")
+		print("savePath not sets, and create tmp file fail : " + mdirDir)
 		return;
 	    }
 	}
@@ -92,6 +96,7 @@ var crawlIterator = function(urls, mdir, conf){
 		urlCount : conf.urls.length
 	}
 	conf.crawlRoundInfo = crawlRoundInfo;
+	var st = now();
 	for(var index in urls){
 	    urlInfo = urls[index];
 	    crawlRoundInfo.checkCount ++;
@@ -118,6 +123,12 @@ var crawlIterator = function(urls, mdir, conf){
 		    Misc.sleep(conf.sleepWhenError)
 		}
 	    }finally{
+		if(crawlRoundInfo.checkCount % 10 == 0){
+		    jpr("!!!!!total %s, crawl %s use %s seconds, average %s page per second",
+			    urls.length,
+			    crawlRoundInfo.checkCount, (now() - st)/1000,
+			    Math.floor(crawlRoundInfo.checkCount * 1000 * 10 / (now() - st)) / 10 )
+		}
 		if(!conf.callback(urlInfo, urlInfo.html)){
 		    break;
 		}

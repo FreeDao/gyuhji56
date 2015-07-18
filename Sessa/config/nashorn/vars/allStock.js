@@ -4,12 +4,14 @@ var allStock={
 	codeTrimedMap: new HashMap(),
 	nameMap: new HashMap(),
 	trimCode:function(code){
+	    code = code + "";
 	    if(code.length > 6){
 		code = code.substring(0, code.length - 1);
 	    }
 	    return code;
 	},
 	stockFrom:function(code){
+	    code = code + "";
 	    if(code.length != 7){
 		print("!!!!!!!!!!!1errorCode " + code);
 		pause();
@@ -19,19 +21,23 @@ var allStock={
 	,
 
 	getByFullCode:function(code){
+	    code = code + "";
 	    return this.codeMap.get(code);
 	},
 	getByName:function(name){
 	    return this.nameMap.get(name)
 	},
 	getByTrimedCode:function(code){
+	    code = code + "";
 	    code = this.trimCode(code);
 	    return this.codeTrimedMap.get(code);
 	},
 	getByShortCode : function(code){
+	    code = code + "";
 	    return this.getByTrimedCode(code);
 	},
 	getByCode:function(code){
+	    code = code + "";
 	    if(code.length == 6){
 		return this.getByShortCode(code);
 	    }else{
@@ -124,8 +130,8 @@ var loadAllStock = function(){
 }
 
 //if(typeof allStock != "undefined"){
-//    print("allStock already loaded")
+//print("allStock already loaded")
 //}else{
-//    
+
 loadAllStock();
 //}
