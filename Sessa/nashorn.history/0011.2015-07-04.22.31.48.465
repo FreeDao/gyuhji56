@@ -1,3 +1,0 @@
-load('config/nashorn/jjsEnv.js')
-var ___internalFunc = java.net.URLDecoder.decode('x+%3D+%27load+env%3A+load%28%22config%2Fnashorn%2FjjsEnv.js%22%29%3B%27', 'utf-8')
-var ___internalFunc2 = eval(___internalFunc);

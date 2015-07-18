@@ -1,8 +1,0 @@
-load('config/nashorn/jjsinput.js')
-url = java.net.URLDecoder.decode("http%3A%2F%2Fhqdigi2.eastmoney.com%2FEM_Quote2010NumericApplication%2Findex.aspx%3Ftype%3Ds%26sortType%3DC%26sortRule%3D-1%26pageSize%3D10000%26page%3D1%26jsName%3Dquote_123%26style%3D33%26", 'utf-8')
-var txt = crawl(url)
-crawl
-loadx('jjsEnv.js');
-load('config/nashorn/jjsEnv.js');
-loadx('jjsEnv.js');
-

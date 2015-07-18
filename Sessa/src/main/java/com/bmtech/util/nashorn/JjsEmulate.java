@@ -123,18 +123,21 @@ public class JjsEmulate {
 			try {
 				ScriptEngine engine = NashornEngine.getEngine();
 				engine.eval("load('config/nashorn/jjsinput.js');");
-				input = engine.eval("jjsInput.input('" + input + "')")
-						.toString().trim();
-				ret[1] = input;// history log
 
-				String ___internalFunc1 = String.format(
-						"var ___internalFunc = %s", jsString(input));
+				Object retFromJs = engine.eval("jjsInput.input("
+						+ jsString(input) + ")");
+				if (retFromJs != null) {
+					input = retFromJs.toString().trim();
+					ret[1] = input;// history log
 
-				String ___internalFunc2 = ___internalFunc1 + "\n"
-						+ "var ___internalFunc2 = eval(___internalFunc);";
-				// System.out.println(___internalFunc2);
-				ret[0] = ___internalFunc2;
+					String ___internalFunc1 = String.format(
+							"var ___internalFunc = %s", jsString(input));
 
+					String ___internalFunc2 = ___internalFunc1 + ";"
+							+ "var ___internalFunc2 = eval(___internalFunc);";
+					// System.out.println(___internalFunc2);
+					ret[0] = ___internalFunc2;
+				}
 				// System.out.println("ret is " + input);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

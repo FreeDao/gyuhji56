@@ -1,3 +1,0 @@
-load('config/nashorn/jjsEnv.js');var hisFile = java.net.URLDecoder.decode('R%3A%5Cgithub%5Cgyuhji56%5CSessa%5Cnashorn.history%5C0019.2015-07-05.19.14.36.604', 'utf-8')
-members(this)
-hisFile
