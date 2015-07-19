@@ -1,6 +1,6 @@
 loadVarExt('allStock')
 
-mdir = openMdir4Write('mdir/doctor/'+ day());
+mdir = openMdir4Write('mdir/doctor/'+ nowday());
 urls=[]
 try{
     for(var index in allStock.data){

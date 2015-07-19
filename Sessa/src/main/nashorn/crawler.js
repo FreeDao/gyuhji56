@@ -1,13 +1,20 @@
-
-
-
+/**
+ * 抓取一个页面
+ * @param url url to crawl
+ */
 var crawl = function(url){
     print("crawling " + url)
     var url = new URL(url);
     var crl = HttpCrawler.makeCrawler(url);
     return crl.getString();
 }
-
+/**
+ * 抓取文件，并将文件存放到mdir中. 先在mdir中寻找是否已经抓取并缓存，如果缓存了则直接返回（避免多次抓取）
+ * @parameter urlStr <string> -the url to crawl
+ * @param mdir the mdir to store the
+ * @method crawlWithMdir
+ * 
+ */
 var crawlWithMdir = function(urlStr, mdir){
     if(!mdir){
 	throw "mdir not set";
@@ -43,7 +50,7 @@ var CrawlConfig = function(){
     };
     this.path = function(typeName){
 	return "mdir/CrawlerTmpHome/" + Misc.formatFileName(typeName)
-	+ "/" +day()
+	+ "/" +nowday()
     }
     this.crawlRoundInfo = {
 	    checkCount : 0,
@@ -80,7 +87,7 @@ var CrawlConfig = function(){
 
 	if(this.savePath.length==0){
 	    this.savePath = "mdir/CrawlerTmpHome/" + Misc.formatFileName(urls[0].url)
-	    + "/" +day()
+	    + "/" +nowDay()
 	    var mdirDir = new File(this.savePath);
 	    if(mdirDir.exists()){
 		print("savePath not sets, and create tmp file fail : " + mdirDir)

@@ -99,7 +99,7 @@ print("10jqka.crawl.history.last loaded");
 //	return true;
 //    }
 //    print("load urls " + urls.length)
-//    mdir = openMdir4Write("mdir/history.last/"+day());
+//    mdir = openMdir4Write("mdir/history.last/"+nowday());
 //    try{
 //	crawlIterator(urls, mdir, conf);
 //    }finally{

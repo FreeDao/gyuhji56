@@ -1,8 +1,12 @@
+/**
+ * @class SeStream
+ * 一个支持stream 操作的实现
+ */
 
 var SeStream = function(array){
     this.oldArr=[]
     this.arr = array;
-    
+
     /**
      * get boolean value for elements in arr, using function callback.
      * if value is true, accept, orelse drop
@@ -45,7 +49,7 @@ var SeStream = function(array){
 	    obj = {key:key, value:arr}
 	    arrNew.push(obj);
 	});
-	
+
 	return this.backupAndSet(arrNew);
     }
 
@@ -62,18 +66,31 @@ var SeStream = function(array){
 	})
 	return this.backupAndSet(arrNew);
     }
+    /**
+     * 回撤上次操作，即将上次操作结果丢弃（对stream中元素的操作无法撤销）
+     * @return 被回撤的
+     */
     this.back = function(){
 	var pos = this.oldArr.length -1;
-	this.arr = this.oldArr[pos]
+	this.arr = this.oldArr[pos - 2]
+	var ret = this.oldArr[pos - 1]
 	this.oldArr = this.oldArr.splice(pos, 1)
-	return this.arr;
+	return ret;
     }
-    
+
+    /**
+     * 
+     * 设置当前stream操作的数组
+     * 
+     * 
+     * @param arr 数组
+     */
     this.backupAndSet = function(arr){
 	this.oldArr.push(this.arr);
 	this.arr = arr;
 	return this.arr;
     }
+
 }
 
 

@@ -82,7 +82,7 @@ var parseHistoryData = function(html, code){
 }
 var downloadAllDays=function(){
     loadVarExt('allStock')
-    mdir = openMdir4Write("mdir/history.year/"+day());
+    mdir = openMdir4Write("mdir/history.year/"+nowday());
     print("start crawl")
     {
 	try{
@@ -133,7 +133,7 @@ var downloadAllDays=function(){
 downloadThisYear=function(){
     loadVarExt('allStock')
     print("start crawl")
-    var yearNum = year();
+    var yearNum = nowYear();
     urls= [];
     allStock.data.forEach(function(stock){
 

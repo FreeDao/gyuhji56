@@ -1,14 +1,34 @@
-var day = function(){
-    return new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+var intDay=function(time){
+    return nowDay("yyyyMMdd", time)
+}
+var nowDay = function(fmt, time){
+    if(!fmt){
+	fmt = "yyyy-MM-dd"
+    }
+    if(!time){
+	time = now()
+    }
+    return new SimpleDateFormat(fmt).format(time);
 }
 
-var year = function(){
-    return day().substring(0,4)
+var nowYear = function(time){
+    return nowDay("yyyy",time)
 }
-var month = function(){
-    return day.substring(5,7)
+var nowMonth = function(time){
+    return nowDay("MM",time)
 }
-
+var nowDayOfMonth = function(time){
+    return nowDay("dd",time)
+}
+var nowHour = function(time){
+    return nowDay("HH",time);
+}
+var nowMinute = function(time){
+    return nowDay("mm",time);
+}
+var nowSecond = function(time){
+    return nowDay("ss",time);
+}
 var members=function(obj){
     try{
 	var lst = Arrays.asList(obj.getClass().getMethods())
@@ -75,14 +95,19 @@ var bottomWithCallback = function(arr, num, func){
 
 var printJson=function(arg){
     print(JSON.stringify(arg))
+    return arg
+    
 }
 
 var now = function(){
     return System.currentTimeMillis();
 }
 
-var confirm = function(){
-    return  Consoler.confirm("continue?");
+var confirm = function(prompt){
+    if(!prompt){
+	prompt = "continue?"
+    }
+    return  Consoler.confirm(prompt);
 }
 
 var pause = function(arg){
@@ -119,4 +144,12 @@ var ArrayMap = function(){
     this.forEach = function(callback){
 	visit(callback)
     }
+}
+
+var asJsArray = function(arr){
+    ret =[]
+    for(var p in arr){
+	ret.push(arr[p]);
+    }
+    return ret;
 }
