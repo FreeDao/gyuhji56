@@ -17,6 +17,18 @@ jjsInput.denoteCmdArray=[
                              cmdFunc:"printJson"  
                          },
                          {
+                             cmdName:"his",
+                             cmdFunc:"hisCmd"  
+                         },
+                         {
+                             cmdName:"hisCmd",
+                             cmdFunc:"hisCmd"  
+                         },
+                         {
+                             cmdName:"m",
+                             cmdFunc:"members"  
+                         },
+                         {
                              cmdName:"b",
                              cmdFunc:"blockExe"
                          },
@@ -56,12 +68,18 @@ jjsInput.cmdExecute=function(cmdName, paras){
 	}
     }
     paras.unshift(cmdName);
-//    print(paras)
+//  print(paras)
     return jjsInput.denoteCmdExecute(jjsInput.defaultCmd, paras);
 }
 
 jjsInput.printJson=function(arg){
     return "printJson("+arg.join(" ")+")"
+}
+jjsInput.hisCmd=function(arg){
+    return "hisCmd()"
+}
+jjsInput.members=function(arg){
+    return "members("+arg.join(" ")+")"
 }
 jjsInput.blockInput=function(){
     print("/** in blockInput  **/");

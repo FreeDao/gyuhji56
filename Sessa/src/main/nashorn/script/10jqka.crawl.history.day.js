@@ -34,7 +34,7 @@ var crawlYear= function(year,stock, list){
 //	code:stock.code,
 //	year:data.start
 //	});
-	//pause();
+	//std.pause();
 
 //	sDays.forEach(function(e){
 //	arr.push(e);
@@ -172,7 +172,7 @@ downloadThisYear=function(){
 	    }
 	}catch(exc){
 	    exception(exc)
-	    if(!confirm("continue")){
+	    if(!std.confirm("continue")){
 		return false;
 	    }
 	}

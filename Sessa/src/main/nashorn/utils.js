@@ -1,6 +1,43 @@
+/**
+ * 格式化字符串
+ * @param args args[0] pattern, args[1...]参数
+ * @returns 格式化后的字符串
+ */
+format=function(args){
+
+    if(args && args.length > 1){
+	var fmtArg = args.slice(1, args.length);
+
+	var fmted= java.lang.String.format(args[0], fmtArg)
+	return fmted;
+    }else{
+	if(args.length == 1){
+	    return args[0];
+	}
+	return "";
+    }
+}
+
+/**
+ * 返回当前毫秒数
+ * @return 返回毫秒数
+ */
+
+var now = function(){
+    return System.currentTimeMillis();
+}
+/**
+ * @param  time  毫秒数, 默认为当前时间
+ * @return 返回yyyyMMdd格式日期 如 20150717
+ */
 var intDay=function(time){
     return nowDay("yyyyMMdd", time)
 }
+/**
+ * @param fmt 格式，默认 yyyy-MM-dd
+ * @param  time  毫秒数, 默认为当前时间
+ * @return 时间字符串
+ */
 var nowDay = function(fmt, time){
     if(!fmt){
 	fmt = "yyyy-MM-dd"
@@ -10,25 +47,212 @@ var nowDay = function(fmt, time){
     }
     return new SimpleDateFormat(fmt).format(time);
 }
-
+/**
+ * @param time 时间毫秒数， 默认为当前时间
+ * @return 返回 指定时间的“年分”
+ */
 var nowYear = function(time){
     return nowDay("yyyy",time)
 }
+/**
+ * @param time 时间毫秒数，默认为当前时间
+ * @return 返回指定时间的月份
+ */
 var nowMonth = function(time){
     return nowDay("MM",time)
 }
+/**
+ * @param time 时间毫秒数，默认为当前时间
+ * @return 返回指定时间的在当月中的日期，如19
+ */
 var nowDayOfMonth = function(time){
     return nowDay("dd",time)
 }
+/**
+ * @param time 时间毫秒数，默认为当前时间
+ * @return 返回指定时间的小时(24小时制)，如19
+ */
 var nowHour = function(time){
     return nowDay("HH",time);
 }
+/**
+ * @param time 时间毫秒数，默认为当前时间
+ * @return 返回指定时间的分钟数，如35
+ */
 var nowMinute = function(time){
     return nowDay("mm",time);
 }
+/**
+ * @param time 时间毫秒数，默认为当前时间
+ * @return 返回指定时间的秒数，如 53 
+ */
 var nowSecond = function(time){
     return nowDay("ss",time);
 }
+
+/**
+ * 通过指定的对象排序值函数排序
+ * @param arr 要排序的数组
+ * @param func 对arr中各个对象生成排序值的回调函数
+ */
+var sortWithCallback = function(arr, func){
+
+    Collections.sort(arr, function(o1, o2){
+	return Math.floor(func(o1) - func(o2) + 0.5);
+    })
+}
+/**
+ * 数组遍历，并对数组中成员执行 callback方法。
+ * <b>callback 应返回一个值，指示是否继续</b>
+ */
+var forEach = function(arr, callback){
+    for(var p in arr){
+	if(!callback(arr[p])){
+	    break;
+	}
+    }
+}
+
+/**
+ * 对数组顶部的 num 个元素 执行 func 函数
+ * @param arr 数组对象
+ * @param func 执行的回调函数
+ * @param num 数字，指定要执行的个数，默认值为 arr.length
+ */
+var forEachTop = function(arr, func, num){
+    var index = 0;
+    if(!num){
+	num = arr.length
+    }
+    for(; index < num && index < arr.length; index ++){
+	func(arr[index]);
+    }
+}
+/**
+ * 对数组底部的 num 个元素 执行 func 函数
+ * @param arr 数组对象
+ * @param func 执行的回调函数
+ * @param num 数字，指定要执行的个数，默认值为 arr.length
+ */
+var forEachBottom = function(arr, func, num){
+    var index = 0;
+    for(; index < num; index ++){
+	var pos = arr.length - 1 - index;
+	if(pos < 0)
+	    break;
+	func(arr[pos]);
+    }
+}
+
+
+/**
+ * @class ArrayMap
+ * 一个<key,[]>数据结构。
+ */
+
+var ArrayMap = function(){
+    this.dict = {};
+    /**
+     * 以key为键向ArrayMap中对应的array中插入元素element
+     * @param key 键
+     * @param element 要插入的元素
+     */
+    this.put = function(key, element){
+	dictArr = this.dict[key];
+	if(!dictArr){
+	    dictArr = [];
+	    this.dict[key] = dictArr;
+	}
+	dictArr.push(element);
+    }
+    /**
+     * 以object 形式返回此对象
+     * @return 返回\{key:array1, key2:array2\}形式的数据结果
+     */
+    this.toDict = function(){
+	return this.dict;
+    }
+    /**
+     * @param key 查询键
+     * @return 返回查询数组
+     */
+    this.get = function(key){
+	return this.dict[key];
+    }
+    /**
+     * 判断是否包含键 key
+     * @param key 键
+     * @return 如果存在key，返回true，否则返回false
+     */
+    this.hasKey = function(key){
+	return !!this.dict[key]
+    }
+    /**
+     * 遍历所有元素
+     * @param callback 对元素遍历时使用的回调函数，参数应接受 (key, array)参数
+     * @return void
+     */
+    this.visit = function(callback){
+	for(var key in this.dict){
+	    callback(key, this.dict[key])
+	}
+    };
+    /**
+     * @see visit
+     */
+    this.forEach = function(callback){
+	visit(callback)
+    }
+}
+
+
+/**
+ * 将对象转换为js数组<br>建议使用forEach方法代替遍历
+ * @param arr java 数组
+ * @return js 数组 {array} 数组
+ * 
+ */
+var asJsArray = function(arr){
+    ret =[]
+    for(var p in arr){
+	ret.push(arr[p]);
+    }
+    return ret;
+}
+
+/**
+ * 打印异常的堆栈
+ * @param e 异常信息
+ */
+var exception = function(e){
+    new java.lang.Exception(e).printStackTrace();;
+}
+/**
+ * 打印当前堆栈
+ */
+var stack = function(){
+    new java.lang.Exception("").printStackTrace();;
+}
+/**
+ * 以format 为基础的print 函数
+ * @example jpr("a=%s,b=%d", 'nnnn',99)
+ */
+var jpr = function(){
+    var args = Array.prototype.slice.call(arguments); 
+    try{
+	var fmted= format(args);
+	print(fmted);
+    }catch(e){
+	print("ERROR　FMT:" + JSON.stringify(args))
+    }
+    return "";
+};
+
+/**
+ * 打印指定对象的成员。 sessa终端下快捷键 //m obj
+ * @param obj 要打印成员的对象
+ * @return 无返回值，只向终端输出
+ */
 var members=function(obj){
     try{
 	var lst = Arrays.asList(obj.getClass().getMethods())
@@ -46,110 +270,14 @@ var members=function(obj){
     }
 }
 
-var tail = function(str, num){
-    if(!top){
-	num = 32;
-    }
-    var strx = str + "";
-    if(num >= strx.length){
-	num = strx.length;
-    }
-    print(strx.substring(str.length - num, num));
-}
-var head = function(str, top){
-    if(!top){
-	top = 32;
-    }
-    var strx = str + "";
-    if(top >= strx.length){
-	top = strx.length;
-    }
-    print(strx.substring(0, top));
-}
-
-var sortWithCallback = function(arr, func){
-
-    Collections.sort(arr, function(o1, o2){
-	return Math.floor(func(o1) - func(o2) + 0.5);
-    })
-
-}
-
-var topWithCallback = function(arr, top, func){
-    var index = 0;
-    for(; index < top && index < arr.length; index ++){
-	func(arr[index]);
-    }
-}
-
-var bottomWithCallback = function(arr, num, func){
-    var index = 0;
-    for(; index < num; index ++){
-	var pos = arr.length - 1 - index;
-	if(pos < 0)
-	    break;
-	func(arr[pos]);
-    }
-}
-
-
+/**
+ * 将对象 arg 以 json格式输出. 
+ * <br>sessa客户端快捷方式为//j arg 或者//arg（如果arg不是其他提示符的话）
+ * 
+ * @param arg 要输出为json的对象
+ * @return 无返回值
+ */
 var printJson=function(arg){
-    print(JSON.stringify(arg))
-    return arg
-    
-}
-
-var now = function(){
-    return System.currentTimeMillis();
-}
-
-var confirm = function(prompt){
-    if(!prompt){
-	prompt = "continue?"
-    }
-    return  Consoler.confirm(prompt);
-}
-
-var pause = function(arg){
-    if(!arg){
-	arg = ""
-    }
-    Consoler.readString(arg)
-}
-
-var ArrayMap = function(){
-    this.dict = {};
-    this.put = function(key, element){
-	dictArr = this.dict[key];
-	if(!dictArr){
-	    dictArr = [];
-	    this.dict[key] = dictArr;
-	}
-	dictArr.push(element);
-    }
-    this.toDict = function(){
-	return this.dict;
-    }
-    this.get = function(key){
-	return this.dict[key];
-    }
-    this.hasKey = function(key){
-	return !!this.dict[key]
-    }
-    this.visit = function(callback){
-	for(var key in this.dict){
-	    callback(key, this.dict[key])
-	}
-    };
-    this.forEach = function(callback){
-	visit(callback)
-    }
-}
-
-var asJsArray = function(arr){
-    ret =[]
-    for(var p in arr){
-	ret.push(arr[p]);
-    }
-    return ret;
+    var json = JSON.stringify(arg)
+    print(json)
 }

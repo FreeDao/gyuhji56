@@ -14,7 +14,7 @@ var allStock={
 	    code = code + "";
 	    if(code.length != 7){
 		print("!!!!!!!!!!!1errorCode " + code);
-		pause();
+		std.pause();
 	    }
 	    return code.substring(6);
 	}

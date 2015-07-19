@@ -34,7 +34,7 @@ for(var index in tagGroup.groups){
 	}catch(exp){
 	    print(exp)
 	    break
-//	    if(pause()){
+//	    if(std.pause()){
 //		break;
 //	    }
 	}

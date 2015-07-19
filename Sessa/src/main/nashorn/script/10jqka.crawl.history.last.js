@@ -42,7 +42,7 @@ updateLastDay=function(){
 	    stockDay = new StockDay(token);
 	    dayInThisYear.push(stockDay)
 	})
-	pause("not saved! use history.day")
+	std.pause("not saved! use history.day")
 	return true;
     }
     print("load urls " + urls.length)
@@ -95,7 +95,7 @@ print("10jqka.crawl.history.last loaded");
 //	    stockDay = new StockDay(token);
 //	    dayInThisYear.push(stockDay)
 //	})
-//	pause("not saved! use history.day")
+//	std.pause("not saved! use history.day")
 //	return true;
 //    }
 //    print("load urls " + urls.length)

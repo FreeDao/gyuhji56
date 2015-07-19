@@ -17,7 +17,6 @@ var openTmpMdir4Write = function(dirName){
     return openMdir4Write(makeOpenTmpDirName(dirName))
 }
 
-
 var openMDir = function(dirName){
     return openMdir(dirName)
 }

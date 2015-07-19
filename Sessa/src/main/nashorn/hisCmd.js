@@ -1,11 +1,14 @@
-
+/**
+ * 打印历史命令。简化命令为 his(), sessa快捷命令为//his
+ * 
+ * @param file{String} 默认为当前history文件
+ */
 var hisCmd=function(file){
 
     if(!file){
 	file = hisFile;
     }
     file = new File(file)
-    print("\n/**history commands for "+file+"**/\n");
     var lr = new LineReader(file);
     var count = 0;
     hisArr = []
@@ -47,7 +50,7 @@ var hisCmd=function(file){
 	    if(startIndex < 0){
 		startIndex=0;
 	    }
-	    print("// in " + last);
+	    print("//# " + last);
 	    for(i in hisArr2){
 		if(i < startIndex){
 		    continue;
@@ -56,18 +59,16 @@ var hisCmd=function(file){
 	    }
 	}
     }
-    print("// in " + file);
+    print("//# " + file);
     hisArr.forEach(function(e){
 	print(e);
     });
 
 
-    print("\n/**history command end**/\n");
+    print("");
 }
 
-var hiscmd=function(file){
-    return hisCmd();
-}
-var his=function(file){
+
+var his=function(){
      return hisCmd();
 }

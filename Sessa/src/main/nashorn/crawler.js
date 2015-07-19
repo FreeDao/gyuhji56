@@ -1,6 +1,6 @@
 /**
  * 抓取一个页面
- * @param url url to crawl
+ * @param {string} url url to crawl
  */
 var crawl = function(url){
     print("crawling " + url)
@@ -10,9 +10,8 @@ var crawl = function(url){
 }
 /**
  * 抓取文件，并将文件存放到mdir中. 先在mdir中寻找是否已经抓取并缓存，如果缓存了则直接返回（避免多次抓取）
- * @parameter urlStr <string> -the url to crawl
+ * @param urlStr {string} -the url to crawl
  * @param mdir the mdir to store the
- * @method crawlWithMdir
  * 
  */
 var crawlWithMdir = function(urlStr, mdir){
@@ -23,7 +22,7 @@ var crawlWithMdir = function(urlStr, mdir){
     var ret;
     print("crawling " + urlStr)
     if(mfile){
-	debug("hit in mdir for url " + urlStr)
+	log.debug("hit in mdir for url %s", urlStr)
 	var bytes = mfile.getBytes();
 	return new java.lang.String(bytes, "utf-8");
     }else{
@@ -46,7 +45,7 @@ var CrawlConfig = function(){
     this.callback =function(url, data){
 	print(data)
 	print("crawl url ok, in callback now")
-	return Consoler.confirm("continue?");
+	return std.confirm("continue?");
     };
     this.path = function(typeName){
 	return "mdir/CrawlerTmpHome/" + Misc.formatFileName(typeName)
