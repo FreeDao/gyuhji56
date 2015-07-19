@@ -1,4 +1,4 @@
-if(typeof allStock == undefined){
+if(!isDefined('allStock')){
     loadVarExt('allStock')
 }
 basic = loadVar('10jqka.basic')

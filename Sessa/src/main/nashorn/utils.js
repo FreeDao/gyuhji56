@@ -281,3 +281,17 @@ var printJson=function(arg){
     var json = JSON.stringify(arg)
     print(json)
 }
+
+/**
+ * 判断 varName所代表的字符串是否为已定义变量
+ * @param varName 要检测的变量名
+ * @return {boolean} 返回true 如果已经定义
+ */
+var isDefined = function(varName){
+    for(var definedName in this){
+	if(varName.equals(definedName)){
+	    return true;
+	}
+    }
+    return false;
+}

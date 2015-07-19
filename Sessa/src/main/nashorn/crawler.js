@@ -35,22 +35,53 @@ var crawlWithMdir = function(urlStr, mdir){
     return ret;
 }
 
-
+/**
+ * @class CrawlConfig
+ * the most usefull crawl tool<br>
+ * members can set:
+ * <br><b>sleepWhenCrawlSuccess</b> default 0
+ * <br><b>sleepWhenCrawlError</b> default 0
+ * <br><b>stopWhenCrawlError</b> default false
+ * <br><b>savePath</b> usually config as: conf.savePath = conf.path(saveName)
+ * <br><b>urls</b> the urls to crawl, data type as: [{'url':urlStr}, ...]
+ * <br><b></b> 
+ */
 var CrawlConfig = function(){
-    this.sleepWhenSuccess=0;
-    this.sleepWhenError=0;
-    this.stopWhenError=false;
+    /**default 0**/
+    this.sleepWhenCrawlSuccess=0;
+    /**default 0**/
+    this.sleepWhenCrawlError=0;
+    /**default false**/
+    this.stopWhenCrawlError=false;
+    /**usually config as: conf.savePath = conf.path(saveName)**/
     this.savePath="";
+    /**the urls to crawl, data type as: [{'url':urlStr}, ...]**/
     this.urls=[];
+    /**
+     * the parse function, if not set use default  interactive function<br>
+     * PLEASE set this function if need parse, 
+     * if not need parse, please set it as function(){return true}<br>
+     * 
+     * @return true/false, if false return the crawl loop will stop
+     * @throws if throw exception, the crawl loop will stop, so please be sure the exception be catched
+     */
     this.callback =function(url, data){
 	print(data)
 	print("crawl url ok, in callback now")
 	return std.confirm("continue?");
     };
+    /**
+     * make a mdir name as mdir/CrawlerTmpHome/$typeName/$nowday()
+     * @param typeName the crawlType, you need only set a name,without a full path
+     * @return the path {string}
+     */
     this.path = function(typeName){
 	return "mdir/CrawlerTmpHome/" + Misc.formatFileName(typeName)
 	+ "/" +nowday()
     }
+    /**
+     * the crawl caculate info
+     */
     this.crawlRoundInfo = {
 	    checkCount : 0,
 	    okCrawl : 0,
@@ -59,6 +90,9 @@ var CrawlConfig = function(){
 	    urlCount : this.urls.length,
 	    parseFail : 0
     }
+    /**
+     * the report function reporting the excute result
+     */
     this.report = function(){
 	print("crawlReport:");
 	printJson(this.crawlRoundInfo);
@@ -77,7 +111,12 @@ var CrawlConfig = function(){
 	    })
 	}
     }
-
+    /**
+     * the function start crawling.<br>
+     * 
+     * you can see report use report(), or just view the member crawlRoundInfo
+     * 
+     */
     this.crawl=function(){
 	if(this.urls.length == 0 || !this.urls[0].url){
 	    print("urls not sets, or has not 'url' field in urls items")
@@ -103,16 +142,22 @@ var CrawlConfig = function(){
 	}
 	this.report()
     }
-    this.warns = []
+    this.warns = [];
     this.addWarn = function(warn){
 	this.warns.push(warn)
     }
-
     //sprint("crawlConfig init")
 }
+/**
+ * crawl urls. usually please use CrawlConfig instance, if mdir is not shared
+ * @param urls urls to crawl
+ * @param mdir the mdir to store
+ * @param conf {CrawlConfig} the config
+ */
 var crawlUrls = function(urls, mdir, conf){
     return crawlIterator(urls, mdir, conf)
 }
+
 var crawlIterator = function(urls, mdir, conf){
     if(typeof(conf) == "undefined"){
 	throw "conf not set";
@@ -138,17 +183,17 @@ var crawlIterator = function(urls, mdir, conf){
 		print("got " + urlInfo.html.length /1000.0 + " KB for " + urlInfo.url)
 		crawlRoundInfo.okCrawl ++;
 
-		if(conf.sleepWhenSuccess){
-		    Misc.sleep(conf.sleepWhenSuccess)
+		if(conf.sleepWhenCrawlSuccess){
+		    Misc.sleep(conf.sleepWhenCrawlSuccess)
 		}
 	    }catch(e){
 		crawlRoundInfo.failCount++
 		exception(e)
-		if(conf.stopWhenError){
+		if(conf.stopWhenCrawlError){
 		    break;
 		}
-		if(conf.sleepWhenError){
-		    Misc.sleep(conf.sleepWhenError)
+		if(conf.sleepWhenCrawlError){
+		    Misc.sleep(conf.sleepWhenCrawlError)
 		}
 	    }finally{
 		if(crawlRoundInfo.checkCount % 10 == 0){
@@ -168,7 +213,7 @@ var crawlIterator = function(urls, mdir, conf){
 		    exception(exc);
 
 //		    if(!confirm("continue?")){
-//			break
+//		    break
 //		    }
 		}
 	    }

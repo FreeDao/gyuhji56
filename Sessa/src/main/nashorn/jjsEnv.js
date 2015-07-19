@@ -44,6 +44,7 @@ loadx('mdir');
 loadx('utils')
 loadx('console')
 loadx('maths');
+loadx('seStream');
 
 
 

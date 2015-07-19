@@ -1,4 +1,4 @@
-if(typeof allStock == undefined || !allStock){
+if(!isDefined('allStock')){
     loadVarExt('allStock')
 }else{
     print('all stock already loaded')
