@@ -2,17 +2,18 @@ package com.bmtech.fsql.expression;
 
 import java.io.IOException;
 
+import com.bmtech.utils.segment.Segment;
+
 /**
  * The <a href="http://en.wikipedia.org/wiki/Lexical_analysis#Scanner">lexer</a>
  * is used to read characters and identify tokens and pass them to the parser
  */
 public class Lexer {
-	
+
 	public static final int EOF = -1;
 	private int columnNo = 1;
 	private PeekReader in;
-	
-	
+
 	public Lexer(String sql) throws IOException {
 		this.in = new PeekReader(sql);
 	}
@@ -23,15 +24,15 @@ public class Lexer {
 
 	private int read() {
 		try {
-			int c = in.read();;
+			int c = in.read();
+			;
 			if (c == '\n') {
-				throw new LexerException("\\n is not expected", columnNo) ;
+				throw new LexerException("\\n is not expected", columnNo);
 			}
 			columnNo++;
 			return c;
 		} catch (IOException e) {
-			throw new LexerException(e.getMessage(), 
-					columnNo);
+			throw new LexerException(e.getMessage(), columnNo);
 		}
 	}
 
@@ -51,9 +52,7 @@ public class Lexer {
 		int input = read();
 		if (input != c) {
 			String inputChar = (input != EOF) ? "" + (char) input : "END_OF_FILE";
-			throw new LexerException(
-					"Expected '" + c + "' but got '" + inputChar + "'", 
-					columnNo);
+			throw new LexerException("Expected '" + c + "' but got '" + inputChar + "'", columnNo);
 		}
 		return c;
 	}
@@ -137,13 +136,11 @@ public class Lexer {
 		default: {
 			if (character >= '0' && character <= '9') {
 				return matchNumber();
-			} else if ((character >= 'A' && character <= 'Z') ||
-					(character >= 'a' && character <= 'z') ||
-					character == '_') {
+			} else if ((character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z')
+					|| character == '_' || Segment.isSino(character)) {
 				return matchIdentifier();
 			} else {
-				throw new LexerException("Unexpected '" + ((char) character) + "' character", 
-						columnNo);
+				throw new LexerException("Unexpected '" + ((char) character) + "' character", columnNo);
 			}
 		}
 		}
@@ -155,8 +152,7 @@ public class Lexer {
 		int character = lookAhead(1);
 		while ((character >= '0' && character <= '9') || character == '.') {
 			if (decimal && character == '.') {
-				throw new LexerException("Unexcepted '.' character", 
-						columnNo);
+				throw new LexerException("Unexcepted '.' character", columnNo);
 			} else if (character == '.') {
 				decimal = true;
 			}
@@ -165,7 +161,7 @@ public class Lexer {
 		}
 		return new Token(columnNo, TokenType.NUMBER, sb.toString());
 	}
-	
+
 	/**
 	 * An identifier is either a keyword, function, or variable
 	 *
@@ -174,14 +170,12 @@ public class Lexer {
 	private Token matchIdentifier() {
 		StringBuilder sb = new StringBuilder();
 		int character = lookAhead(1);
-		while ((character >= 'a' && character <= 'z') ||
-				(character >= 'A' && character <= 'Z') ||
-				(character >= '0' && character <= '9') ||
-				character == '_') {
+		while ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z')
+				|| (character >= '0' && character <= '9') || character == '_' || Segment.isSino(character)) {
 			sb.append((char) character);
 			character = next();
 		}
-		
+
 		String word = sb.toString();
 		String wordLower = word.toLowerCase();
 		Object var;
@@ -189,39 +183,39 @@ public class Lexer {
 			return new Token(columnNo, TokenType.TRUE, word);
 		} else if (wordLower.equals("false")) {
 			return new Token(columnNo, TokenType.FALSE, word);
-		}else if ((var = TokenType.getConditionType(wordLower)) != null) {
-			if(var == TokenType.SEARCH){
-				return new Token(columnNo,  TokenType.SEARCH, TokenType.SEARCH.str);
-			}else if(var == TokenType.IS){
-				return new Token(columnNo,  TokenType.IS, TokenType.IS.str);
-			}else if(var == TokenType.LIKE){
-				return new Token(columnNo,  TokenType.LIKE, TokenType.LIKE.str);
-			}else if(var == TokenType.IN){
-				return new Token(columnNo,  TokenType.IN, TokenType.IN.str);
-			}else {
+		} else if ((var = TokenType.getConditionType(wordLower)) != null) {
+			if (var == TokenType.SEARCH) {
+				return new Token(columnNo, TokenType.SEARCH, TokenType.SEARCH.str);
+			} else if (var == TokenType.IS) {
+				return new Token(columnNo, TokenType.IS, TokenType.IS.str);
+			} else if (var == TokenType.LIKE) {
+				return new Token(columnNo, TokenType.LIKE, TokenType.LIKE.str);
+			} else if (var == TokenType.IN) {
+				return new Token(columnNo, TokenType.IN, TokenType.IN.str);
+			} else {
 				throw new RuntimeException("condMap not defined:" + word);
 			}
-		}else if ((var = TokenType.getConnjuctType(wordLower)) != null) {
-			if(var == TokenType.AND){
-				return new Token(columnNo,  TokenType.AND, TokenType.AND.str);
-			}else if(var == TokenType.OR){
-				return new Token(columnNo,  TokenType.OR, TokenType.OR.str);
-			}else if(var == TokenType.NOT){
-				return new Token(columnNo,  TokenType.NOT, TokenType.NOT.str);
-			}else {
+		} else if ((var = TokenType.getConnjuctType(wordLower)) != null) {
+			if (var == TokenType.AND) {
+				return new Token(columnNo, TokenType.AND, TokenType.AND.str);
+			} else if (var == TokenType.OR) {
+				return new Token(columnNo, TokenType.OR, TokenType.OR.str);
+			} else if (var == TokenType.NOT) {
+				return new Token(columnNo, TokenType.NOT, TokenType.NOT.str);
+			} else {
 				throw new RuntimeException("conjunctMap not defined:" + word);
 			}
-		}else if (wordLower.equals("order")) {
-            return new Token(columnNo, TokenType.ORDER, word);
-        }else if (wordLower.equals("by")) {
-            return new Token(columnNo, TokenType.BY, word);
-        }else if (wordLower.equals("limit")) {
-            return new Token(columnNo, TokenType.LIMIT, word);
-        }else if (wordLower.equals("asc")) {
-            return new Token(columnNo, TokenType.ASC, word);
-        }else if (wordLower.equals("desc")) {
-            return new Token(columnNo, TokenType.DESC, word);
-        }else{
+		} else if (wordLower.equals("order")) {
+			return new Token(columnNo, TokenType.ORDER, word);
+		} else if (wordLower.equals("by")) {
+			return new Token(columnNo, TokenType.BY, word);
+		} else if (wordLower.equals("limit")) {
+			return new Token(columnNo, TokenType.LIMIT, word);
+		} else if (wordLower.equals("asc")) {
+			return new Token(columnNo, TokenType.ASC, word);
+		} else if (wordLower.equals("desc")) {
+			return new Token(columnNo, TokenType.DESC, word);
+		} else {
 			return new Token(columnNo, TokenType.VARIABLE, word);
 		}
 	}

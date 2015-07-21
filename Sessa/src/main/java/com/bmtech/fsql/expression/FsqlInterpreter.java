@@ -89,7 +89,7 @@ public class FsqlInterpreter {
 		TokenType tokenType = node.getRelation().type;
 		String queryValue = node.getFieldValue();
 
-		return queryName + " " + tokenType + " " + queryValue;
+		return "(" + queryName + " " + tokenType + " " + queryValue + ")";
 	}
 
 	public static String colletQuery(ConditionNode headNode) throws Exception {
@@ -100,8 +100,8 @@ public class FsqlInterpreter {
 			if (nodeToMake.isCompond()) {
 				ConditionNode nodeToMake2 = ((CompondCondtionNode) nodeToMake).thisCond;
 
-				ret = colletQuery(nodeToMake2);
-				sub = " (" + ret + ")";
+				sub = colletQuery(nodeToMake2);
+				sub = " {" + sub + "}";
 			} else {
 				sub = doSimpleNode((ItemConditionNode) nodeToMake);
 			}
@@ -113,7 +113,8 @@ public class FsqlInterpreter {
 	}
 
 	public static void main(String[] args) throws Exception {
-		FsqlInterpreter ipt = new FsqlInterpreter("a > 'zzza' and c > 24.19 && (x>'zzzzx' && y like 'dfa')");
+		FsqlInterpreter ipt = new FsqlInterpreter(
+				"电子节目单> zzza && 驻地=湖北电信2期 and c > 24.19 && (x>'zzzzx' && y like 'dfa')");
 		ConditionNode cond = ipt.toConditionLink();
 		System.out.println(colletQuery(cond));
 	}

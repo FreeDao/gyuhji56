@@ -101,17 +101,7 @@ var sortWithCallback = function(arr, func){
 	return Math.floor(func(o1) - func(o2) + 0.5);
     })
 }
-/**
- * 数组遍历，并对数组中成员执行 callback方法。
- * <b>callback 应返回一个值，指示是否继续</b>
- */
-var forEach = function(arr, callback){
-    for(var p in arr){
-	if(!callback(arr[p])){
-	    break;
-	}
-    }
-}
+
 
 /**
  * 对数组顶部的 num 个元素 执行 func 函数

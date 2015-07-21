@@ -187,6 +187,8 @@ public class Parser {
 				} else if (valueToken.type == TokenType.VALUEUNSET) {
 					valueNode = new FiledValueNode(valueToken.getPosition(), TokenType.VALUEUNSET);
 					isVar = true;
+				} else if (valueToken.type == TokenType.VARIABLE) {
+					valueNode = new FiledValueNode(valueToken.getPosition(), valueToken.text);
 				} else {
 					// FIXME use more slack grammer
 					throw new ParserException(

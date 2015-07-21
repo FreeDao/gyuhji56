@@ -1,12 +1,18 @@
-// 
-loadVarExt('10jqka.basic')
-loadVarExt('10jqka.concept')
-var stream = new SeStream(allStock.data)
+//x = 'daf'
+//    switch(x){
+//    case 'aa':
+//	break;
+//    case 'daf':
+//    print('aaaaaaaaaaa');
+//    break;
+//    default:
+//	print('not found');
+//    }
 
-//pe < 40
-stream.filter(function(ele){
-    rule = "市盈率(动态) >= 40";
-    return ele.is(rule);
-    
-    
+loadVarExt('allStock')
+
+allStock.data.forEach(function(stock){
+    for(var pos in stock){
+	print(pos);
+    }
 })

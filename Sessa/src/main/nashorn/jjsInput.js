@@ -12,6 +12,14 @@ jjsInput.defaultCmd = {
 }
 
 jjsInput.denoteCmdArray=[
+                          {
+                             cmdName:"t",
+                             cmdFunc:"test"  
+                         },
+                         {
+                             cmdName:"test",
+                             cmdFunc:"test"  
+                         },
                          {
                              cmdName:"j",
                              cmdFunc:"printJson"  
@@ -74,6 +82,9 @@ jjsInput.cmdExecute=function(cmdName, paras){
 
 jjsInput.printJson=function(arg){
     return "printJson("+arg.join(" ")+")"
+}
+jjsInput.test=function(arg){
+    return "test()"
 }
 jjsInput.hisCmd=function(arg){
     return "hisCmd()"
