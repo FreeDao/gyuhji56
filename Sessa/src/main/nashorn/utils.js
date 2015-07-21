@@ -204,8 +204,18 @@ var ArrayMap = function(){
  */
 var asJsArray = function(arr){
     ret =[]
-    for(var p in arr){
-	ret.push(arr[p]);
+    if(arr.length){
+	for(var p = 0; p<arr.length; p++){
+	    ret.push(arr[p]);
+	}
+    }else{
+	
+	if(arr.iterator){
+	    var itr = arr.iterator();
+	    while(itr.hasNext()){
+		ret.push(itr.next())
+	    }
+	}
     }
     return ret;
 }
