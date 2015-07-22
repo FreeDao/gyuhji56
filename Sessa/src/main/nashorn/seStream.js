@@ -13,6 +13,7 @@ var SeStream = function(array){
      * @param callback  过滤object或回调函数. 
      * 如果callback.filter存在则调用callback.filter(ele),否则调用callback(ele). 接受ele参数，返回 true/false.
      * 
+     * @return 返回对象本身
      */
     this.filter=function(callback){
 	arrNew = [];
@@ -27,13 +28,16 @@ var SeStream = function(array){
 		arrNew.push(ele);
 	    }
 	})
-	return this.backupAndSet(arrNew);
+	this.backupAndSet(arrNew);
+	return this;
     };
     /**
      * 根据callback.order(ele)/callback(ele)计算arr每个元素ele的排序值，然后根据排序值对arr排序.
      * @param callback 返回元素排序值的函数。
      * 如果callback存在order()函数，则使用call.order(ele)计算排序值，
      * 否则使用callback(ele)计算排序值
+     * 
+     * @return 返回对象本身
      */
     this.sort = function(callback){
 	Collections.sort(arr, function(o1, o2){
@@ -43,20 +47,24 @@ var SeStream = function(array){
 		return Math.floor(callback(o1) - callback(o2) + 0.5);
 	    }
 	})
-	return this.arr;
+	return this;
     };
     /**
      * 根据 callback {java.util.Comparator}对arr排序
      * @param callback java.util.Comparator实例
+     * 
+     * @return 返回对象本身
      */
     this.sortWithComparator =function(callback){
 	Collections.sort(this.arr, callback)
-	return this.arr;
+	return this;
     }
     /**
      * 元素遍历函数。
      * @param callback, 作用于ele的object/function.
      * 如果callback.visit()存在，则执行callback.visit(ele),否则调用callback(ele)
+     * 
+     * @return 返回对象本身
      */
     this.forEach = function(callback){
 	this.arr.forEach(function(ele){
@@ -66,11 +74,13 @@ var SeStream = function(array){
 		callback(arr) 
 	    }
 	});
+	return this;
     }
-   
+
 
     /**
      * 将当前所有元素映射为新元素，并将新元素放入一个数组（如果非空的话）
+     * @return 返回对象本身
      */
     this.map = function(mapper){
 	arrNew = [];
@@ -85,7 +95,8 @@ var SeStream = function(array){
 		arrNew.push(newOne);
 	    }
 	})
-	return this.backupAndSet(arrNew);
+	this.backupAndSet(arrNew);
+	return this;
     }
     /**
      * 回撤上次操作，即将上次操作结果丢弃（对stream中元素的操作无法撤销）
@@ -99,19 +110,17 @@ var SeStream = function(array){
 	return ret;
     }
 
-    /**
-     * @private
-     * 设置当前stream操作的数组
-     * 
-     * 
-     * @param arr 数组
-     */
     this.backupAndSet = function(arr){
 	this.oldArr.push(this.arr);
 	this.arr = arr;
+    }
+    /**
+     * 以数组形式返回
+     * @return 返回本对象内置数组
+     */
+    this.toArray = function(){
 	return this.arr;
     }
-
 }
 
 

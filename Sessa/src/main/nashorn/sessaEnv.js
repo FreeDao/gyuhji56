@@ -97,7 +97,7 @@ var save = function(file, txt){
  * 列出运行环境下，所有非 sessa环境的变量（运行脚本自定义的变量）
  */
 
-var localVars=function(){
+var localVars = function(){
     print("/***local****/");
     for(var e in this){
 	if(globalVar.indexOf(e)!=-1){

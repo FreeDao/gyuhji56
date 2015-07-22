@@ -203,13 +203,12 @@ var ArrayMap = function(){
  * 
  */
 var asJsArray = function(arr){
-    ret =[]
+    var ret =[]
     if(arr.length){
 	for(var p = 0; p<arr.length; p++){
 	    ret.push(arr[p]);
 	}
     }else{
-	
 	if(arr.iterator){
 	    var itr = arr.iterator();
 	    while(itr.hasNext()){
