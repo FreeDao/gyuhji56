@@ -40,7 +40,7 @@ var SeStream = function (array) {
      * @return {SeStream}返回对象本身
      */
     this.sort = function (callback) {
-        Collections.sort(arr, function (o1, o2) {
+        Collections.sort(this.arr, function (o1, o2) {
             if (callback.order) {
                 return Math.floor(callback.order(o1) - callback.order(o2) + 0.5);
             } else {

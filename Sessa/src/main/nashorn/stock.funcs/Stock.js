@@ -91,15 +91,15 @@ var Stock = function (stkInfo) {
     }
     this.dayIntFormat = function (intDayStr) {
         var intDay = Number(intDayStr);
-        if (intDay <= nowDay('yyyy') && intDay >= 1994) {
+        if (intDay <= nowDay('yyyy', now()) && intDay >= 1994) {
             intDay = intDay * 10000 + 101
-        } else if (intDay <= nowDay('yyyyMM') && intDay >= 199401) {
+        } else if (intDay <= nowDay('yyyyMM', now()) && intDay >= 199401) {
             intDay = intDay * 100 + 1
         } else {
-            if (intDay <= nowDay('yyyyMMdd') && intDay >= 19940101) {
+            if (intDay <= nowDay('yyyyMMdd', now()) && intDay >= 19940101) {
                 //ok
             } else {
-                throw new Exception("invalid cursor '" + intDayStr + "'(formated as " + intDay + ")")
+                throw exception("invalid cursor '" + intDayStr + "'(formated as " + intDay + ")")
             }
         }
         return intDay;
@@ -113,7 +113,7 @@ var Stock = function (stkInfo) {
     this.getDayCursor = function (dayFrom, dayTo) {
         var intDay = this.dayIntFormat(dayFrom);
 
-        var dayToFmt = dayTo ? dayTo : nowDay("yyyyMMdd");
+        var dayToFmt = dayTo ? dayTo : nowDay("yyyyMMdd", now());
         var intDayTo = this.dayIntFormat(dayToFmt);
 
         var posit = this.position(intDay)
@@ -135,10 +135,10 @@ var Stock = function (stkInfo) {
      *
      */
     this.loadDays = function (from, to) {
-        from = from + "";
-        to = to + ""
-        var fromYear = from.substring(0, 4)
-        var toYear = to.substring(0, 4);
+        var fromStr = String(from) + "";
+        var toStr = to + ""
+        var fromYear = fromStr.substring(0, 4)
+        var toYear = toStr.substring(0, 4);
         var datas = []
         for (var x = fromYear; x <= toYear; x++) {
             var yearData = this.loadYear(x);

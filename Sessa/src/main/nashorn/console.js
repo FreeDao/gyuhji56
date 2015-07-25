@@ -20,7 +20,7 @@ var STD = function () {
     /**
      * sessa 客户端要求输入确认信息
      * @param prompt 提示字符串，默认为"ok?"
-     * @return 确认信息，n/no 返回false， y/yes 返回true，其他输入下会重复要求输入
+     * @return {boolean}确认信息，n/no 返回false， y/yes 返回true，其他输入下会重复要求输入
      */
     this.confirm = function (prompt) {
         if (!prompt) {

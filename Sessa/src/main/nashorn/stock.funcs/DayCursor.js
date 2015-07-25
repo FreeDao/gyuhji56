@@ -2,7 +2,7 @@ var DayCursor = function (stock, begin, end) {
     this.stock = stock;
     this.yearInfo = null;
     this.begin = begin ? begin : 20100101;
-    this.end = end ? end : Number(nowDay("yyyyMMdd"));
+    this.end = end ? end : Number(nowDay("yyyyMMdd", now()));
 
     this.check = function (stockDay) {
         if (stockDay.day > this.end || stockDay.day < this.begin) {

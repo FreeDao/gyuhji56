@@ -57,12 +57,13 @@ var CrawlConfig = function () {
     this.savePath = "";
     /**the urls to crawl, data type as: [{'url':urlStr}, ...]**/
     this.urls = [];
+    this.err = "";
     /**
      * the parse function, if not set use default  interactive function<br>
      * PLEASE set this function if need parse,
      * if not need parse, please set it as function(){return true}<br>
      *
-     * @return true/false, if false return the crawl loop will stop
+     * @return {boolean} if false return the crawl loop will stop
      * @throws if throw exception, the crawl loop will stop, so please be sure the exception be catched
      */
     this.callback = function (url, data) {
@@ -73,11 +74,11 @@ var CrawlConfig = function () {
     /**
      * make a mdir name as mdir/CrawlerTmpHome/$typeName/$nowday()
      * @param typeName the crawlType, you need only set a name,without a full path
-     * @return the path {string}
+     * @return {string} the path
      */
     this.path = function (typeName) {
         return "mdir/CrawlerTmpHome/" + Misc.formatFileName(typeName)
-            + "/" + nowday()
+            + "/" + nowDay("yyyy-MM-dd", now());
     }
     /**
      * the crawl caculate info
@@ -98,7 +99,7 @@ var CrawlConfig = function () {
         printJson(this.crawlRoundInfo);
         if (this.crawlRoundInfo.failCount == 0 ||
             this.crawlRoundInfo.parseFail ||
-            urlCount != checkCount) {
+            this.crawlRoundInfo.urlCount != this.crawlRoundInfo.checkCount) {
             print("Error!!! maybe not all success")
         }
         if (this.err) {
@@ -125,7 +126,7 @@ var CrawlConfig = function () {
 
         if (this.savePath.length == 0) {
             this.savePath = "mdir/CrawlerTmpHome/" + Misc.formatFileName(urls[0].url)
-                + "/" + nowDay()
+                + "/" + nowDay("yyyy-MM-dd", now())
             var mdirDir = new File(this.savePath);
             if (mdirDir.exists()) {
                 print("savePath not sets, and create tmp file fail : " + mdirDir)
@@ -134,7 +135,7 @@ var CrawlConfig = function () {
         }
 
         print("saving to " + this.savePath)
-        mdir = openMdir4Write(this.savePath);
+        var mdir = openMdir4Write(this.savePath);
         try {
             crawlUrls(this.urls, mdir, this);
         } finally {

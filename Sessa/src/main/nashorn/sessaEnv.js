@@ -73,15 +73,14 @@ var loadVar = function (varName, fromDir) {
  * 如 allStock，本方法会寻求加载 vars/allStock.js,而非vars/allStock.jvar<br>
  * 本方法仅执行对应的js，变量的加载过程，通过执行对应的同名js实现
  * @para varName 要加载的var的文件名
- * @return 本方法不反悔任何值
+ * @return 本方法不返回任何值，如变量需加入到运行时中，需在对应脚本中设定
  */
 var loadVarExt = function (varName) {
     var file = new File(baseVarDir, varName + ".js");
     if (!file.exists()) {
         print("file not exits:" + file);
-        return;
     }
-    return load(file);
+    load(file);
 }
 
 /**
@@ -130,7 +129,7 @@ var vars = function () {
 /**
  * 去掉文件后缀
  * @param fileName {string}
- * @return 返回去掉了最后 '.xxx'的新字符串
+ * @return {Array}返回去掉了最后 '.xxx'的新字符串
  */
 var fileNameWithNoSuffix = function (fileName) {
     var ret = [2];
@@ -162,7 +161,7 @@ var seJs = function () {
     Collections.sort(files, compareFunc)
 
     files.forEach(function (f) {
-        name = f.getName()
+        var name = f.getName()
         if (name.endsWith(".js")) {
             print(" " + name.substring(0, name.length - 3))
         } else {
@@ -181,7 +180,7 @@ var seVars = function () {
         var s1 = fileNameWithNoSuffix(o1.getName());
         var s2 = fileNameWithNoSuffix(o2.getName())
 
-        ret = s1[0].compareTo(s2[0]);
+        var ret = s1[0].compareTo(s2[0]);
         if (ret == 0) {
             return s2[1].compareTo(s1[1])
         }

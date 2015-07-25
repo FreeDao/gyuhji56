@@ -11,17 +11,6 @@ importPackage(
 	java.util.Map);
 
 importPackage(com.bmtech,
-	com.bmtech.htmls,
-	com.bmtech.htmls.parser,
-	com.bmtech.htmls.parser.filters,
-	com.bmtech.htmls.parser.lexer,
-	com.bmtech.htmls.parser.nodes,
-	com.bmtech.htmls.parser.sax,
-	com.bmtech.htmls.parser.scanners,
-	com.bmtech.htmls.parser.tags,
-	com.bmtech.htmls.parser.util,
-	com.bmtech.htmls.parser.util.sort,
-	com.bmtech.htmls.parser.visitors,
 	com.bmtech.utils,
 	com.bmtech.utils.bmfs,
 	com.bmtech.utils.bmfs.tool,

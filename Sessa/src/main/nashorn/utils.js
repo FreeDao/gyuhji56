@@ -1,7 +1,7 @@
 /**
  * 格式化字符串
  * @param args args[0] pattern, args[1...]参数
- * @returns 格式化后的字符串
+ * @returns {string}格式化后的字符串
  */
 format = function (args) {
     if (args && args.length > 1) {
@@ -31,9 +31,9 @@ var intDay = function (time) {
     return Number(nowDay("yyyyMMdd", time))
 }
 /**
- * @param fmt 格式，默认 yyyy-MM-dd
- * @param  time  毫秒数, 默认为当前时间
- * @return 时间字符串
+ * @param fmt {string} @default 格式，默认 yyyy-MM-dd
+ * @param  time {Number} @default 毫秒数, 默认为当前时间
+ * @return {Number}时间字符串
  */
 var nowDay = function (fmt, time) {
     if (!fmt) {
@@ -42,50 +42,9 @@ var nowDay = function (fmt, time) {
     if (!time) {
         time = now()
     }
-    return new SimpleDateFormat(fmt).format(time);
+    return Number(new SimpleDateFormat(fmt).format(time));
 }
-/**
- * @param time 时间毫秒数， 默认为当前时间
- * @return 返回 指定时间的“年分”
- */
-var nowYear = function (time) {
-    return nowDay("yyyy", time)
-}
-/**
- * @param time 时间毫秒数，默认为当前时间
- * @return 返回指定时间的月份
- */
-var nowMonth = function (time) {
-    return nowDay("MM", time)
-}
-/**
- * @param time 时间毫秒数，默认为当前时间
- * @return 返回指定时间的在当月中的日期，如19
- */
-var nowDayOfMonth = function (time) {
-    return nowDay("dd", time)
-}
-/**
- * @param time 时间毫秒数，默认为当前时间
- * @return 返回指定时间的小时(24小时制)，如19
- */
-var nowHour = function (time) {
-    return nowDay("HH", time);
-}
-/**
- * @param time 时间毫秒数，默认为当前时间
- * @return 返回指定时间的分钟数，如35
- */
-var nowMinute = function (time) {
-    return nowDay("mm", time);
-}
-/**
- * @param time 时间毫秒数，默认为当前时间
- * @return 返回指定时间的秒数，如 53
- */
-var nowSecond = function (time) {
-    return nowDay("ss", time);
-}
+
 
 /**
  * 通过指定的对象排序值函数排序
@@ -145,7 +104,7 @@ var ArrayMap = function () {
      * @param element 要插入的元素
      */
     this.put = function (key, element) {
-        dictArr = this.dict[key];
+       var dictArr = this.dict[key];
         if (!dictArr) {
             dictArr = [];
             this.dict[key] = dictArr;
@@ -169,7 +128,7 @@ var ArrayMap = function () {
     /**
      * 判断是否包含键 key
      * @param key 键
-     * @return 如果存在key，返回true，否则返回false
+     * @return {boolean}如果存在key，返回true，否则返回false
      */
     this.hasKey = function (key) {
         return !!this.dict[key]
@@ -177,7 +136,6 @@ var ArrayMap = function () {
     /**
      * 遍历所有元素
      * @param callback 对元素遍历时使用的回调函数，参数应接受 (key, array)参数
-     * @return void
      */
     this.visit = function (callback) {
         for (var key in this.dict) {
@@ -186,9 +144,10 @@ var ArrayMap = function () {
     };
     /**
      * @see visit
+     * @param callback{function} 回调函数，参见 visit
      */
     this.forEach = function (callback) {
-        visit(callback)
+        this.visit(callback)
     }
 }
 
@@ -196,7 +155,7 @@ var ArrayMap = function () {
 /**
  * 将对象转换为js数组<br>建议使用forEach方法代替遍历
  * @param arr java 数组
- * @return js 数组 {array} 数组
+ * @return {Array} 数组
  *
  */
 var asJsArray = function (arr) {
@@ -261,8 +220,8 @@ var members = function (obj) {
             print(met.getName() + "\t" + met.getReturnType())
         })
     } catch (exc) {
-        log.print(exc);
-        for (i in obj) {
+        log.error(exc);
+        for (var i in obj) {
             print(i)
         }
     }

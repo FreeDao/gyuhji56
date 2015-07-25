@@ -4,29 +4,12 @@
  * @param file{String} 默认为当前history文件
  */
 var hisCmd = function (file) {
+    this.leftBig = function(file, left){
 
-    if (!file) {
-        file = hisFile;
-    }
-    file = new File(file)
-    var lr = new LineReader(file);
-    var count = 0;
-    hisArr = []
-    for (; lr.hasNext();) {
-        var line = lr.next();
-        hisArr.push(line);
-        count++;
-    }
-    lr.close();
-
-
-    var left = 100 - count;
-
-    if (left > 0) {
-        files = new File(file).getParentFile().listFiles();
-        last = null;
-        for (i in files) {
-            e = files[i]
+        var files = new File(file).getParentFile().listFiles();
+        var last = null;
+        for (var i in files) {
+            var e = files[i]
 
             if (!e.equals(file)) {
 
@@ -39,10 +22,10 @@ var hisCmd = function (file) {
         }
 
         if (last != null) {
-            lr = new LineReader(last);
-            hisArr2 = []
+            var lr = new LineReader(last);
+            var hisArr2 = []
             for (; lr.hasNext();) {
-                line = lr.next();
+                var  line = lr.next();
                 hisArr2.push(line);
             }
             lr.close();
@@ -58,17 +41,35 @@ var hisCmd = function (file) {
                 print(hisArr2[i])
             }
         }
+    };
+    if (!file) {
+        file = hisFile;
+    }
+    file = new File(file)
+    var lr = new LineReader(file);
+    var count = 0;
+    var hisArr = []
+    for (; lr.hasNext();) {
+        var line = lr.next();
+        hisArr.push(line);
+        count++;
+    }
+    lr.close();
+
+
+    var left = 100 - count;
+
+    if (left > 0) {
+        this.leftBig(file, left);
     }
     print("//# " + file);
     hisArr.forEach(function (e) {
         print(e);
     });
-
-
     print("");
 }
 
 
 var his = function () {
-    return hisCmd();
+    return hisCmd(null);
 }
