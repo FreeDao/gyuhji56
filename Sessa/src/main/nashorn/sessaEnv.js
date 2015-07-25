@@ -51,7 +51,8 @@ var saveVar = function (fileName, jsVar, forcedSave) {
  * 加载varName所指代的变量的文件名。
  * 加载过程为：先将文件载入内存，然后将通过 JSON.parse解析对应json文件，获得内存对象<br>
  * 注：本方法仅返回内存对象，不负责声明对象名
- * @param varName 要加载的变量文件名
+ * @param varName {string} 要加载的变量文件名
+ * @param fromDir {File} 从指定文件夹加载
  */
 var loadVar = function (varName, fromDir) {
     if (!fromDir) {
@@ -85,8 +86,8 @@ var loadVarExt = function (varName) {
 
 /**
  * 将字符串保存到指定文件
- * @param file 要保存到文件
- * @param 要保存在字符串
+ * @param file {File} 要保存到文件
+ * @param txt{string}要保存在字符串
  */
 var save = function (file, txt) {
     var f = new File(file.toString());
@@ -103,9 +104,7 @@ var save = function (file, txt) {
 var localVars = function () {
     print("/***local****/");
     for (var e in this) {
-        if (globalVar.indexOf(e) != -1) {
-            continue;
-        } else {
+        if (globalVar.indexOf(e) == -1) {
             var type = (typeof eval("this." + e));
             print(" " + type + "\t" + e);
         }
@@ -157,14 +156,11 @@ var seScript = function () {
 var seJs = function () {
     var files = baseScriptDir.listFiles();
     files = Arrays.asList(files);
-    Collections.sort(files, new Comparator()
-    {
-        compare:function (o1, o2) {
-            return o1.getName().compareTo(o2.getName())
-        }
+    var compareFunc = function (o1, o2) {
+        return o1.getName().compareTo(o2.getName())
     }
-    )
-    ;
+    Collections.sort(files, compareFunc)
+
     files.forEach(function (f) {
         name = f.getName()
         if (name.endsWith(".js")) {
@@ -180,21 +176,19 @@ var seJs = function () {
 var seVars = function () {
     var files = baseVarDir.listFiles();
     files = Arrays.asList(files);
-    Collections.sort(files, new Comparator()
-    {
-        compare:function (o1, o2) {
-            var s1 = fileNameWithNoSuffix(o1.getName());
-            var s2 = fileNameWithNoSuffix(o2.getName())
 
-            ret = s1[0].compareTo(s2[0]);
-            if (ret == 0) {
-                return s2[1].compareTo(s1[1])
-            }
-            return ret;
+    var compareFunc = function (o1, o2) {
+        var s1 = fileNameWithNoSuffix(o1.getName());
+        var s2 = fileNameWithNoSuffix(o2.getName())
+
+        ret = s1[0].compareTo(s2[0]);
+        if (ret == 0) {
+            return s2[1].compareTo(s1[1])
         }
+        return ret;
     }
-    )
-    ;
+
+    Collections.sort(files, compareFunc)
 
     for (var fIndex in files) {
         var f = files[fIndex];
