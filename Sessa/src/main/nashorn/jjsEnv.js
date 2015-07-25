@@ -17,6 +17,7 @@ var sessaPath  = function(relPath){
 	return base;
     }
 }
+var stockDayDir = new File(sessaPath('../sessaStockDays/days/'));
 
 /**
  * 以sessa目录为相对目录的js加载函数
@@ -45,6 +46,7 @@ loadx('utils')
 loadx('console')
 loadx('maths');
 loadx('seStream');
+loadx("stock.funcs/Stock");
 
 
 

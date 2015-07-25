@@ -1,6 +1,5 @@
 updateLastDay=function(){
     var kkk = loadVarExt('allStock')
-    loadx('stock.day')
 
     stockYear = []
 

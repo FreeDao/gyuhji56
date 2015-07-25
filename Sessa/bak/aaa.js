@@ -10,3 +10,19 @@ testMap=function(httpMap){
 	httpMap.remove("BDPAGETYPE");
 	return httpMap;
 };
+
+
+//  this.scanYearFile = function(){
+
+//  var stkDir = new File(sessaPath('vars/days/' + this.getCode()));
+//  var stkFiles = Arrays.asList(stkDir.listFiles());
+//  Collections.sort(stkFiles, new Comparator(){
+//  compare:function(f1, f2){
+//  return f1.getName().compareTo(f2.getName())
+//  }
+//  })
+
+//  stkFiles.forEach(function(file){
+//  this.years.push(file.getName().replace(".jvar", ""))
+//  })
+//  }

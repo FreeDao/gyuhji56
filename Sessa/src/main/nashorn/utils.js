@@ -4,7 +4,6 @@
  * @returns 格式化后的字符串
  */
 format=function(args){
-
     if(args && args.length > 1){
 	var fmtArg = args.slice(1, args.length);
 
@@ -22,7 +21,6 @@ format=function(args){
  * 返回当前毫秒数
  * @return 返回毫秒数
  */
-
 var now = function(){
     return System.currentTimeMillis();
 }
@@ -31,7 +29,7 @@ var now = function(){
  * @return 返回yyyyMMdd格式日期 如 20150717
  */
 var intDay=function(time){
-    return nowDay("yyyyMMdd", time)
+    return Number(nowDay("yyyyMMdd", time))
 }
 /**
  * @param fmt 格式，默认 yyyy-MM-dd

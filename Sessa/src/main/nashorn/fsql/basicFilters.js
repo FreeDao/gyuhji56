@@ -1,3 +1,25 @@
+var FsqlCmbFilter = function(combinFilters){
+    this.filter = function(stock){
+	var ret = true;
+	combinFilters.forEach(function(e){
+	    var is = e.filter.filter(stock);
+	    switch(e.op){
+	    case '&&':
+		ret = ret && is
+		break;
+	    case "||":
+		ret = ret || is
+		break;
+	    case "!":
+		ret = ret && !is
+		break;
+		default:
+		    throw new Exception("unknown fsql combin operation '" + e.op +"'")
+	    }
+	})
+	return ret;
+    }
+}
 var FilterTemplate = function(op, opValue){
     this.op = op;
     this.opValue = opValue;

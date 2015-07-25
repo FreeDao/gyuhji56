@@ -1,11 +1,14 @@
-stream = new SeStream(allStock.data);
-filter1 = filterFactoryMap.getFilter("规模", "=", '中');
-filter2 = filterFactoryMap.getFilter("静态市盈率", "<", '40');
-printJson(filter);
+
+
+//stream = new SeStream(allStock.data);
+//filter1 = filterFactoryMap.getFilter("规模", "=", '中');
+//filter2 = filterFactoryMap.getFilter("静态市盈率", "<", '40');
+////filter0 = fsql2Filter("规模=中  && 静态市盈率<40");
+//printJson(filter);
 //stream.filter(filter1).filter(filter2);
-stream.filter(filter1)
-//stream.filter(filter2);
-print(stream.arr.length)
+//stream.filter(filter0)
+////stream.filter(filter2);
+//print(stream.arr.length)
 
 ////x = 'daf'
 ////switch(x){

@@ -7,8 +7,9 @@ import java.util.HashMap;
  *
  */
 public enum TokenType {
-	COMMA("@,", TokenClass.UNKNOWN), LPAREN("@(", TokenClass.GROUP), RPAREN("@)", TokenClass.GROUP), NOT("@!",
-			TokenClass.CONJUNCT), AND("@&&", TokenClass.CONJUNCT), OR("@||", TokenClass.CONJUNCT), // relation
+	COMMA("@,", TokenClass.UNKNOWN), LPAREN("@(", TokenClass.GROUP), RPAREN("@)", TokenClass.GROUP),
+	// boolean
+	NOT("!", TokenClass.CONJUNCT), AND("&&", TokenClass.CONJUNCT), OR("||", TokenClass.CONJUNCT), // relation
 	// operation
 	// operators
 	LESS_THEN("<", TokenClass.RELATION), LESS_EQUAL(">", TokenClass.RELATION), EQUAL("=",

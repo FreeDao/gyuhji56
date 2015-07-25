@@ -1,4 +1,4 @@
-loadx("stock.day");
+
 var crawlYear= function(year,stock, list){
 
     stockFrom = allStock.stockFrom(stock.code);
@@ -156,8 +156,8 @@ downloadThisYear=function(){
 	    yearList = parseHistoryData(urlInfo.html)
 	    oldYear = urlInfo.stock.loadYear(yearNum)
 
-	    if(oldYear.length < yearList.length){
-		jpr("old size %s, new size %s", oldYear.length, yearList.length);
+	    if(!oldYear || oldYear.length < yearList.length){
+		jpr("old size %s, new size %s",oldYear? oldYear.length :"0", yearList.length);
 		saveVar("days/" + urlInfo.stock.code + "/" + yearNum, yearList, true)
 		updated++
 	    }else if(oldYear.length == yearList.length){

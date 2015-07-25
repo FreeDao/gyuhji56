@@ -16,7 +16,7 @@ var SeStream = function(array){
      * @return 返回对象本身
      */
     this.filter=function(callback){
-	arrNew = [];
+	var arrNew = [];
 	this.arr.forEach(function(ele){
 	    var ret;
 	    if(callback.filter){
@@ -83,7 +83,7 @@ var SeStream = function(array){
      * @return 返回对象本身
      */
     this.map = function(mapper){
-	arrNew = [];
+	var arrNew = [];
 	this.arr.forEach(function(ele){
 	    if(mapper.map){
 		newOne = mapper.map(ele);
