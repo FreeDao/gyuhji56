@@ -4,7 +4,7 @@
  */
 var crawl = function (urlStr) {
     print("crawling " + urlStr)
-    var url = new URL(url);
+    var url = new URL(urlStr);
     var crl = HttpCrawler.makeCrawler(url);
     return crl.getString();
 }
@@ -58,16 +58,18 @@ var CrawlConfig = function () {
     /**the urls to crawl, data type as: [{'url':urlStr}, ...]**/
     this.urls = [];
     this.err = "";
+    this.self = this;
     /**
      * the parse function, if not set use default  interactive function<br>
      * PLEASE set this function if need parse,
      * if not need parse, please set it as function(){return true}<br>
-     *
+     * @param urlInfo {object} a object has field 'url'...
+     * @param html {string} the html got from urlInfo.url
      * @return {boolean} if false return the crawl loop will stop
      * @throws if throw exception, the crawl loop will stop, so please be sure the exception be catched
      */
-    this.callback = function (url, data) {
-        print(data)
+    this.callback = function (urlInfo, html) {
+        print(html)
         print("crawl url ok, in callback now")
         return std.confirm("continue?");
     };
@@ -88,18 +90,18 @@ var CrawlConfig = function () {
         okCrawl: 0,
         crawlCount: 0,
         failCount: 0,
-        urlCount: this.urls.length,
         parseFail: 0
     }
+
     /**
      * the report function reporting the excute result
      */
     this.report = function () {
         print("crawlReport:");
         printJson(this.crawlRoundInfo);
-        if (this.crawlRoundInfo.failCount == 0 ||
+        if (this.crawlRoundInfo.failCount > 0 ||
             this.crawlRoundInfo.parseFail ||
-            this.crawlRoundInfo.urlCount != this.crawlRoundInfo.checkCount) {
+            this.urls.length != this.crawlRoundInfo.checkCount) {
             print("Error!!! maybe not all success")
         }
         if (this.err) {

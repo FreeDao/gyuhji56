@@ -17,7 +17,7 @@ var sessaPath  = function(relPath){
 	return base;
     }
 }
-var stockDayDir = new java.io.File(new java.io.File(sessaPath(null)), "../sessaStockDays/days/");
+
 /**
  * 以sessa目录为相对目录的js加载函数
  * @param js <string>  文件名（无.js后缀，后缀自动添加）

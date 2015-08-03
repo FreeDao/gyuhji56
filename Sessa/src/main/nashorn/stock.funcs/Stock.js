@@ -157,6 +157,10 @@ var Stock = function (stkInfo) {
         }
         return ret;
     }
+
+    this.saveYearData = function(yearNum, yearData, forceSave){
+        saveVar(this.code + "/" + yearNum, yearData, forceSave, stockDayDir)
+    }
 }
 
 var loadAllStock = function () {

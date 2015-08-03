@@ -1,5 +1,7 @@
-
-
+loadVarExt('10jqka.basic')
+var ex = stockFieldsAttrDefines.getFieldAttrDefine('净利润-排名')
+var x = ex.extractValue(allStock.data[100])
+print(x)
 //stream = new SeStream(allStock.data);
 //filter1 = filterFactoryMap.getFilter("规模", "=", '中');
 //filter2 = filterFactoryMap.getFilter("静态市盈率", "<", '40');

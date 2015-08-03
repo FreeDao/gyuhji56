@@ -180,7 +180,9 @@ var asJsArray = function (arr) {
  * @param e 异常信息
  */
 var exception = function (e) {
-    new java.lang.Exception(e).printStackTrace();
+    var ret =  new java.lang.Exception(e ? e + "": "");
+    ret.printStackTrace();
+   return ret;
 }
 /**
  * 打印当前堆栈

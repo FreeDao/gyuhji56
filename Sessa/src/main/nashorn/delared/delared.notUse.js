@@ -99,6 +99,9 @@ FileGet = {
 FileOutputStream = function (obj) {
 
 }
+Jsoup = {
+    parse:"",
+}
 Arrays = {
     asList: "",
 }
@@ -108,6 +111,11 @@ ByteArrayInputStream = function () {
 Misc={
     sleep:"",
     formatFileName:"",
+    substring:""
+}
+StringBuilder = function(){
+    this.append = function (){};
+    this.toString = function(){}
 }
 MDir = {
     open4Write: "",

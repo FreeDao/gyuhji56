@@ -3,6 +3,7 @@
  */
 baseVarDir = new File(sessaPath("vars/"));
 baseVarDir.mkdirs();
+var stockDayDir = new File(new java.io.File(sessaPath(null)), "../sessaStockDays/days/");
 
 /**
  * script 的 根目录。所有内置js脚本存放于此目录
@@ -25,14 +26,18 @@ var loadScript = function (fileName) {
 }
 /**
  * 保存对象到vars目录
- * @param fileName 要保存到文件
- * @param jsVar js变量
+ * @param fileName {string} 要保存到文件
+ * @param jsVar {object} js变量
  * @param forcedSave {boolean} 默认false, 如果此值为false，且对应文件已经存在，
+ * @param toDir{File} @ignore 基础路径，如果不设置则默认为 {baseVarDir}
  * 将通过console提示是否覆盖
  */
-var saveVar = function (fileName, jsVar, forcedSave) {
-
-    var file = new File(baseVarDir, fileName + ".jvar");
+var saveVar = function (fileName, jsVar, forcedSave, toDir) {
+    var dirBase = toDir;
+    if(!dirBase){
+        dirBase = baseVarDir
+    }
+    var file = new File(dirBase, fileName + ".jvar");
     print("save to " + file);
     if (file.exists()) {
         if (typeof forcedSave != "undefined" && forcedSave) {
@@ -47,18 +52,21 @@ var saveVar = function (fileName, jsVar, forcedSave) {
     save(file, JSON.stringify(jsVar))
 }
 
+
+
 /**
  * 加载varName所指代的变量的文件名。
  * 加载过程为：先将文件载入内存，然后将通过 JSON.parse解析对应json文件，获得内存对象<br>
  * 注：本方法仅返回内存对象，不负责声明对象名
  * @param varName {string} 要加载的变量文件名
- * @param fromDir {File} 从指定文件夹加载
+ * @param fromDir {File} @ignore 从指定文件夹加载
  */
 var loadVar = function (varName, fromDir) {
-    if (!fromDir) {
-        fromDir = baseVarDir
+    var myBaseDir = fromDir
+    if (!myBaseDir) {
+        myBaseDir = baseVarDir
     }
-    var file = new File(fromDir, varName + ".jvar");
+    var file = new File(myBaseDir, varName + ".jvar");
     if (!file.exists()) {
         print("file not exits:" + file);
         return;
