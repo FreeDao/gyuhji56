@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fun.tv"
+    package="com.funtv"
     android:versionCode="4"
     android:versionName="0.1.2.111111" >
 
@@ -74,12 +74,12 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.fun.tv.utils.report.UploadLogService" >
+        <!-- <service android:name="com.funtv.utils.report.UploadLogService" >
             <intent-filter>
-                <action android:name="com.fun.tv.utils.report.UploadLogService" >
+                <action android:name="com.funtv.utils.report.UploadLogService" >
                 </action>
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 
 </manifest>

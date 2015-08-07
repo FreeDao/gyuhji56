@@ -373,16 +373,7 @@ public class WebViewJSInterface {
 		//P2pHelper.getInstance(FunApplication.getInstance().getApplicationContext()).reportNetRequestToKernel(userBehavior);
 	}
 
-	@JavascriptInterface
-	public void callBackServerTimestamp(String time){
-		LogUtil.i(TAG,"callBackServerTimestamp() time="+time);
-		if(null != mActivity && !StringUtil.isEmpty(time)){
-			 Intent intent = new Intent();
-	         intent.setAction(Constans.ACTION_CHECK_SERVER_TIME);
-	         intent.putExtra(Constans.CHECK_SERVER_TIME, time);
-	         mActivity.sendBroadcast(intent);
-		}
-	}
+
 
 
 

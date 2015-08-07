@@ -8,7 +8,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.widget.TextView;
 
-import com.fun.tv.R;
+import com.funtv.R;
 import com.funtv.FunApplication;
 import com.funtv.player.entity.EpisodeInfo;
 import com.funtv.player.entity.PlayerInfo;

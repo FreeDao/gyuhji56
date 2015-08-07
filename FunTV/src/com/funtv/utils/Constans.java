@@ -80,10 +80,6 @@ public interface Constans {
 
 	public static final String RELATED_MEDIA_LINK_URL = "related_media_link_url";
 
-	public static final String RELATED_MEDIA_ACTIONG = "com.fun.tv.open.media";
-
-
-	public static final String ACTION_CHECK_SERVER_TIME = "com.fun.tv.server.time";
 
 	public static final String CHECK_SERVER_TIME = "server_time";
 
@@ -105,11 +101,9 @@ public interface Constans {
 
 	public static final long KEY_DELAY = 1000;//延迟执行key事件时间间隔
 
-	public static final Object TAG_VOLLEY = "com.fun.tv.tag.volley";
 
 	public static final String REPORT_VERSION="1";//上报协议版本
 
-	public static final String ACTION_P2PKERNEL_START ="com.fun.tv.P2PSTART";
 
 	public static final int PLAY_STEP_LONG = 10;
 	public static final int PLAY_STEP_MIDDLE = 5;

@@ -20,12 +20,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.fun.tv.R;
-import com.funtv.utils.Constans;
-import com.funtv.utils.DeviceInfoUtil;
+import com.funtv.R;
 import com.funtv.utils.LogUtil;
-import com.funtv.utils.StringUtil;
-import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends Activity implements  android.view.View.OnClickListener{
@@ -38,17 +34,10 @@ public class MainActivity extends Activity implements  android.view.View.OnClick
 
 
 
-	private WebMediaBroadCast mWebMediaBroadCast;
-
-
-	private static final int LOADING_DELAY = 500;
-
-//	private static final String SERVER_IP = "ott-srv1.fun.tv";
-//	private static final String SERVER_IP = "ott-alpha.fun.tv";
-//	private static final String SERVER_IP = "ott-srv.fun.tv";
-//	private static final String SERVER_IP = "192.168.136.243";
 
 	private static final String EXTRA_AS_LIB = "com.fun.tv.extra.aslib";
+
+	private static final String INDEX_URL = "http://127.0.0.1:8686/sessa";
 	
 	private Animation mAnimation;
 
@@ -162,7 +151,6 @@ public class MainActivity extends Activity implements  android.view.View.OnClick
 	protected void onDestroy() {
 		LogUtil.e(TAG, "-----onDestroy()----");
 		super.onDestroy();
-		unregisterReceiver();
 		if(null != mFunWebview){
 			mFunWebview.removeAllViews();
 			mFunWebview.destroy();
@@ -224,30 +212,7 @@ public class MainActivity extends Activity implements  android.view.View.OnClick
 
 
 
-	private void unregisterReceiver() {
-		if(null != mWebMediaBroadCast){
-			unregisterReceiver(mWebMediaBroadCast);
-		}
 
-	}
-
-	public class WebMediaBroadCast extends BroadcastReceiver {
-
-		private static final String TAG = "WebMediaBroadCast";
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (null != context && null != intent) {
-				String action = intent.getAction();
-				String mediaUrl = intent.getStringExtra(Constans.RELATED_MEDIA_LINK_URL);
-				LogUtil.e(TAG, "WebMediaBroadCast onReceive() mediaUrl=" + mediaUrl +" action = " + action);
-				if(!StringUtil.isEmpty(action) && action.equals(Constans.RELATED_MEDIA_ACTIONG)){
-					if (!StringUtil.isEmpty(mediaUrl) && null != mFunWebview) {
-						mFunWebview.loadUrl(mediaUrl);
-					}
-				}
-			}
-		}
-	}
 
 	@Override
 	public void onClick(View v) {

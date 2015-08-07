@@ -16,7 +16,7 @@ import android.webkit.WebSettings.PluginState;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 
-import com.fun.tv.R;
+import com.funtv.R;
 import com.funtv.utils.LogUtil;
 import com.funtv.utils.PlayUtil;
 import com.funtv.webkit.NaviHistory.HistoryStackInfo;
