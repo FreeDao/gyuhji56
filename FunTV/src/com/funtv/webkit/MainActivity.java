@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements  android.view.View.OnClick
 
 	private static final String EXTRA_AS_LIB = "com.fun.tv.extra.aslib";
 
-	private static final String INDEX_URL = "http://127.0.0.1:8686/sessa";
+	private static final String INDEX_URL = "http://10.60.1.13:8080/";
 	
 	private Animation mAnimation;
 
