@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black" >
+
+    <LinearLayout
+        android:id="@+id/video_player_loading_bottom_tip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_30px"
+        android:layout_marginLeft="@dimen/dimen_256px"
+        android:layout_marginRight="@dimen/dimen_256px"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/video_player_loading_bottom_tip_ok"
+            style="@style/player_loading_text_style"
+            android:layout_weight="1"
+            android:text="@string/player_tip_ok" />
+
+        <TextView
+           	android:id="@+id/video_player_loading_bottom_tip_exit"
+            style="@style/player_loading_text_style"
+            android:layout_weight="1"
+            android:text="@string/player_tip_exit" />
+
+        <TextView
+            android:id="@+id/video_player_loading_bottom_tip_clarity"
+            style="@style/player_loading_text_style"
+            android:layout_weight="1"
+            android:text="@string/player_tip_clarity_panel" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/video_player_loading_bottom_tip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <ImageView
+                android:id="@+id/video_player_loading_bg_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dimen_70px"
+                android:src="@drawable/video_player_loading_bg" />
+
+            <com.funtv.player.CacheInfo
+                android:id="@+id/cache_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/video_player_loading_bg_iv"
+                android:layout_marginLeft="@dimen/dimen_540px"
+                android:layout_marginRight="@dimen/dimen_540px"
+                android:layout_marginTop="@dimen/dimen_22px" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

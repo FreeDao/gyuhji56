@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/player_related_bg_selector" >
+
+    <RelativeLayout
+        android:id="@+id/related_media_item_image_bg"
+        android:layout_width="@dimen/dimen_248px"
+        android:layout_height="@dimen/dimen_358px" >
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/related_image"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/dimen_340px"
+            android:scaleType="centerCrop"
+            android:background="@color/related_media_item_image_bg" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/related_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/related_media_item_image_bg"
+        android:layout_alignLeft="@id/related_media_item_image_bg"
+        android:layout_alignRight="@id/related_media_item_image_bg"
+        android:background="@drawable/player_related_item_name_bg"
+        android:ellipsize="end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/episode_definition_word"
+        android:textSize="@dimen/dimen_font_34px" />
+
+</RelativeLayout>

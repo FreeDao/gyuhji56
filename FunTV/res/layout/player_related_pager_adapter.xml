@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/player_related_gv"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:cacheColorHint="@color/transparent"
+    android:fadingEdge="none"
+    android:fadingEdgeLength="0dp"
+    android:gravity="center"
+    android:horizontalSpacing="2dp"
+    android:listSelector="@color/transparent"
+    android:numColumns="5"
+    android:scrollbars="none"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="0dp" />

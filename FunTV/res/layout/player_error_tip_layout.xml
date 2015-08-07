@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/play_error_tip_rl"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:visibility="gone" >
+
+    <TextView
+        android:id="@+id/player_error_tip_word"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/no_net_tip"
+        android:textColor="@color/episode_definition_word"
+        android:textSize="@dimen/dimen_font_54px" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/player_error_tip_word"
+        android:layout_marginTop="@dimen/dimen_94px"
+        android:gravity="center_horizontal" >
+
+        <Button
+            android:id="@+id/player_error_retry_btn"
+            style="@style/play_error_tip_style"
+            android:focusable="true"
+            android:text="@string/error_retry" />
+
+        <Button
+            android:id="@+id/player_error_back_btn"
+            style="@style/play_error_tip_style"
+            android:layout_marginLeft="@dimen/dimen_60px"
+            android:text="@string/error_back" />
+    </LinearLayout>
+
+</RelativeLayout>

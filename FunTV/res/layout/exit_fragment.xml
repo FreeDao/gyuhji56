@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/exit_fragment_root"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/episode_bg"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/exit_fragment_exit_btn_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_244px"
+            android:layout_marginRight="@dimen/dimen_244px"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/exit_fragment_complete_video_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_180px"
+                android:ellipsize="start"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/episode_definition_word"
+                android:textSize="@dimen/dimen_font_42px" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_40px"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/exit_fragment_exit_btn"
+                    style="@style/player_exit_style"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:text="@string/exit" />
+
+                <Button
+                    android:id="@+id/exit_fragment_cancle_btn"
+                    style="@style/player_exit_style"
+                    android:layout_marginLeft="@dimen/dimen_60px"
+                    android:nextFocusLeft="@id/exit_fragment_exit_btn"
+                    android:text="@string/cancle" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/exit_fragment_related_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_80px"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/exit_fragment_live_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_244px"
+            android:layout_marginRight="@dimen/dimen_244px"
+            android:layout_marginTop="@dimen/dimen_80px"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/exit_fragment_live_tv"
+                style="@style/player_loading_text_style"
+                android:layout_marginBottom="@dimen/dimen_30px"
+                android:text="@string/other_live"
+                android:visibility="gone" />
+
+            <GridView
+                android:id="@+id/exit_fragment_live_gridview"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/dimen_380px"
+                android:background="@color/transparent"
+                android:cacheColorHint="@color/transparent"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/dimen_12px"
+                android:listSelector="@color/transparent"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="@dimen/dimen_12px" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/exit_fragment_live_clarity_root"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_40px"
+        android:layout_marginLeft="@dimen/dimen_126px"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+    </LinearLayout>
+
+</RelativeLayout>

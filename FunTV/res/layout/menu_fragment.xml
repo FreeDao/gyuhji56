@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/episode_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/menu_fragment_root"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_126px"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_40px"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:text="@string/choice_definition"
+            android:textColor="@color/episode_definition_title"
+            android:textSize="@dimen/dimen_font_42px" />
+
+        <LinearLayout
+            android:id="@+id/menu_fragment_clarity_root"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/dimen_40px"
+            android:layout_marginTop="@dimen/dimen_30px"
+            android:orientation="horizontal" >
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_fragment_select_episode_lv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/menu_fragment_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:text="@string/choice_episode"
+                android:textColor="@color/episode_definition_title"
+                android:textSize="@dimen/dimen_font_42px" />
+
+            <GridView
+                android:id="@+id/menu_fragment_lv"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/dimen_360px"
+                android:layout_marginRight="@dimen/dimen_126px"
+                android:layout_marginTop="@dimen/dimen_30px"
+                android:background="@color/transparent"
+                android:cacheColorHint="@color/transparent"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/dimen_12px"
+                android:listSelector="@color/transparent"
+                android:numColumns="10"
+                android:scrollbars="none"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="@dimen/dimen_12px" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/menu_fragment_select_episode_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dimen_45px"
+        android:layout_alignBottom="@id/menu_fragment_root"
+        android:background="@drawable/control_panel_bottom_gradual_bg"
+        android:visibility="gone" />
+
+</RelativeLayout>

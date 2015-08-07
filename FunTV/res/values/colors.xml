@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="episode_bg">#E6000000</color>  <!--透明度90%  -->
+    <color name="episode_definition">#0FF1F1F1</color>
+    <color name="episode_bg_normal_stroke">#2AF1F1F1</color>
+    <color name="episode_bg_focus_stroke">#F1F1F1</color>
+    <color name="episode_selector_press">#99F25B00</color>
+    <color name="episode_bg_focus">#2AF1F1F1</color>
+    <color name="episode_definition_title">#66F1F1F1</color>  <!--透明度40%  -->
+    <color name="episode_definition_word">#CCF1F1F1</color>  <!--透明度80%  -->
+    <color name="episode_definition_select">#CCF25B00</color>
+
+    <color name="player_seek_bar_bg">#1FF1F1F1</color>
+ 	<color name="player_seek_bar_progress_start">#E6FF9C00</color> <!--透明度90%  -->
+    <color name="player_seek_bar_progress_end">#E6F25B00</color>
+    <color name="player_pause_panel_bg">#C0000000</color> <!--透明度70%  -->
+    <color name="player_loading_progress_bg">#4DF86400</color>
+    <color name="player_loading_progress">#CCFFD200</color>
+    <color name="player_loading_progress_start">#9AFF6E02</color> <!--透明度60%  -->
+    <color name="player_loading_progress_end">#9AFFF000</color> <!--透明度60%  -->
+    <color name="player_next_part_bg">#CC000000</color>  <!--透明度90%  -->
+
+    <color name="variety_item_bg">#66000000</color>
+    <color name="variety_item_press">#C0000000</color>
+
+    <color name="control_panel_bg">#33000000</color> <!-- 透明度20% -->
+
+    <color name="related_media_item_image_bg">#66747474</color>  <!--透明度40%  -->
+
+    <color name="player_seek_bar_second_progress_bg">#5CF1F1F1</color>  <!--透明度60%  填充 60%-->
+
+     <color name="live_aphla_bg">#CC000000</color>  <!--透明度80%  -->
+
+</resources>

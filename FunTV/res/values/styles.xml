@@ -1,0 +1,79 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <!-- Application theme. -->
+    <style name="AppTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="LoadingProgressStyle" parent="@android:style/Widget.ProgressBar.Large">
+        <item name="android:minWidth">@dimen/player_progress_wedth</item>
+        <item name="android:maxWidth">@dimen/player_progress_wedth</item>
+        <item name="android:minHeight">@dimen/player_progress_height</item>
+        <item name="android:maxHeight">@dimen/player_progress_height</item>
+    </style>
+
+    <style name="episode_definition_style">
+        <item name="android:layout_width">@dimen/dimen_310px</item>
+        <item name="android:layout_height">@dimen/dimen_106px</item>
+        <item name="android:background">@drawable/episode_bg_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:textSize">@dimen/dimen_font_42px</item>
+    </style>
+
+     <style name="play_error_tip_style">
+        <item name="android:layout_width">@dimen/dimen_310px</item>
+        <item name="android:layout_height">@dimen/dimen_96px</item>
+        <item name="android:background">@drawable/episode_bg_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:textSize">@dimen/dimen_font_42px</item>
+    </style>
+
+    <style name="episode_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:textSize">@dimen/dimen_font_52px</item>
+    </style>
+
+    <style name="episode_indicator_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/dimen_80px</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:background">@color/player_next_part_bg</item>
+        <item name="android:textSize">@dimen/dimen_font_36px</item>
+    </style>
+
+    <style name="player_loading_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_title</item>
+        <item name="android:textSize">@dimen/dimen_font_42px</item>
+    </style>
+
+    <style name="player_loading_video_title_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:textSize">@dimen/dimen_font_42px</item>
+    </style>
+
+    <style name="player_exit_style">
+        <item name="android:layout_width">@dimen/dimen_380px</item>
+        <item name="android:layout_height">@dimen/dimen_116px</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/episode_definition_word</item>
+        <item name="android:textSize">@dimen/dimen_font_42px</item>
+        <item name="android:background">@drawable/episode_bg_selector</item>
+    </style>
+
+</resources>

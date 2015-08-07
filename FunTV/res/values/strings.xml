@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">百视通TV</string>
+    <string name="action_settings">Settings</string>
+    <string name="choice_definition">选择清晰度</string>
+    <string name="blue_1080p_definition">蓝光</string>
+    <string name="superdvd_720p_definition">超清</string>
+    <string name="highdvd_480p_definition">高清</string>
+    <string name="clarity_dvd_definition">清晰</string>
+    <string name="fluency_definition">流畅</string>
+    <string name="ts_definition">枪版</string>
+    <string name="choice_episode">选集</string>
+    <string name="version_upgrade_title">有新版本</string>
+    <string name="version_upgrade_message">版本升级到新版</string>
+    <string name="now_upgrade">现在更新</string>
+    <string name="next_upgrade">下次再说</string>
+    <string name="ok">确定</string>
+    <string name="exit">退出</string>
+    <string name="cancle">取消</string>
+    <string name="download_progress_title">下载进度</string>
+    <string name="player_tip_ok">确定:开始/暂停</string>
+    <string name="player_tip_live_ok">确定:切换直播频道</string>
+    <string name="player_tip_live_clarity">菜单/下键:清晰度选择</string>
+    <string name="player_tip_exit">返回/上键:退出</string>
+    <string name="player_tip_clarity_panel">菜单/下键:清晰度选择和选集</string>
+    <string name="player_related_tip">看过该片的人也喜欢看</string>
+    <string name="player_complete_format">%1$s 已播放完成</string>
+    <string name="player_pause_btn_style">&#xe801;</string>
+    <string name="player_forward_btn_style">&#xe802;</string>
+    <string name="player_backward_btn_style">&#xe800;</string>
+    <string name="player_loading_text">视频加载中...</string>
+    <string name="cache_speed">%1$dKB/s</string>
+    <string name="cache_progress">%1$d%%</string>
+    <string name="no_net_tip">缓冲失败，请检查网络后重新播放</string>
+    <string name="error_retry">重试一次</string>
+    <string name="error_back">退出</string>
+    <string name="no_net_tip_title">网络连接失败</string>
+    <string name="not_connect_server_tip">目前无法与服务器建立连接，请检查您的网络设置</string>
+    <string name="click_retry_button_tip">修复后点击重试一次进行使用</string>
+    <string name="load_webpage_error_tip">加载页面失败</string>
+    <string name="default_time">00:00</string>
+    <string name="user_exit_tips">亲,您确定要退出应用吗?</string>
+    <string name="user_exit_ok">确定</string>
+    <string name="user_exit_cancel">取消</string>
+    <string name="episode_indicator">即将播放 %1$s</string>
+    <string name="other_live">其他直播</string>
+    <string name="player_living_tip">正在直播,不支持快进/快退</string>
+</resources>

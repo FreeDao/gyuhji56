@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/control_panel_pause_layout_btn"
+        android:layout_width="@dimen/dimen_244px"
+        android:layout_height="@dimen/dimen_244px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_12px"
+        android:layout_marginLeft="@dimen/dimen_120px"
+        android:background="@drawable/icon_player_pause_selector"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:nextFocusDown="@id/control_panel_pause_layout_btn"
+        android:text="@string/player_pause_btn_style"
+        android:textSize="@dimen/dimen_font_180px" />
+
+    <LinearLayout
+        android:id="@+id/pause_panel_related_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/control_panel_pause_layout_btn"
+        android:layout_marginTop="@dimen/dimen_204px"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</RelativeLayout>

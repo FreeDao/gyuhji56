@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="video_rate">
+        <item>s_super_dvd</item>
+        <item>super_dvd</item>
+        <item>high_dvd</item>
+        <item>dvd</item>
+        <item>tv</item>
+        <item>shot</item>
+    </string-array>
+    
+    <string-array name="pinfo_language">
+        <item>pinfo_language_ none</item>
+        <item>pinfo_language_gylang</item>
+        <item> pinfo_language_yylang</item>
+        <item>pinfo_language_yslang</item>
+    </string-array>
+
+</resources>

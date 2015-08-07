@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.funtv.webkit.FunWebview
+        android:id="@+id/main_webView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <ViewStub
+        android:id="@+id/main_activity_error_viewstub"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout="@layout/no_net_tip_layout" />
+
+</RelativeLayout>

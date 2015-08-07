@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/control_panel_bg"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/control_panel_bg" >
+
+    <ImageView
+        android:id="@+id/move_forward_tv"
+        android:layout_width="@dimen/dimen_204px"
+        android:layout_height="@dimen/dimen_204px"
+        android:layout_centerInParent="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:src="@drawable/icon_player_forward"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/move_backward_tv"
+        android:layout_width="@dimen/dimen_204px"
+        android:layout_height="@dimen/dimen_204px"
+        android:layout_centerInParent="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:src="@drawable/icon_player_backward"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/control_pannel_seek_bar_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/control_panel_bottom_gradual_bg"
+        android:minHeight="@dimen/dimen_120px" >
+
+        <SeekBar
+            android:id="@+id/media_progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dimen_120px"
+            android:layout_marginRight="@dimen/dimen_120px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:minHeight="@dimen/dimen_40px"
+            android:progress="40"
+            android:progressDrawable="@drawable/progress_style_play"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/time_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/media_progress"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/media_progress"
+            android:gravity="center"
+            android:paddingBottom="1dp"
+            android:paddingLeft="15dp"
+            android:text="00:00"
+            android:textColor="@color/episode_bg_focus_stroke"
+            android:textSize="@dimen/dimen_font_36px" />
+
+        <TextView
+            android:id="@+id/time_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/media_progress"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/media_progress"
+            android:gravity="center"
+            android:paddingBottom="1dp"
+            android:paddingRight="15dp"
+            android:text="00:00"
+            android:textColor="@color/episode_bg_focus_stroke"
+            android:textSize="@dimen/dimen_font_36px" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/time_display"
+        android:layout_width="@dimen/dimen_180px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/control_pannel_seek_bar_layout"
+        android:layout_marginBottom="@dimen/dimen_42px"
+        android:layout_marginLeft="4dp"
+        android:background="@drawable/player_progress_move_icon"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/default_time"
+        android:textColor="@color/episode_bg_focus_stroke"
+        android:textSize="@dimen/dimen_font_36px" />
+
+    <LinearLayout
+        android:id="@+id/control_pannel_pause_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/control_pannel_seek_bar_layout"
+        android:orientation="vertical" >
+
+        <include layout="@layout/pause_panel_layout" />
+    </LinearLayout>
+
+</RelativeLayout>
