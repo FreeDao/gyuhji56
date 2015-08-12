@@ -11,20 +11,21 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import com.bmtech.utils.io.TchFileTool;
+import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.log.LogHelper;
 
 public class Startor {
 
 	public static void main(String[] args) throws Exception {
-		int port = TchFileTool.getInt("config", "proxy-port.def", 8880);
+		ConfigReader cr = new ConfigReader("config/proxy.properties", "main");
+		int port = cr.getInt("proxy_port");
 		Server server = new Server(port);
 
 		ProxyHandler handler = new ProxyHandler();
 		server.setHandler(handler);
 
 		server.start();
-		LogHelper.log.info("jetty started at port %s", port);
+		LogHelper.log.info("httproxy started at port %s", port);
 		server.join();
 	}
 

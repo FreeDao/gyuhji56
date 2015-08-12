@@ -36,7 +36,7 @@ public final class ProxyConfig {
 
 	public File newTmpFile() {
 		try {
-			return File.createTempFile("httpProxy", "pro", getTmpDir());
+			return File.createTempFile("httproxy", "pro", getTmpDir());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
