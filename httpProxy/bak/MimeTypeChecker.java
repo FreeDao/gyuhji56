@@ -37,61 +37,61 @@ import org.apache.commons.httpclient.HttpMethod;
  */
 public class MimeTypeChecker implements ProxyCallback {
 
-    ProxyConfig config;
+	ProxyConfig config;
 
-    /**
-     * @param config
-     */
-    public MimeTypeChecker(ProxyConfig config) {
-        this.config = config;
-    }
+	/**
+	 * @param config
+	 */
+	public MimeTypeChecker(ProxyConfig config) {
+		this.config = config;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see it.geosolutions.httpproxy.ProxyCallback#onRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    public void onRequest(HttpServletRequest request, HttpServletResponse response, URL url)
-            throws IOException {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.geosolutions.httpproxy.ProxyCallback#onRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	public void onRequest(HttpServletRequest request, HttpServletResponse response, URL url)
+			throws IOException {
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see it.geosolutions.httpproxy.ProxyCallback#onRemoteResponse(org.apache.commons.httpclient.HttpMethod)
-     */
-    public void onRemoteResponse(HttpMethod method) throws IOException {
-        Set<String> mimeTypes = config.getMimetypeWhitelist();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.geosolutions.httpproxy.ProxyCallback#onRemoteResponse(org.apache.commons.httpclient.HttpMethod)
+	 */
+	public void onRemoteResponse(HttpMethod method) throws IOException {
+		Set<String> mimeTypes = config.getMimetypeWhitelist();
 
-        if (mimeTypes != null && mimeTypes.size() > 0) {
-            Header header = method.getResponseHeader("Content-type");
-            
-            
-            if(header != null){              	
-            	String contentType = header.getValue();
-            	
-                // //////////////////////////////////
-                // Trim off extraneous information
-                // //////////////////////////////////
-
-                String firstType = contentType.split(";")[0];
-
-                if (!mimeTypes.contains(firstType)) {
-                    throw new HttpErrorException(403, "Content-type " + firstType
-                            + " is not among the ones allowed for this proxy");
-                }
-            }
+		if (mimeTypes != null && mimeTypes.size() > 0) {
+			Header header = method.getResponseHeader("Content-type");
 
 
-        }
-    }
+			if(header != null){              	
+				String contentType = header.getValue();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see it.geosolutions.httpproxy.ProxyCallback#onFinish()
-     */
-    public void onFinish() throws IOException {
-    }
+				// //////////////////////////////////
+				// Trim off extraneous information
+				// //////////////////////////////////
+
+				String firstType = contentType.split(";")[0];
+
+				if (!mimeTypes.contains(firstType)) {
+					throw new HttpErrorException(403, "Content-type " + firstType
+							+ " is not among the ones allowed for this proxy");
+				}
+			}
+
+
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.geosolutions.httpproxy.ProxyCallback#onFinish()
+	 */
+	public void onFinish() throws IOException {
+	}
 
 }

@@ -1,14 +1,10 @@
 package rays.httpproxy;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -26,15 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.bmtech.utils.http.HttpCrawler;
 import com.bmtech.utils.http.HttpHandler.Prop;
 
-public class HTTPProxy {
-	private ProxyConfig proxyConfig = ProxyConfig.getInstance();
-
-	public HTTPProxy() {
-	}
+public class Httproxy {
+	private int connectTimeout = 30000;
+	private int readTimeout = 90000;
+	public Httproxy() {}
 
 	public void doGet(URL url, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse) throws IOException,
-			ServletException, URISyntaxException {
+			HttpServletResponse httpServletResponse) throws Exception {
 		try {
 
 			final List<String[]> headers = collectClientHeaders(url,
@@ -49,6 +43,8 @@ public class HTTPProxy {
 					} else {
 						conn = (HttpURLConnection) url.openConnection();
 					}
+					conn.setConnectTimeout(connectTimeout);
+					conn.setReadTimeout(readTimeout);
 					conn.setInstanceFollowRedirects(false);
 					for (Prop p : props) {
 						conn.addRequestProperty(p.key, p.getValue());
@@ -66,13 +62,13 @@ public class HTTPProxy {
 	}
 
 	public void doPost(URL url, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse) throws IOException,
-			ServletException {
+			HttpServletResponse httpServletResponse) throws Exception {
 		try {
 			List<String[]> headers = collectClientHeaders(url,
 					httpServletRequest);
 
 			HttpCrawler crl = new HttpCrawler(url) {
+
 				@Override
 				public int post(Prop[] props, byte[] bs) throws IOException {
 					if (handler.getProxy() != null) {
@@ -81,6 +77,9 @@ public class HTTPProxy {
 					} else {
 						conn = (HttpURLConnection) url.openConnection();
 					}
+					conn.setConnectTimeout(connectTimeout);
+					conn.setReadTimeout(readTimeout);
+
 					conn.setInstanceFollowRedirects(false);
 					for (Prop p : props) {
 						conn.addRequestProperty(p.key, p.getValue());
@@ -123,16 +122,21 @@ public class HTTPProxy {
 		return out.toByteArray();
 	}
 
+
 	private void executeProxyRequest(HttpCrawler crl,
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse) throws IOException,
-			ServletException {
+			HttpServletResponse httpServletResponse) throws Exception,
+	ServletException {
 		try {
-			int intProxyResponseCode = crl.getHttpCode();
-			Map<String, List<String>> respHead = crl.getHeadInfo();
+			Map<String, List<String>> oldHead = crl.getHeadInfo();
+			HttpHeader header = new HttpHeader(oldHead);
+			header.setHttpCode(crl.getHttpCode());
+
+			byte[] injected = RewriteEngine.httpHeaderRewriter.filter(crl.getURL().toString(), header, null);
+			int intProxyResponseCode = header.getHttpCode();
 
 			httpServletResponse.setStatus(intProxyResponseCode);
-			Iterator<Entry<String, List<String>>> itr = respHead.entrySet()
+			Iterator<Entry<String, List<String>>> itr = header.respHead.entrySet()
 					.iterator();
 			while (itr.hasNext()) {
 				Entry<String, List<String>> ent = itr.next();
@@ -140,7 +144,7 @@ public class HTTPProxy {
 				List<String> lst = ent.getValue();
 				if (name == null) {
 					System.out
-							.println("status " + lst + " for " + crl.getURL());
+					.println("status " + lst + " for " + crl.getURL());
 					continue;
 				}
 
@@ -174,7 +178,7 @@ public class HTTPProxy {
 
 				String stringStatusCode = Integer
 						.toString(intProxyResponseCode);
-				List<String> stringLocation = respHead
+				List<String> stringLocation =  header.respHead
 						.get(Utils.LOCATION_HEADER);
 
 				if (stringLocation == null || stringLocation.size() == 0) {
@@ -196,36 +200,24 @@ public class HTTPProxy {
 				httpServletResponse.setIntHeader(
 						Utils.CONTENT_LENGTH_HEADER_NAME, 0);
 				httpServletResponse
-						.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+				.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 				return;
 			}
 
-			File f = this.proxyConfig.newTmpFile();
-			FileOutputStream fos = new FileOutputStream(f);
-			try {
-				crl.dumpTo(fos);
-				if (crl.getURL().toString().contains("?leftnav")) {
-					fos.write(("<script >alert('inject 郑龙强小狗狗第')</script>")
-							.getBytes());
-				}
-			} finally {
-				fos.close();
+			if(injected == null){
+				ByteArrayOutputStream ops = new ByteArrayOutputStream();
+				crl.dumpTo(ops);
+				injected = ops.toByteArray();
+			}else{
+				System.out.println("using injected html");
 			}
-			httpServletResponse.setHeader(Utils.HTTP_HEADER_Content_Length, ""
-					+ f.length());
 
-			byte[] b = new byte[4096];
+			httpServletResponse.setHeader(Utils.HTTP_HEADER_Content_Length, ""
+					+ injected.length);
+
 			OutputStream out = httpServletResponse.getOutputStream();
 			if (out != null) {
-				FileInputStream fis = new FileInputStream(f);
-				try {
-					int read = 0;
-					while ((read = fis.read(b)) > 0) {
-						out.write(b, 0, read);
-					}
-				} finally {
-					fis.close();
-				}
+				out.write(injected);
 			}
 		} finally {
 			crl.close();
@@ -252,15 +244,6 @@ public class HTTPProxy {
 			while (enumerationOfHeaderValues.hasMoreElements()) {
 				String stringHeaderValue = (String) enumerationOfHeaderValues
 						.nextElement();
-
-				// if (stringHeaderName
-				// .equalsIgnoreCase(Utils.HTTP_HEADER_ACCEPT_ENCODING)
-				// && stringHeaderValue.toLowerCase().contains("gzip"))
-				// continue;
-				// if (stringHeaderName
-				// .equalsIgnoreCase(Utils.HTTP_HEADER_CONTENT_ENCODING)
-				// && stringHeaderValue.toLowerCase().contains("gzip"))
-				// continue;
 
 				headers.add(new String[] { stringHeaderName, stringHeaderValue });
 			}

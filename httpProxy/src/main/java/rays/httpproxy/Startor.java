@@ -15,17 +15,18 @@ import com.bmtech.utils.io.ConfigReader;
 import com.bmtech.utils.log.LogHelper;
 
 public class Startor {
-
+	static LogHelper log = new LogHelper("stator");
 	public static void main(String[] args) throws Exception {
 		ConfigReader cr = new ConfigReader("config/proxy.properties", "main");
 		int port = cr.getInt("proxy_port");
 		Server server = new Server(port);
-
+		RewriteEngine.init();
+		
 		ProxyHandler handler = new ProxyHandler();
 		server.setHandler(handler);
 
 		server.start();
-		LogHelper.log.info("httproxy started at port %s", port);
+		log.info("httproxy started at port %s", port);
 		server.join();
 	}
 
@@ -48,20 +49,25 @@ public class Startor {
 				ops = response.getOutputStream();
 				String method = request.getMethod();
 				String path = baseRequest.getRequestURL().toString();
+				
 				String fullPath = path;
 				if (queryStr != null) {
 					fullPath = path + "?" + queryStr;
 				}
+				log.info("proxy for %s", fullPath);
+				if(!fullPath.toLowerCase().startsWith("http")){
+					fullPath = "http://" + fullPath ;
+				}
 				URL url = new URL(fullPath);
 
 				System.out.println("---> " + path);
-				HTTPProxy proxy = new HTTPProxy();
+				Httproxy proxy = new Httproxy();
 				if (method.equalsIgnoreCase("GET")) {
 					proxy.doGet(url, request, response);
 				} else if (method.equalsIgnoreCase("post")) {
 					proxy.doPost(url, request, response);
 				} else {
-					log.debug("xxxxxxxxxxxxxxx for %s , to %", method, target);
+					log.debug("xxxxxxxxxxxxxxx for %s , to %s", method, target);
 					String str = "ERROR method " + method + ", for url "
 							+ target;
 					response.getOutputStream().write(str.getBytes());
